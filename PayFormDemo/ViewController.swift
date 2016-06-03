@@ -1,0 +1,21 @@
+//
+//  ViewController.swift
+//  PayFormDemo
+//
+//  Created by Sven Resch on 2016-06-03.
+//  Copyright © 2016 Beanstream Internet Commerce, Inc. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    @IBAction func payAction(sender: AnyObject) {
+        let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
+        if let controller = storyboard.instantiateInitialViewController() {
+            self.presentViewController(controller, animated: true, completion: nil)
+        }
+    }
+    
+}
+
