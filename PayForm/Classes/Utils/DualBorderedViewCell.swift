@@ -21,26 +21,59 @@ class DualBorderedViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupLeftView()
+        self.setupRightView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupLeftView()
+        self.setupRightView()
     }
     
     // MARK: - Public methods
 
-    func setupLeftView() {
+    func setBorderColor(color: UIColor, side: Side) {
+        let view = (side == .Left ? self.contentView.subviews.first : self.contentView.subviews.last)
+        if let borderedView = view as? BorderedView {
+            borderedView.borderColor = color
+        }
+    }
+    
+    func setHighlightColor(color: UIColor, side: Side) {
+        let view = (side == .Left ? self.contentView.subviews.first : self.contentView.subviews.last)
+        if let borderedView = view as? BorderedView {
+            borderedView.innerBorderColor = color
+        }
+    }
+    
+    func textField(side: Side) -> UITextField? {
+        var borderedView: BorderedView? = nil
+        if let view = self.contentView.subviews.first as? BorderedView where side == .Left {
+            borderedView = view;
+        }
+        else if let view = self.contentView.subviews.last as? BorderedView where side == .Right {
+            borderedView = view;
+        }
+        if let textField = borderedView?.subviews.first as? UITextField {
+            return textField;
+        }
+        return nil
+    }
+
+
+    // MARK: - Private methods
+    
+    private func setupLeftView() {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.drawLeft = true
         }
     }
     
-    func setBorderColor(color: UIColor, side: Side) {
-        let view = (side == .Left ? self.contentView.subviews.first : self.contentView.subviews.last)
+    private func setupRightView() {
+        let view = self.contentView.subviews.last
         if let borderedView = view as? BorderedView {
-            borderedView.borderColor = color
+            borderedView.drawLeft = false
         }
     }
 

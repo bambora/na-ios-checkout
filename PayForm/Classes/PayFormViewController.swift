@@ -28,9 +28,45 @@ import UIKit
    primaryColor: the highlight color of the form. Default is blue.
  */
 public class PayFormViewController: UIViewController {
+    
+    // MARK: - Private properties
+
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    // MARK: - View controller methods
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+
+        if self.primaryColor != nil {
+            self.headerView.backgroundColor = self.primaryColor
+        }
+        
+        if self.image == nil {
+            // Set the default image to use template coloring
+            if let defaultImage = self.imageView.image {
+                let color = self.headerView.backgroundColor
+                self.imageView.image = defaultImage.imageWithRenderingMode(.AlwaysTemplate)
+                self.imageView.tintColor = color
+            }
+        }
+        else {
+            self.imageView.image = self.image
+        }
+        
+        self.nameLabel.text = self.name
+        self.amountLabel.text = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
+        self.descriptionLabel.text = self.purchaseDescription
+    }
+
+    // MARK: - Properties
 
     public var amount: NSDecimalNumber = NSDecimalNumber(double:1.0)
-    public var currency: String = "CAD"
+    public var currencyCode: String = "CAD"
     
     public var name: String?
     public var image: UIImage?
@@ -41,14 +77,40 @@ public class PayFormViewController: UIViewController {
     public var shippingAddress: Address?
     public var billingAddress: Address?
     
-    /*
+    public var primaryColor: UIColor?
+    
+    override public func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let controller = segue.destinationViewController as? UINavigationController where segue.identifier == "navController" {
+            if let addressController = controller.viewControllers.first as? AddressViewController {
+                addressController.amountStr = self.amountLabel.text
+            }
+        }
     }
-    */
+    
+    // MARK: - Custom action methods
+    
+    @IBAction func closeButtonAction(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - Private methods
+    
+    private static func localizedCurrencyAmount(amount:NSDecimalNumber, currencyCode:String) -> String {
+        let formatter = NSNumberFormatter()
+        formatter.currencyCode = currencyCode
+        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+        if let localized = formatter.stringFromNumber(amount) {
+            return localized
+        }
+        else {
+            return "0.0"
+        }
+    }
 
 }

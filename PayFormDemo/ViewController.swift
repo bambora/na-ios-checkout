@@ -10,9 +10,18 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
     @IBAction func payAction(sender: AnyObject) {
         let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
-        if let controller = storyboard.instantiateInitialViewController() {
+        if let controller = storyboard.instantiateInitialViewController() as? PayFormViewController {
+            controller.name = "Lollipop Shop"
+            controller.amount = NSDecimalNumber(double: 100.00)
+            controller.currencyCode = "CAD"
+            controller.purchaseDescription = "item, item, item..."
+            
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }

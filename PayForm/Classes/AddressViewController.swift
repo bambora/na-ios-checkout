@@ -23,6 +23,7 @@ public class AddressViewController: UITableViewController {
 
     var addressType: AddressType = .Shipping
     var billingAddressIsSame: Bool = false
+    var amountStr: String?
     
     // MARK: - View controller methods
 
@@ -43,6 +44,20 @@ public class AddressViewController: UITableViewController {
     // MARK: - Table view delegate
     
     override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if indexPath.row == Row.NextStep.rawValue {
+            self.view.endEditing(true)
+            
+            if addressType == .Shipping && !self.billingAddressIsSame {
+                if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
+                    controller.addressType = .Billing
+                    controller.amountStr = self.amountStr
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            }
+            else {
+                self.performSegueWithIdentifier("payment", sender: self)
+            }
+        }
         return nil; // Disable cell selection
     }
     
@@ -71,24 +86,21 @@ public class AddressViewController: UITableViewController {
         switch indexPath.row {
         case Row.Name.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
-            if let borderedCell = cell as? BorderedViewCell {
-                borderedCell.drawLeft(true)
-                borderedCell.drawTop(true) // needed for first row
+            if let borderedCell = self.setupBorderedCell(cell) {
+                borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
             }
             
         case Row.Street.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
-            if let borderedCell = cell as? BorderedViewCell {
-                borderedCell.setBorderColor(UIColor.redColor())
-                borderedCell.drawLeft(true)
-                borderedCell.drawTop(true) // needed to show red highlight
-            }
+            self.setupBorderedCell(cell)
             
         case Row.ZipCity.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
+            self.setupDualBorderedCell(cell)
             
         case Row.ProvinceCountry.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
+            self.setupDualBorderedCell(cell)
             
         case Row.BillingSame.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
@@ -100,12 +112,14 @@ public class AddressViewController: UITableViewController {
         case Row.NextStep.rawValue:
             cell = tableView.dequeueReusableCellWithIdentifier("nextStepCell", forIndexPath: indexPath)
             if let nextStepCell = cell as? NextStepCell {
-                var title = NSLocalizedString("PAY >", comment: "Button title to use to enter Payment view")
-                if !self.billingAddressIsSame {
+                var title = ""
+                if addressType == .Shipping && !self.billingAddressIsSame {
                     title = NSLocalizedString("BILLING ADDRESS >", comment: "Button title to use to enter Billing Address view")
                 }
+                else {
+                    title = NSLocalizedString("PAY >", comment: "Button title to use to enter Payment view")
+                }
                 nextStepCell.setTitleText(title)
-                nextStepCell.drawLeft(true)
                 nextStepCell.drawTop(true)
             }
             
@@ -127,9 +141,54 @@ public class AddressViewController: UITableViewController {
     // MARK: - Custom action methods
     
     func billingIsSameValueChanged(sender: UISwitch) {
+        self.view.endEditing(true)
         self.billingAddressIsSame = sender.on
         let nextStepIndexPath = NSIndexPath(forRow: Row.NextStep.rawValue, inSection: 0)
         self.tableView.reloadRowsAtIndexPaths([nextStepIndexPath], withRowAnimation: .Automatic)
     }
     
+    // MARK: - Private methods
+    
+    private func setupBorderedCell(cell: UITableViewCell ) -> BorderedViewCell? {
+        if let borderedCell = cell as? BorderedViewCell {
+            if let textField = borderedCell.textField() {
+                textField.delegate = self
+            }
+            return borderedCell
+        }
+        
+        return nil
+    }
+
+    private func setupDualBorderedCell(cell: UITableViewCell ) -> DualBorderedViewCell? {
+        if let dualBorderedCell = cell as? DualBorderedViewCell {
+            if let textField = dualBorderedCell.textField(.Left) {
+                textField.delegate = self
+            }
+            if let textField = dualBorderedCell.textField(.Right) {
+                textField.delegate = self
+            }
+            return dualBorderedCell
+        }
+        
+        return nil
+    }
+
 }
+
+extension AddressViewController: UITextFieldDelegate {
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        if let borderedView = textField.superview as? BorderedView {
+            //var highlightColor = borderedView.innerBorder?.borderColor
+            borderedView.innerBorder?.borderColor = UIColor.blackColor().CGColor
+            borderedView.setNeedsDisplay()
+        }
+    }
+    public func textFieldDidEndEditing(textField: UITextField) {
+        if let borderedView = textField.superview as? BorderedView {
+            borderedView.innerBorder?.borderColor = UIColor.clearColor().CGColor
+            borderedView.setNeedsDisplay()
+        }
+    }
+}
+

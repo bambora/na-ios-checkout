@@ -19,7 +19,14 @@ class BorderedViewCell: UITableViewCell {
             borderedView.borderColor = color
         }
     }
-    
+
+    func setHighlightColor(color: UIColor) {
+        let view = self.contentView.subviews.first
+        if let borderedView = view as? BorderedView {
+            borderedView.innerBorderColor = color
+        }
+    }
+
     func drawLeft(draw: Bool) {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
@@ -32,6 +39,15 @@ class BorderedViewCell: UITableViewCell {
         if let borderedView = view as? BorderedView {
             borderedView.drawTop = draw
         }
+    }
+    
+    func textField() -> UITextField? {
+        if let borderedView = self.contentView.subviews.first as? BorderedView {
+            if let textField = borderedView.subviews.first as? UITextField {
+                return textField;
+            }
+        }
+        return nil
     }
     
 }

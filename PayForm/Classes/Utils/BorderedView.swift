@@ -30,37 +30,57 @@ class BorderedView: UIView {
         }
     }
     
+    @IBInspectable var innerBorderColor: UIColor? {
+        didSet {
+            self.innerBorder?.borderColor = innerBorderColor?.CGColor
+        }
+    }
+    
     var border: CALayer?
-    var drawLeft: Bool = false
+    var innerBorder: CALayer?
+    var drawLeft: Bool = true
     var drawTop: Bool = false
     
     // MARK: - View controller methods
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        border = self.addBorder()
+        border = self.addBorder("outerBorder")
+        innerBorder = self.addBorder("innerBorder", borderWidth: 1.0, borderColor: UIColor.clearColor())
+        if let rect = innerBorder?.frame {
+            innerBorder?.frame = CGRectInset(rect, 1.0, 1.0)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        border = self.addBorder()
+        border = self.addBorder("outerBorder")
+        innerBorder = self.addBorder("innerBorder", borderWidth: 1.0, borderColor: UIColor.clearColor())
+        if let rect = innerBorder?.frame {
+            innerBorder?.frame = CGRectInset(rect, 1.0, 1.0)
+        }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        var rect: CGRect = self.bounds
         if let border = self.border {
             let borderWidth = border.borderWidth
             let x = (drawLeft ? 0 : -borderWidth)
             let y = (drawTop ? 0 : -borderWidth)
             let w = (drawLeft ? bounds.size.width : bounds.size.width+borderWidth)
             let h = (drawTop ? bounds.size.height : bounds.size.height+borderWidth)
-            border.frame = CGRectMake(x, y, w, h)
+            rect = CGRectMake(x, y, w, h)
+            border.frame = rect
+        }
+        if let innerBorder = self.innerBorder {
+            innerBorder.frame = CGRectInset(rect, 1.0, 1.0)
         }
     }
 
     // MARK: - Private methods
 
-    private func addBorder(borderWidth: CGFloat = 1.0, borderColor: UIColor = UIColor.lightGrayColor()) -> CALayer {
+    private func addBorder(name: String, borderWidth: CGFloat = 1.0, borderColor: UIColor = UIColor.lightGrayColor()) -> CALayer {
         let border = CALayer()
         let x = (drawLeft ? 0 : -borderWidth)
         let y = (drawTop ? 0 : -borderWidth)
@@ -70,7 +90,7 @@ class BorderedView: UIView {
         border.frame = CGRectMake(x, y, w, h)
         border.borderColor = borderColor.CGColor
         border.borderWidth = borderWidth
-        border.name = "externalBorder"
+        border.name = name
         
         layer.insertSublayer(border, atIndex: 0)
         layer.masksToBounds = false
