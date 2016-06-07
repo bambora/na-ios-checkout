@@ -163,14 +163,14 @@
         <scene sceneID="hYt-38-qzM">
             <objects>
                 <tableViewController storyboardIdentifier="AddressViewController" title="Shipping Address" id="xtv-gs-FVv" customClass="AddressViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kcb-xv-HPR">
+                    <tableView key="view" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="kcb-xv-HPR">
                         <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" id="Pws-Fc-JC0" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="93.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pws-Fc-JC0" id="sZP-Ot-6Cu">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -211,7 +211,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="streetCell" id="Le8-zs-Fem" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="116" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="137.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Le8-zs-Fem" id="rHS-Tq-LVO">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -252,7 +252,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="zipCityCell" id="MgK-2h-Q7t" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="160" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="181.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MgK-2h-Q7t" id="4RM-sL-iJx">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -322,7 +322,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="provinceCountryCell" id="kPQ-9f-dgN" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="204" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="225.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kPQ-9f-dgN" id="sEN-gP-2pv">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -392,7 +392,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="billingIsSameCell" id="p3Q-jS-hCx" customClass="BillingIsSameViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="248" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="269.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3Q-jS-hCx" id="SfN-bh-F7I">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
@@ -427,7 +427,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nextStepCell" id="H3l-Xx-LYk" userLabel="nextStepCell" customClass="NextStepCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="292" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="313.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H3l-Xx-LYk" id="yIj-8g-9OV">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>

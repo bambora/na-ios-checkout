@@ -31,11 +31,26 @@ public class PayFormViewController: UIViewController {
     
     // MARK: - Private properties
 
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var headerView: UIView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var amountLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    
+    private weak var shippingAddressController: AddressViewController?
+    
+    // MARK: - Public properties
+    
+    public var amount: NSDecimalNumber = NSDecimalNumber(double:1.0)
+    public var currencyCode: String = "CAD"
+    public var name: String?
+    public var image: UIImage?
+    public var purchaseDescription: String?
+    public var shippingAddressRequired: Bool?
+    public var billingAddressRequired: Bool?
+    public var shippingAddress: Address?
+    public var billingAddress: Address?
+    public var primaryColor: UIColor?
     
     // MARK: - View controller methods
     
@@ -61,34 +76,23 @@ public class PayFormViewController: UIViewController {
         self.nameLabel.text = self.name
         self.amountLabel.text = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
         self.descriptionLabel.text = self.purchaseDescription
+        
+        if let controller = self.shippingAddressController {
+            controller.amountStr = self.amountLabel.text
+        }
     }
 
-    // MARK: - Properties
-
-    public var amount: NSDecimalNumber = NSDecimalNumber(double:1.0)
-    public var currencyCode: String = "CAD"
-    
-    public var name: String?
-    public var image: UIImage?
-    public var purchaseDescription: String?
-    public var shippingAddressRequired: Bool?
-    public var billingAddressRequired: Bool?
-    
-    public var shippingAddress: Address?
-    public var billingAddress: Address?
-    
-    public var primaryColor: UIColor?
-    
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
 
     // MARK: - Navigation
 
+    // This method is executed before viewDidLoad.
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let controller = segue.destinationViewController as? UINavigationController where segue.identifier == "navController" {
             if let addressController = controller.viewControllers.first as? AddressViewController {
-                addressController.amountStr = self.amountLabel.text
+                self.shippingAddressController = addressController
             }
         }
     }
