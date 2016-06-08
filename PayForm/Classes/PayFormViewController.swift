@@ -54,9 +54,23 @@ public class PayFormViewController: UIViewController {
     
     // MARK: - View controller methods
     
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            self.modalPresentationStyle = .FormSheet
+        }
+    }
+    
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            self.modalPresentationStyle = .FormSheet
+        }
+    }
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if self.primaryColor != nil {
             self.headerView.backgroundColor = self.primaryColor
         }
@@ -85,7 +99,7 @@ public class PayFormViewController: UIViewController {
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
-
+    
     // MARK: - Navigation
 
     // This method is executed before viewDidLoad.
