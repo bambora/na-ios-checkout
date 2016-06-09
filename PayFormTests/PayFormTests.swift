@@ -23,7 +23,6 @@ class PayFormTests: XCTestCase {
     
     func test1Luhn() {
         let ccValidator = CreditCardValidator()
-        
         let luhn = "1234 5678 9012 3452"
         XCTAssertTrue(ccValidator.isLuhnValid(luhn), "Luhn test validation.")
     }
