@@ -38,6 +38,28 @@ class CreditCardValidator {
     let DINERS_CLUB_TYPE    = "^3(?:0[0-5]|[68][0-9])[0-9]$"		// DinersClub 14
     
     let CC_LEN_FOR_TYPE = 4
+
+    //
+    // Check to make sure we are passed a cardNumber that:
+    // - Has a known card type.
+    // - Has a valid number of digits.
+    // - Appears to potentially look valid.
+    // - Is definitely Luhn valid.
+    //
+    func validate(cardNumber: String) -> Bool {
+        let cardType = self.cardType(cardNumber)
+        if cardType != .InvalidCard {
+            let cleanCard = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+            let len = self.lengthOfStringForType(cardType)
+            if len == cleanCard.characters.count {
+                if self.isValidNumber(cardNumber) && self.isLuhnValid(cardNumber) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
     
     func cardType(cardNumber: String) -> CardType {
         let ccnumber = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")

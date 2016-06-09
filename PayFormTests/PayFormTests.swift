@@ -25,7 +25,7 @@ class PayFormTests: XCTestCase {
         let ccValidator = CreditCardValidator()
         
         let luhn = "1234 5678 9012 3452"
-        XCTAssertTrue(ccValidator.isLuhnValid(luhn), "Luhn test invalid.")
+        XCTAssertTrue(ccValidator.isLuhnValid(luhn), "Luhn test validation.")
     }
     
     func test2VisaValidation() {
@@ -80,8 +80,11 @@ class PayFormTests: XCTestCase {
         XCTAssertTrue(ccValidator.lengthOfCvvForType(cardType!) == cvvLength, "\(cardName) type does not have \(cvvLength) digit security code.")
         
         let goodCard = cards[0]
+        XCTAssertTrue(ccValidator.validate(goodCard), "\(cardName) general card validation.")
+        
         let cleanNumber = goodCard.stringByReplacingOccurrencesOfString(" ", withString: "")
         XCTAssertTrue(ccValidator.lengthOfStringForType(cardType!) == cleanNumber.characters.count, "\(cardName) did not have required length of \(cardLength).")
+        
         XCTAssertTrue(ccValidator.cardType(goodCard) == cardType, "\(cardName) number type test.")
         XCTAssertTrue(ccValidator.isValidNumber(goodCard), "\(cardName) number validation.")
         XCTAssertTrue(ccValidator.isLuhnValid(goodCard), "\(cardName) number Luhn validation.")
