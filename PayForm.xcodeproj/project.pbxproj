@@ -44,6 +44,9 @@
 		BCA6B5121D023FD90070B92C /* NextStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B4D51D0206600070B92C /* NextStepCell.swift */; };
 		BCA6B5141D0777B50070B92C /* StringHexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5131D0777B50070B92C /* StringHexColor.swift */; };
 		BCA6B5151D0777B50070B92C /* StringHexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5131D0777B50070B92C /* StringHexColor.swift */; };
+		BCA6B51A1D09E5560070B92C /* CreditCardValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */; };
+		BCA6B51B1D09E5560070B92C /* CreditCardValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */; };
+		BCA6B51C1D0A031E0070B92C /* CreditCardValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,7 @@
 		BCA6B5001D021E620070B92C /* PayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayButton.swift; sourceTree = "<group>"; };
 		BCA6B5051D023EF50070B92C /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		BCA6B5131D0777B50070B92C /* StringHexColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringHexColor.swift; sourceTree = "<group>"; };
+		BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardValidator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +180,7 @@
 				BCA6B4DB1D02128F0070B92C /* BillingIsSameViewCell.swift */,
 				BCA6B4D51D0206600070B92C /* NextStepCell.swift */,
 				BCA6B5131D0777B50070B92C /* StringHexColor.swift */,
+				BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				BC9AF2C41CFF6BB6003AD818 /* ProcessingViewController.swift in Sources */,
 				BC9AF2CA1D00F20B003AD818 /* AddressViewController.swift in Sources */,
 				BCA6B4DA1D0206EA0070B92C /* DualBorderedViewCell.swift in Sources */,
+				BCA6B51A1D09E5560070B92C /* CreditCardValidator.swift in Sources */,
 				BCA6B5141D0777B50070B92C /* StringHexColor.swift in Sources */,
 				BC9AF2CE1D00F28E003AD818 /* PaymentViewController.swift in Sources */,
 				BCA6B4D81D0206C30070B92C /* BorderedViewCell.swift in Sources */,
@@ -368,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC9AF2B41CFF6B32003AD818 /* PayFormTests.swift in Sources */,
+				BCA6B51C1D0A031E0070B92C /* CreditCardValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,6 +397,7 @@
 				BCA6B4E61D021D730070B92C /* AppDelegate.swift in Sources */,
 				BCA6B5011D021E620070B92C /* PayButton.swift in Sources */,
 				BCA6B5111D023FD40070B92C /* BillingIsSameViewCell.swift in Sources */,
+				BCA6B51B1D09E5560070B92C /* CreditCardValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
