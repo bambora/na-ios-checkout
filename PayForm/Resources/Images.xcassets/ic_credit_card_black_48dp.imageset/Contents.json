@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_toys_black_48dp.png",
+      "filename" : "ic_credit_card_black_48dp.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_toys_black_48dp@2x.png",
+      "filename" : "ic_credit_card_black_48dp@2x.png",
       "scale" : "2x"
     },
     {

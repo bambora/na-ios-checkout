@@ -141,10 +141,10 @@
             </objects>
             <point key="canvasLocation" x="-131" y="-86"/>
         </scene>
-        <!--Processing View Controller-->
+        <!--Processing-->
         <scene sceneID="Nrq-9p-Gkh">
             <objects>
-                <viewController id="zbg-ky-5M2" customClass="ProcessingViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Processing" id="zbg-ky-5M2" customClass="ProcessingViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T7V-4c-82D"/>
                         <viewControllerLayoutGuide type="bottom" id="iGZ-wC-v9E"/>
@@ -152,17 +152,26 @@
                     <view key="view" contentMode="scaleToFill" id="9rj-KB-TZu">
                         <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="3nY-r9-AGo">
+                                <rect key="frame" x="250" y="204" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3nY-r9-AGo" firstAttribute="centerX" secondItem="9rj-KB-TZu" secondAttribute="centerX" id="CsI-XL-MR6"/>
+                            <constraint firstItem="3nY-r9-AGo" firstAttribute="centerY" secondItem="9rj-KB-TZu" secondAttribute="centerY" id="Ngw-fK-0Sz"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TPs-Pw-bOM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1173" y="1184"/>
         </scene>
-        <!--Shipping Address-->
+        <!--Shipping-->
         <scene sceneID="hYt-38-qzM">
             <objects>
-                <tableViewController storyboardIdentifier="AddressViewController" title="Shipping Address" id="xtv-gs-FVv" customClass="AddressViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AddressViewController" title="Shipping" id="xtv-gs-FVv" customClass="AddressViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="kcb-xv-HPR">
                         <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -485,22 +494,284 @@
             </objects>
             <point key="canvasLocation" x="533" y="601"/>
         </scene>
-        <!--Payment View Controller-->
+        <!--Payment-->
         <scene sceneID="o3P-gi-lgp">
             <objects>
-                <tableViewController id="Wzw-lC-oKO" customClass="PaymentViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JIV-Td-nfV">
+                <tableViewController title="Payment" id="Wzw-lC-oKO" customClass="PaymentViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIV-Td-nfV">
                         <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tbdCell" id="jHY-gV-EJt">
-                                <rect key="frame" x="0.0" y="72" width="520" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="emailCell" id="RbJ-ls-n6Q" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="93.5" width="520" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jHY-gV-EJt" id="mpd-5Q-Lcy">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RbJ-ls-n6Q" id="WqW-v4-ned">
+                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGm-tO-CQA" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7OT-PU-KWN">
+                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="7OT-PU-KWN" secondAttribute="trailing" constant="8" id="Lad-YA-G4m"/>
+                                                <constraint firstItem="7OT-PU-KWN" firstAttribute="leading" secondItem="eGm-tO-CQA" secondAttribute="leading" constant="8" id="Ohy-OG-7MG"/>
+                                                <constraint firstItem="7OT-PU-KWN" firstAttribute="top" secondItem="eGm-tO-CQA" secondAttribute="top" constant="1" id="ahk-MT-peE"/>
+                                                <constraint firstAttribute="bottom" secondItem="7OT-PU-KWN" secondAttribute="bottom" constant="1" id="piy-eL-ncF"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="eGm-tO-CQA" secondAttribute="trailing" id="41v-Y4-FIH"/>
+                                        <constraint firstAttribute="bottom" secondItem="eGm-tO-CQA" secondAttribute="bottom" id="7Qp-xY-4jI"/>
+                                        <constraint firstItem="eGm-tO-CQA" firstAttribute="leading" secondItem="WqW-v4-ned" secondAttribute="leading" id="OeD-vm-toS"/>
+                                        <constraint firstItem="eGm-tO-CQA" firstAttribute="top" secondItem="WqW-v4-ned" secondAttribute="top" id="ZIU-KO-O38"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" id="dUn-xH-OBx" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="137.5" width="520" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dUn-xH-OBx" id="GRB-vk-lo6">
+                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hmg-BO-EZH" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fER-v9-gxN">
+                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="fER-v9-gxN" secondAttribute="bottom" constant="1" id="4Bj-fJ-YPI"/>
+                                                <constraint firstAttribute="trailing" secondItem="fER-v9-gxN" secondAttribute="trailing" constant="8" id="4Cj-XZ-Pzp"/>
+                                                <constraint firstItem="fER-v9-gxN" firstAttribute="leading" secondItem="hmg-BO-EZH" secondAttribute="leading" constant="8" id="Ye5-sY-oT7"/>
+                                                <constraint firstItem="fER-v9-gxN" firstAttribute="top" secondItem="hmg-BO-EZH" secondAttribute="top" constant="1" id="ee9-4f-uMR"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="hmg-BO-EZH" secondAttribute="bottom" id="H9V-4T-fNH"/>
+                                        <constraint firstAttribute="trailing" secondItem="hmg-BO-EZH" secondAttribute="trailing" id="Hpu-Sm-nLU"/>
+                                        <constraint firstItem="hmg-BO-EZH" firstAttribute="leading" secondItem="GRB-vk-lo6" secondAttribute="leading" id="bOi-fe-L9F"/>
+                                        <constraint firstItem="hmg-BO-EZH" firstAttribute="top" secondItem="GRB-vk-lo6" secondAttribute="top" id="gmd-1v-bre"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cardCell" id="wpT-qX-qgy" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="181.5" width="520" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wpT-qX-qgy" id="Y6H-7K-hU3">
+                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hio-KG-6HD" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="card number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nqH-79-hy9">
+                                                    <rect key="frame" x="8" y="1" width="472" height="41.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_credit_card_black_48dp" translatesAutoresizingMaskIntoConstraints="NO" id="pYX-KW-Y6c">
+                                                    <rect key="frame" x="488" y="10" width="24" height="24"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="KmN-TZ-WS7"/>
+                                                        <constraint firstAttribute="height" constant="24" id="fA5-g8-Pji"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="pYX-KW-Y6c" firstAttribute="leading" secondItem="nqH-79-hy9" secondAttribute="trailing" constant="8" id="FQ5-Uv-dU0"/>
+                                                <constraint firstAttribute="trailing" secondItem="pYX-KW-Y6c" secondAttribute="trailing" constant="8" id="I97-Ah-3Ba"/>
+                                                <constraint firstItem="pYX-KW-Y6c" firstAttribute="centerY" secondItem="hio-KG-6HD" secondAttribute="centerY" id="Q3f-C6-mzc"/>
+                                                <constraint firstItem="nqH-79-hy9" firstAttribute="top" secondItem="hio-KG-6HD" secondAttribute="top" constant="1" id="m5a-Lo-ecQ"/>
+                                                <constraint firstAttribute="bottom" secondItem="nqH-79-hy9" secondAttribute="bottom" constant="1" id="nzR-Qw-FQ6"/>
+                                                <constraint firstItem="nqH-79-hy9" firstAttribute="leading" secondItem="hio-KG-6HD" secondAttribute="leading" constant="8" id="xbb-gD-Izd"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="hio-KG-6HD" secondAttribute="bottom" id="5Mj-Be-OaN"/>
+                                        <constraint firstItem="hio-KG-6HD" firstAttribute="top" secondItem="Y6H-7K-hU3" secondAttribute="top" id="R7N-zl-l0m"/>
+                                        <constraint firstAttribute="trailing" secondItem="hio-KG-6HD" secondAttribute="trailing" id="XVY-v6-Mfx"/>
+                                        <constraint firstItem="hio-KG-6HD" firstAttribute="leading" secondItem="Y6H-7K-hU3" secondAttribute="leading" id="cOj-hw-Gn4"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="expiryCvvCell" id="E5m-ei-8Uj" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="225.5" width="520" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E5m-ei-8Uj" id="STF-im-Vpb">
+                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LMg-8W-2LY" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="expiry mm/yy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kf9-fo-QXQ">
+                                                    <rect key="frame" x="8" y="1" width="212" height="41.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_date_range_black_48dp" translatesAutoresizingMaskIntoConstraints="NO" id="Jzh-rs-O59">
+                                                    <rect key="frame" x="228" y="10" width="24" height="24"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="ELS-q6-uZV"/>
+                                                        <constraint firstAttribute="height" constant="24" id="qbT-da-mDk"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="vyv-LN-en5"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="kf9-fo-QXQ" firstAttribute="leading" secondItem="LMg-8W-2LY" secondAttribute="leading" constant="8" id="DUK-Et-2yT"/>
+                                                <constraint firstAttribute="trailing" secondItem="Jzh-rs-O59" secondAttribute="trailing" constant="8" id="Ktx-be-5L5"/>
+                                                <constraint firstItem="kf9-fo-QXQ" firstAttribute="top" secondItem="LMg-8W-2LY" secondAttribute="top" constant="1" id="cgp-5j-DBs"/>
+                                                <constraint firstItem="Jzh-rs-O59" firstAttribute="leading" secondItem="kf9-fo-QXQ" secondAttribute="trailing" constant="8" id="dJa-8x-aMh"/>
+                                                <constraint firstAttribute="bottom" secondItem="kf9-fo-QXQ" secondAttribute="bottom" constant="1" id="mJO-PG-YDg"/>
+                                                <constraint firstItem="Jzh-rs-O59" firstAttribute="centerY" secondItem="LMg-8W-2LY" secondAttribute="centerY" id="s01-cd-RPL"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmM-ed-NHb" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="260" y="0.0" width="260" height="44"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="cvv" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vid-AX-afl">
+                                                    <rect key="frame" x="8" y="1" width="212" height="42"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_lock_outline_black_48dp" highlightedImage="cvc_hint_color" translatesAutoresizingMaskIntoConstraints="NO" id="LC3-g2-JeV">
+                                                    <rect key="frame" x="228" y="10" width="24" height="24"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="11D-cw-dK8"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="4IX-yd-85T"/>
+                                                        <constraint firstAttribute="height" constant="24" id="66g-Hb-oZf"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="BLI-g7-oyv"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="vid-AX-afl" secondAttribute="bottom" constant="1" id="9Uv-u0-107"/>
+                                                <constraint firstAttribute="trailing" secondItem="LC3-g2-JeV" secondAttribute="trailing" constant="8" id="HV4-9w-rod"/>
+                                                <constraint firstItem="LC3-g2-JeV" firstAttribute="leading" secondItem="vid-AX-afl" secondAttribute="trailing" constant="8" id="njs-2s-S92"/>
+                                                <constraint firstItem="LC3-g2-JeV" firstAttribute="centerY" secondItem="dmM-ed-NHb" secondAttribute="centerY" id="oPl-sx-rNN"/>
+                                                <constraint firstItem="vid-AX-afl" firstAttribute="top" secondItem="dmM-ed-NHb" secondAttribute="top" constant="1" id="qRP-rk-9t7"/>
+                                                <constraint firstItem="vid-AX-afl" firstAttribute="leading" secondItem="dmM-ed-NHb" secondAttribute="leading" constant="8" id="qrH-CE-FI4"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="dmM-ed-NHb" firstAttribute="top" secondItem="STF-im-Vpb" secondAttribute="top" id="1KB-sI-7RJ"/>
+                                        <constraint firstItem="LMg-8W-2LY" firstAttribute="top" secondItem="STF-im-Vpb" secondAttribute="top" id="AbX-D7-A7q"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dmM-ed-NHb" secondAttribute="trailing" constant="-8" id="BHq-Lc-xWy"/>
+                                        <constraint firstItem="LMg-8W-2LY" firstAttribute="width" secondItem="STF-im-Vpb" secondAttribute="width" multiplier="1:2" id="CZF-FP-WLc"/>
+                                        <constraint firstItem="dmM-ed-NHb" firstAttribute="leading" secondItem="LMg-8W-2LY" secondAttribute="trailing" id="KXB-e7-acK"/>
+                                        <constraint firstAttribute="bottom" secondItem="LMg-8W-2LY" secondAttribute="bottom" id="UMX-bY-96e"/>
+                                        <constraint firstItem="LMg-8W-2LY" firstAttribute="leading" secondItem="STF-im-Vpb" secondAttribute="leading" id="k6h-oj-KPr"/>
+                                        <constraint firstAttribute="bottom" secondItem="dmM-ed-NHb" secondAttribute="bottom" id="uTy-nX-4BJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="payCell" id="YQM-Zd-XUy" userLabel="nextStepCell" customClass="NextStepCell" customModule="PayForm" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="269.5" width="520" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YQM-Zd-XUy" id="5jT-Qb-CUp">
+                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PDv-d1-KF2" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOw-cB-b20">
+                                                    <rect key="frame" x="8" y="11" width="504" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="UOw-cB-b20" firstAttribute="trailing" secondItem="PDv-d1-KF2" secondAttribute="trailingMargin" id="6YU-g8-dbS"/>
+                                                <constraint firstItem="UOw-cB-b20" firstAttribute="leading" secondItem="PDv-d1-KF2" secondAttribute="leadingMargin" id="tjC-ju-cNm"/>
+                                                <constraint firstItem="UOw-cB-b20" firstAttribute="centerY" secondItem="PDv-d1-KF2" secondAttribute="centerY" id="uBV-bI-8aA"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="PDv-d1-KF2" secondAttribute="trailing" id="JDY-h5-aiX"/>
+                                        <constraint firstItem="PDv-d1-KF2" firstAttribute="top" secondItem="5jT-Qb-CUp" secondAttribute="top" id="Nb9-V1-OsQ"/>
+                                        <constraint firstItem="PDv-d1-KF2" firstAttribute="leading" secondItem="5jT-Qb-CUp" secondAttribute="leading" id="aLS-JS-pIN"/>
+                                        <constraint firstAttribute="bottom" secondItem="PDv-d1-KF2" secondAttribute="bottom" id="hpf-oQ-wkk"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nextStepTitleLabel" destination="UOw-cB-b20" id="o4d-cg-Ay9"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -541,7 +812,11 @@
     </scenes>
     <resources>
         <image name="beanstream_logo" width="380" height="57"/>
+        <image name="cvc_hint_color" width="48" height="48"/>
         <image name="ic_clear_white_24px" width="24" height="24"/>
+        <image name="ic_credit_card_black_48dp" width="48" height="48"/>
+        <image name="ic_date_range_black_48dp" width="48" height="48"/>
+        <image name="ic_lock_outline_black_48dp" width="48" height="48"/>
         <image name="ic_toys_black_48dp" width="48" height="48"/>
     </resources>
 </document>

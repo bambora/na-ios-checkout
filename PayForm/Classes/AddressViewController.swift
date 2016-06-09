@@ -8,27 +8,27 @@
 
 import UIKit
 
-private enum Row: Int {
-    case Name = 0
-    case Street
-    case ZipCity
-    case ProvinceCountry
-    case BillingSame
-    case Error
-}
-
-// Handles either Shipping Address or Billing address interaction depending on the addressType 
+// Handles either Shipping Address or Billing address interaction depending on the addressType
 // property that is setup before the view is loaded. This controller has an initial section 0 
 // where most content is shown except for the Next Step "button" row that is section 1. The Next 
 // Step button will have a title text that reads Billing Address (if billing address is required
 // and if the user has set "Billing is not the same as Shipping" or otherwise will have a button 
 // title text that read "Pay >".
-public class AddressViewController: UITableViewController {
+class AddressViewController: UITableViewController {
+    
+    private enum Row: Int {
+        case Name = 0
+        case Street
+        case ZipCity
+        case ProvinceCountry
+        case BillingSame
+        case Error
+    }
     
     // MARK: - Properties
 
-    public var addressType: AddressType = .Shipping
-    public var amountStr: String?
+    var addressType: AddressType = .Shipping
+    var amountStr: String?
     
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
@@ -39,32 +39,20 @@ public class AddressViewController: UITableViewController {
     
     // MARK: - View controller methods
 
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Get rid of extra/unused cell separator lines
-        self.tableView.tableFooterView = UIView(frame: CGRectZero)
-    }
-    
-    override public func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         if addressType == .Billing {
-            self.title = NSLocalizedString("Billing Address", comment: "Address view title when used in Billing mode")
+            self.title = NSLocalizedString("Billing", comment: "Address view title when used in Billing mode")
         }
         else {
-            self.title = NSLocalizedString("Shipping Address", comment: "Address view title when used in Shipping mode")
+            self.title = NSLocalizedString("Shipping", comment: "Address view title when used in Shipping mode")
         }
-    }
-    
-    override public func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.title = ""
     }
     
     // MARK: - Table view delegate
     
-    override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         if indexPath.section == 1 {
             // Next Step button
             self.view.endEditing(true)
@@ -96,7 +84,7 @@ public class AddressViewController: UITableViewController {
         return nil; // Disable cell selection
     }
     
-    override public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if self.addressType == .Billing && indexPath.row == Row.BillingSame.rawValue {
             return 0
         }
@@ -107,11 +95,11 @@ public class AddressViewController: UITableViewController {
 
     // MARK: - Table view data source
     
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return numRows
         }
@@ -120,7 +108,7 @@ public class AddressViewController: UITableViewController {
         }
     }
     
-    override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell;
         
         if indexPath.section == 0 {
@@ -153,15 +141,15 @@ public class AddressViewController: UITableViewController {
             case Row.Error.rawValue:
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
                 cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
+                cell.selectionStyle = .None
                 cell.textLabel?.text = "Please fill all fields."
                 cell.textLabel?.textColor = "#b71c1c".hexColor
                 cell.imageView?.tintColor = "#b71c1c".hexColor
                 
                 var image = UIImage.init(named: "ic_error_outline_black_48dp")
-                let itemSize = CGSizeMake(24, 24)
-                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
+                let imageRect = CGRectMake(0, 0, 24, 24)
                 
-                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
+                UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
                 image?.drawInRect(imageRect)
                 image = UIGraphicsGetImageFromCurrentImageContext()
                 cell.imageView?.image = image?.imageWithRenderingMode(.AlwaysTemplate)
@@ -188,13 +176,6 @@ public class AddressViewController: UITableViewController {
         }
         
         return cell
-    }
-    
-    // MARK: - Navigation
-    
-    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
     
     // MARK: - Custom action methods
@@ -269,17 +250,17 @@ public class AddressViewController: UITableViewController {
 
 extension AddressViewController: UITextFieldDelegate {
     
-    public func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
             //var highlightColor = borderedView.innerBorder?.borderColor
-            borderedView.innerBorder?.borderColor = UIColor.blackColor().CGColor
+            borderedView.innerBorderColor = UIColor.blackColor()
             borderedView.setNeedsDisplay()
         }
     }
     
-    public func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
-            borderedView.innerBorder?.borderColor = UIColor.clearColor().CGColor
+            borderedView.innerBorderColor = UIColor.clearColor()
             borderedView.setNeedsDisplay()
         }
         
@@ -290,4 +271,3 @@ extension AddressViewController: UITextFieldDelegate {
     }
     
 }
-

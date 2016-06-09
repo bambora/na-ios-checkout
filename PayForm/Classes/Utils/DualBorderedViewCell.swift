@@ -60,6 +60,19 @@ class DualBorderedViewCell: UITableViewCell {
         return nil
     }
 
+    func embeddedImageView(side: Side) -> UIImageView? {
+        var borderedView: BorderedView? = nil
+        if let view = self.contentView.subviews.first as? BorderedView where side == .Left {
+            borderedView = view;
+        }
+        else if let view = self.contentView.subviews.last as? BorderedView where side == .Right {
+            borderedView = view;
+        }
+        if let imageView = borderedView?.subviews.last as? UIImageView {
+            return imageView;
+        }
+        return nil
+    }
 
     // MARK: - Private methods
     

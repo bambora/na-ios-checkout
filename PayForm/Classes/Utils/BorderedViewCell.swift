@@ -49,5 +49,14 @@ class BorderedViewCell: UITableViewCell {
         }
         return nil
     }
-    
+
+    func embeddedImageView() -> UIImageView? {
+        if let borderedView = self.contentView.subviews.first as? BorderedView {
+            if let imageView = borderedView.subviews.last as? UIImageView {
+                return imageView;
+            }
+        }
+        return nil
+    }
+
 }

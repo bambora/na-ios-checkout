@@ -10,9 +10,11 @@ import UIKit
 
 class NextStepCell: BorderedViewCell {
     
-    @IBOutlet weak var nextStepTitleLabel: UILabel!
+    @IBOutlet private weak var nextStepTitleLabel: UILabel!
 
     func setTitleText(text: String) {
-        self.nextStepTitleLabel.text = text
+        if let label = self.nextStepTitleLabel {
+            label.text = text
+        }
     }
 }

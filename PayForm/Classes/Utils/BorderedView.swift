@@ -18,6 +18,12 @@ class BorderedView: UIView {
     
     // MARK: - Properties
 
+    private var border: CALayer?
+    private var innerBorder: CALayer?
+    
+    var drawLeft: Bool = true
+    var drawTop: Bool = false
+
     @IBInspectable var borderWidth: CGFloat = 0 {
         didSet {
             self.border?.borderWidth = borderWidth
@@ -36,29 +42,16 @@ class BorderedView: UIView {
         }
     }
     
-    var border: CALayer?
-    var innerBorder: CALayer?
-    var drawLeft: Bool = true
-    var drawTop: Bool = false
-    
     // MARK: - View controller methods
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        border = self.addBorder("outerBorder")
-        innerBorder = self.addBorder("innerBorder", borderWidth: 1.0, borderColor: UIColor.clearColor())
-        if let rect = innerBorder?.frame {
-            innerBorder?.frame = CGRectInset(rect, 1.0, 1.0)
-        }
+        self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        border = self.addBorder("outerBorder")
-        innerBorder = self.addBorder("innerBorder", borderWidth: 1.0, borderColor: UIColor.clearColor())
-        if let rect = innerBorder?.frame {
-            innerBorder?.frame = CGRectInset(rect, 1.0, 1.0)
-        }
+        self.setup()
     }
     
     override func layoutSubviews() {
@@ -79,6 +72,14 @@ class BorderedView: UIView {
     }
 
     // MARK: - Private methods
+    
+    private func setup() {
+        border = self.addBorder("outerBorder")
+        innerBorder = self.addBorder("innerBorder", borderWidth: 1.0, borderColor: UIColor.clearColor())
+        if let rect = innerBorder?.frame {
+            innerBorder?.frame = CGRectInset(rect, 1.0, 1.0)
+        }
+    }
 
     private func addBorder(name: String, borderWidth: CGFloat = 1.0, borderColor: UIColor = UIColor.lightGrayColor()) -> CALayer {
         let border = CALayer()

@@ -25,7 +25,7 @@ import UIKit
    shippingAddress: if the shipping address is required – true/false
    billingAddress: if the billing address is required – true/false
 -->   submitForm: if the form’s default action should be executed – true/false
-   primaryColor: the highlight color of the form. Default is blue.
+   primaryColor: the primary header color of the form. Default is blue.
  */
 public class PayFormViewController: UIViewController {
     
@@ -77,9 +77,8 @@ public class PayFormViewController: UIViewController {
         
         if self.image == nil {
             // Set the default image to use template coloring
-            if let defaultImage = self.imageView.image {
+            if let _ = self.imageView.image {
                 let color = self.headerView.backgroundColor
-                self.imageView.image = defaultImage.imageWithRenderingMode(.AlwaysTemplate)
                 self.imageView.tintColor = color
             }
         }
