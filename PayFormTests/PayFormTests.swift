@@ -56,6 +56,18 @@ class PayFormTests: XCTestCase {
         let dict: Dictionary<String, AnyObject> = ["name": "Diners Club", "cardType": CardType.DinersClub.rawValue, "cardLength": 14, "cvvLength": 3, "cards" : ["38520000023237", "48520000023237", "385200000232377", "38520000023247"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
+    
+    func test7EmailValidation() {
+        let emailValidator = EmailValidator()
+        XCTAssertTrue(emailValidator.validate("someone@testing.com"), "Valid email")
+        XCTAssertFalse(emailValidator.validate("someone"), "Invalid email - no domain 1")
+        XCTAssertFalse(emailValidator.validate("someone@"), "Invalid email - no domain 2")
+        XCTAssertFalse(emailValidator.validate("someone@testing"), "Invalid email - no domain 3")
+        XCTAssertFalse(emailValidator.validate("someone@testing."), "Invalid email - no domain 4")
+        XCTAssertFalse(emailValidator.validate("someone@testing.c"), "Invalid email - no domain 5")
+        XCTAssertFalse(emailValidator.validate("testing.com"), "Invalid email - no name 1")
+        XCTAssertFalse(emailValidator.validate("@testing.com"), "Invalid email - no name 2")
+    }
 
     /*
     func testPerformanceExample() {
