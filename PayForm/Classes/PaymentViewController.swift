@@ -15,6 +15,8 @@ class PaymentViewController: UITableViewController {
         case Card
         case ExpiryCvv
         case Spacer
+        case Info
+        case Error
     }
 
     override func viewDidLoad() {
@@ -41,6 +43,11 @@ class PaymentViewController: UITableViewController {
     private var previousTextFieldContent: String?
     private var previousSelection: UITextRange?
 
+    private var errorMessages: [String]?
+    private let messageIconWidth: CGFloat = 24.0
+    private let ccValidator = CreditCardValidator()
+    private let emailValidator = EmailValidator()
+        
     // MARK: - Table view delegate
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -52,19 +59,36 @@ class PaymentViewController: UITableViewController {
             
             // endEditing will have indirectly causes validateTextFields to be called with updateTable:true.
             if self.validateTextFields() {
-//                self.performSegueWithIdentifier("processing", sender: self)
+                self.performSegueWithIdentifier("processing", sender: self)
             }
         }
         return nil; // Disable cell selection
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 1 && indexPath.row == Row.Spacer.rawValue {
-            return 10
+        var h = tableView.rowHeight
+        if indexPath.section == 1 {
+            if indexPath.row == Row.Spacer.rawValue {
+                h = 10
+            }
+            else if indexPath.row == Row.Info.rawValue || indexPath.row == Row.Error.rawValue {
+                let cell = self.tableView(self.tableView, cellForRowAtIndexPath: indexPath)
+                if let textLabel = cell.textLabel {
+                    // The imageView doesn't have a size and label doesn't have a frame..
+                    // seems that 64 works for the imageView width along with 10 pixels 
+                    // at the end for padding.
+                    let w = cell.bounds.size.width - (64 + 10)
+                    let label:UILabel = UILabel(frame: CGRectMake(0, 0, w, CGFloat.max))
+                    label.numberOfLines = 0
+                    label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+                    label.font = textLabel.font
+                    label.text = textLabel.text
+                    label.sizeToFit()
+                    h = label.frame.height + 20 // add a little space for top and bottom
+                }
+            }
         }
-        else {
-            return self.tableView.rowHeight
-        }
+        return h
     }
     
     // MARK: - Table view data source
@@ -81,7 +105,7 @@ class PaymentViewController: UITableViewController {
             numRows = 1
         case 1:
             numRows = 3
-            if showingCvvInfo || showingError { numRows += 1 }
+            if showingCvvInfo || showingError { numRows += 1 } // for the spacer
             if showingCvvInfo { numRows += 1 }
             if showingError { numRows += 1 }
         case 2:
@@ -146,7 +170,7 @@ class PaymentViewController: UITableViewController {
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "spacer")
                 cell.selectionStyle = .None
                 
-            case (Row.Spacer.rawValue + 1):
+            case Row.Info.rawValue:
                 if showingCvvInfo {
                     cell = self.dequeueCvvInfoCell()
                 }
@@ -154,12 +178,13 @@ class PaymentViewController: UITableViewController {
                     cell = self.dequeueErrorCell()
                 }
                 
-            case (Row.Spacer.rawValue + 2):
+            case Row.Error.rawValue:
                 cell = self.dequeueErrorCell()
                 
             default:
+                print(">>> Should not have happend. Have a wierd row!!! \(indexPath.row)")
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "fubar")
-                cell.textLabel?.text = "fubar"
+                cell.textLabel?.text = "Ooops!"
             }
         }
         else {
@@ -179,7 +204,18 @@ class PaymentViewController: UITableViewController {
     private func dequeueCvvInfoCell() -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "CvvInfoCell")
         cell.selectionStyle = .None
-        cell.textLabel?.text = NSLocalizedString("The last 3 digits on the back of your card.", comment: "Info label for the CVV field on the Payment viuw.")
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = emailTextField?.font
+        cell.imageView?.image = UIImage.init(named: "cvc_hint_color")
+        
+        if let cardnumber = cardTextField?.text {
+            if ccValidator.cardType(cardnumber) == .AMEX {
+                cell.textLabel?.text = NSLocalizedString("The last 4 digits on the back of your card.", comment: "Info label for the 4 digit CVV field on the Payment view.")
+            }
+            else {
+                cell.textLabel?.text = NSLocalizedString("The last 3 digits on the back of your card.", comment: "Info label for the 3 digit CVV field on the Payment view.")
+            }
+        }
         
         return cell
     }
@@ -188,12 +224,24 @@ class PaymentViewController: UITableViewController {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
         cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
         cell.selectionStyle = .None
-        cell.textLabel?.text = "Please fill all fields."
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = emailTextField?.font
         cell.textLabel?.textColor = "#b71c1c".hexColor
         cell.imageView?.tintColor = "#b71c1c".hexColor
+
+        if let errorMessages = self.errorMessages where errorMessages.count > 0 {
+            var text = ""
+            for msg in errorMessages {
+                text += msg
+                if errorMessages.last != msg {
+                    text += "\n"
+                }
+            }
+            cell.textLabel?.text = text
+        }
         
         var image = UIImage.init(named: "ic_error_outline_black_48dp")
-        let imageRect = CGRectMake(0, 0, 24, 24)
+        let imageRect = CGRectMake(0, 0, messageIconWidth, messageIconWidth)
         
         UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
         image?.drawInRect(imageRect)
@@ -252,42 +300,107 @@ class PaymentViewController: UITableViewController {
     }
     
     private func validateTextFields() -> Bool {
-        var valid = true
+        var errorMessages = [String]()
         
         for (borderedView, textField) in viewFields {
             if textField.text == nil ||
                 textField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
             {
-                valid = false
+                if errorMessages.count == 0 {
+                    let msg = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Payment view.")
+                    errorMessages.append(msg)
+                }
+                
                 borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
             }
             else {
                 borderedView.innerBorderColor = UIColor.clearColor()
             }
         }
+
+        if let text = emailTextField?.text {
+            if emailValidator.validate(text) == false {
+                // Setup a message and make sure its always presented as the first message
+                let msg = NSLocalizedString("Please enter a valid email address.", comment: "Validation statement used when email entered is invalid.")
+                errorMessages.insert(msg, atIndex: 0)
+                
+                if let borderedView = emailTextField?.superview as? BorderedView {
+                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                }
+            }
+        }
         
+        var cardType = CardType.InvalidCard
+        
+        if let cardNumber = cardTextField?.text where cardNumber != "" {
+            cardType = ccValidator.cardType(cardNumber)
+            
+            let cleanCard = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+            let minCardLength = ccValidator.lengthOfStringForType(cardType)
+            var cardInvalid = false
+            
+            if cleanCard.characters.count < minCardLength {
+                let msg = NSLocalizedString("Please enter a valid credit card number. The number entered is too short.", comment: "Validation statement used when credit card number entered is too short.")
+                errorMessages.append(msg)
+                cardInvalid = true
+            }
+            else if ccValidator.isValidNumber(cardNumber) == false || ccValidator.isLuhnValid(cardNumber) == false {
+                let msg = NSLocalizedString("Please enter a valid credit card number.", comment: "Validation statement used when credit card number entered is invalid.")
+                errorMessages.append(msg)
+                cardInvalid = true
+            }
+            
+            if cardInvalid {
+                if let borderedView = cardTextField?.superview as? BorderedView {
+                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                }
+            }
+        }
+        
+        if let cvvNumber = cvvTextField?.text where cvvNumber != "" {
+            let minCvvLength = ccValidator.lengthOfCvvForType(cardType)
+            
+            if cvvNumber.characters.count < minCvvLength {
+                let msg = NSLocalizedString("Please enter a valid CVV number. The number entered is too short.", comment: "Validation statement used when CVV entered is too short.")
+                errorMessages.append(msg)
+                
+                if let borderedView = cvvTextField?.superview as? BorderedView {
+                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                }
+            }
+        }
+        
+        var valid = true
+        if errorMessages.count > 0 { valid = false }
+
         if self.doTableUpdatesWhenValidating {
             var numRows = self.tableView.numberOfRowsInSection(1)
+            self.errorMessages = errorMessages
             
-            if valid && showingError {
-                // Remove the error row
+            if showingError {
                 var indexPaths = [NSIndexPath]()
-                showingError = false
-                
-                if !showingCvvInfo {
-                    // Also remove the spacer
-                    indexPaths.append(NSIndexPath.init(forRow: numRows-2, inSection: 1))
+               
+                if valid {
+                    // Remove the error row
+                    showingError = false
+                    if !showingCvvInfo {
+                        // Also remove the spacer
+                        indexPaths.append(NSIndexPath.init(forRow: numRows-2, inSection: 1))
+                    }
+                    
+                    indexPaths.append(NSIndexPath.init(forRow: numRows-1, inSection: 1))
+                    self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
                 }
-                
-                indexPaths.append(NSIndexPath.init(forRow: numRows-1, inSection: 1))
-                self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                else {
+                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: numRows-1, inSection: 1)], withRowAnimation: .Automatic)
+                }
             }
             else if !showingError {
                 // Add an error row
                 var indexPaths = [NSIndexPath]()
                 showingError = true
                 
-                if !showingCvvInfo {
+                if showingCvvInfo == false {
                     // Also add a spacer
                     indexPaths.append(NSIndexPath.init(forRow: numRows, inSection: 1))
                     numRows += 1
@@ -301,23 +414,36 @@ class PaymentViewController: UITableViewController {
         return valid
     }
     
-    private func shouldShowCvvInfo() -> Bool {
-        return false // TODO
-    }
-    
 }
 
 extension PaymentViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
-            //var highlightColor = borderedView.innerBorder?.borderColor
             borderedView.innerBorderColor = UIColor.blackColor()
             borderedView.setNeedsDisplay()
 
             if let imageView = borderedView.subviews.last as? UIImageView {
                 imageView.highlighted = true
             }
+        }
+
+        if textField == cvvTextField && !showingCvvInfo {
+            showingCvvInfo = true
+            
+            var row = Row.Spacer.rawValue
+            var indexPaths = [NSIndexPath]()
+            
+            if !showingError {
+                // Also add the spacer
+                indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+            }
+
+            row += 1
+            
+            indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+            
+            self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
         }
     }
     
@@ -332,27 +458,59 @@ extension PaymentViewController: UITextFieldDelegate {
         }
         
         // Re-check validation only when an error condidion pre-exists
-        if showingError {
+        if showingError || showingCvvInfo {
             self.validateTextFields()
+        }
+        
+        if textField == cvvTextField && showingCvvInfo {
+            showingCvvInfo = false
+            
+            var row = Row.Spacer.rawValue
+            var indexPaths = [NSIndexPath]()
+            
+            if !showingError {
+                // Also remove the spacer
+                indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+            }
+            
+            row += 1
+            
+            indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+            
+            // 1.2 sec delayed dispatch to give time for table changes to
+            // happen on previous validateTextFields method call.
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) {
+                self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 1)], withRowAnimation: .Automatic)
+            }
         }
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == cvvTextField {
             guard let text = textField.text else { return true }
+            
+            // Ensure a number is typed even with an external non-numeric keyboard
+            if Int(string) == nil {
+                return false
+            }
+            
+            var minLength = 3;
+            if let cardnumber = cardTextField?.text where ccValidator.cardType(cardnumber) == .AMEX {
+                minLength = 4
+            }
+            
             let newLength = text.utf16.count + string.utf16.count - range.length
-            return newLength <= 3
+            return newLength <= minLength
         }
         else if textField == cardTextField {
             // Record the textField's current state before performing the change, in case
-            // reformatTextField wants to revert it
+            // reformatAsCardNumber(_:) wants to revert it
             previousTextFieldContent = textField.text;
             previousSelection = textField.selectedTextRange;
-            return true
         }
-        else {
-            return true
-        }
+
+        return true
     }
     
     //

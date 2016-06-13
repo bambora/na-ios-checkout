@@ -142,7 +142,7 @@ class AddressViewController: UITableViewController {
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
                 cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
                 cell.selectionStyle = .None
-                cell.textLabel?.text = "Please fill all fields."
+                cell.textLabel?.text = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Address view.")
                 cell.textLabel?.textColor = "#b71c1c".hexColor
                 cell.imageView?.tintColor = "#b71c1c".hexColor
                 
