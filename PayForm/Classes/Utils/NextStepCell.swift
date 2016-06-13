@@ -17,4 +17,5 @@ class NextStepCell: BorderedViewCell {
             label.text = text
         }
     }
+    
 }

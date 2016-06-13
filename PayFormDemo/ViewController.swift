@@ -21,6 +21,7 @@ class ViewController: UIViewController {
             controller.amount = NSDecimalNumber(double: 100.00)
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
+            controller.primaryColor = "#067aed".hexColor
             
             self.presentViewController(controller, animated: true, completion: nil)
         }

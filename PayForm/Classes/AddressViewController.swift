@@ -50,6 +50,17 @@ class AddressViewController: UITableViewController {
         }
     }
     
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let controller = segue.destinationViewController as? AddressViewController {
+            controller.amountStr = amountStr
+        }
+        else if let controller = segue.destinationViewController as? PaymentViewController {
+            controller.amountStr = amountStr
+        }
+    }
+    
     // MARK: - Table view delegate
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -172,6 +183,10 @@ class AddressViewController: UITableViewController {
                 }
                 nextStepCell.setTitleText(title)
                 nextStepCell.drawTop(true)
+                
+                if let color = Settings.primaryColor {
+                    nextStepCell.setBorderColor(color)
+                }
             }
         }
         

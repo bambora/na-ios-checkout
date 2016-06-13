@@ -50,7 +50,11 @@ public class PayFormViewController: UIViewController {
     public var billingAddressRequired: Bool?
     public var shippingAddress: Address?
     public var billingAddress: Address?
-    public var primaryColor: UIColor?
+    public var primaryColor: UIColor? {
+        didSet {
+            Settings.primaryColor = primaryColor
+        }
+    }
     
     // MARK: - View controller methods
     

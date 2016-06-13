@@ -19,10 +19,6 @@ class PaymentViewController: UITableViewController {
         case Error
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     // MARK: - Properties
     
     var amountStr: String?
@@ -47,7 +43,7 @@ class PaymentViewController: UITableViewController {
     private let messageIconWidth: CGFloat = 24.0
     private let ccValidator = CreditCardValidator()
     private let emailValidator = EmailValidator()
-        
+    
     // MARK: - Table view delegate
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -190,9 +186,18 @@ class PaymentViewController: UITableViewController {
         else {
             cell = tableView.dequeueReusableCellWithIdentifier("payCell", forIndexPath: indexPath)
             if let payCell = cell as? NextStepCell {
-                let title = NSLocalizedString("PAY >", comment: "Button title to used to enter Payment")
+                var title = NSLocalizedString("PAY", comment: "Button title to used to enter Payment")
+                
+                if let amountStr = self.amountStr {
+                    title = String(format: NSLocalizedString("PAY %@", comment: "Button title to used to enter Payment"), amountStr)
+                }
+                
                 payCell.setTitleText(title)
                 payCell.drawTop(true)
+                
+                if let color = Settings.primaryColor {
+                    payCell.setBorderColor(color)
+                }
             }
         }
         
@@ -226,7 +231,7 @@ class PaymentViewController: UITableViewController {
         cell.selectionStyle = .None
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = emailTextField?.font
-        cell.textLabel?.textColor = "#b71c1c".hexColor
+        cell.textLabel?.textColor = "#b71c1c".hexColor // deep red color
         cell.imageView?.tintColor = "#b71c1c".hexColor
 
         if let errorMessages = self.errorMessages where errorMessages.count > 0 {
