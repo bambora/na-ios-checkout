@@ -38,7 +38,10 @@ public class PayFormViewController: UIViewController {
     @IBOutlet private weak var amountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     
-    private weak var shippingAddressController: AddressViewController?
+    // Either an AddressViewController (billing or shipping) or a 
+    // PaymentViewController will be loaded as the root controller.
+    private weak var addressController: AddressViewController?
+    private weak var paymentController: PaymentViewController?
     
     // MARK: - Public properties
     
@@ -47,18 +50,25 @@ public class PayFormViewController: UIViewController {
     public var name: String?
     public var image: UIImage?
     public var purchaseDescription: String?
-    public var shippingAddressRequired: Bool?
-    public var billingAddressRequired: Bool?
+    
+    public var shippingAddressRequired: Bool = true
+    public var billingAddressRequired: Bool = true
     public var shippingAddress: Address?
     public var billingAddress: Address?
     
-    public var primaryColor: UIColor? {
+    public var primaryColor: UIColor = Settings.primaryColor {
         didSet {
             Settings.primaryColor = primaryColor
         }
     }
     
-    public var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    public var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    
+    public var tokenRequestTimeoutSeconds = Settings.tokenRequestTimeout {
+        didSet {
+            Settings.tokenRequestTimeout = tokenRequestTimeoutSeconds
+        }
+    }
     
     // MARK: - View controller methods
     
@@ -79,9 +89,7 @@ public class PayFormViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        if self.primaryColor != nil {
-            self.headerView.backgroundColor = self.primaryColor
-        }
+        self.headerView.backgroundColor = self.primaryColor
         
         if self.image == nil {
             // Set the default image to use template coloring
@@ -98,9 +106,18 @@ public class PayFormViewController: UIViewController {
         self.amountLabel.text = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
         self.descriptionLabel.text = self.purchaseDescription
         
-        if let controller = self.shippingAddressController {
+        if let controller = self.addressController {
             controller.amountStr = self.amountLabel.text
             controller.processingClosure = self.processingClosure
+            controller.billingAddressRequired = self.billingAddressRequired
+            controller.shippingAddress = self.shippingAddress
+            controller.billingAddress = self.billingAddress
+        }
+        else if let controller = self.paymentController {
+            controller.amountStr = self.amountLabel.text
+            controller.processingClosure = self.processingClosure
+            controller.shippingAddress = self.shippingAddress
+            controller.billingAddress = self.billingAddress
         }
         
         self.footerView.alpha = 0
@@ -123,12 +140,26 @@ public class PayFormViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
+    
     // This method is executed before viewDidLoad.
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let controller = segue.destinationViewController as? UINavigationController where segue.identifier == "navController" {
-            if let addressController = controller.viewControllers.first as? AddressViewController {
-                self.shippingAddressController = addressController
+        if let navController = segue.destinationViewController as? UINavigationController where segue.identifier == "navController" {
+            if !self.billingAddressRequired && !self.shippingAddressRequired {
+                // Re-jig the nav controller to have a PaymentViewController as its root
+                let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
+                if let paymentController = storyboard.instantiateViewControllerWithIdentifier("PaymentViewController") as? PaymentViewController {
+                    self.paymentController = paymentController
+                    navController.viewControllers = [paymentController]
+                }
+            }
+            else {
+                // Figure out what root view controller we are dealing with and set
+                // it as an instance var so that it can be further setup in viewDidLoad.
+                if let addressController = navController.viewControllers.first as? AddressViewController {
+                    self.addressController = addressController
+                } else if let paymentController = navController.viewControllers.first as? PaymentViewController {
+                    self.paymentController = paymentController
+                }
             }
         }
     }

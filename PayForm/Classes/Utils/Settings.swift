@@ -11,6 +11,7 @@ import UIKit
 class Settings {
     
     //static let sharedInstance = Settings()
-    static var primaryColor: UIColor?
+    static var primaryColor: UIColor = "#067aed".hexColor // default blue
+    static var tokenRequestTimeout: NSTimeInterval = 6
     
 }

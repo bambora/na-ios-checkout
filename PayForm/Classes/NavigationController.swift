@@ -36,11 +36,8 @@ class NavigationController: UINavigationController {
         self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.translucent = true
-        
-        if let color = Settings.primaryColor {
-            self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: color]
-            self.navigationBar.tintColor = color
-        }
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Settings.primaryColor]
+        self.navigationBar.tintColor = Settings.primaryColor
     }
     
 }

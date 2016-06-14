@@ -12,13 +12,18 @@ class ProcessingViewController: UIViewController {
     
     @IBOutlet weak var amountLabel: UILabel!
     
-    var amountStr: String?
-    var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
-
+    var email: String?
+    var name: String?
     var number: String?
     var expiryMonth: String?
     var expiryYear: String?
     var cvd: String?
+    
+    var amountStr: String?
+    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    
+    var shippingAddress: Address?
+    var billingAddress: Address?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +47,7 @@ class ProcessingViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if let number = number, let expiryYear = expiryYear, let expiryMonth = expiryMonth, let cvd = cvd where amountStr != nil && processingClosure != nil {
+            
             let params = ["number": number,
                           "expiry_month": expiryMonth,
                           "expiry_year": expiryYear,
@@ -57,8 +63,13 @@ class ProcessingViewController: UIViewController {
     
     private func process(params: Dictionary<String, String>) {
         if let url = NSURL(string: "https://www.beanstream.com/scripts/tokenization/tokens") {
+            
+            let urlconfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+            urlconfig.timeoutIntervalForRequest = Settings.tokenRequestTimeout
+            urlconfig.timeoutIntervalForResource = Settings.tokenRequestTimeout
+            
+            let session = NSURLSession(configuration: urlconfig, delegate: self, delegateQueue: nil)
             let request = NSMutableURLRequest(URL: url)
-            let session = NSURLSession.sharedSession()
             
             var data: NSData?
             
@@ -66,7 +77,7 @@ class ProcessingViewController: UIViewController {
                 try data = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(rawValue: 0))
             } catch let error as NSError {
                 if let processingClosure = self.processingClosure {
-                    processingClosure(jsonToken: nil, error: error)
+                    processingClosure(result: nil, error: error)
                 }
                 return
             }
@@ -82,10 +93,10 @@ class ProcessingViewController: UIViewController {
             // Force a 2 second sleep to ensure UX as the tokenization call alone is pretty fast
             NSThread.sleepForTimeInterval(2)
             
-            let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
-
+            let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, err) in
+                
                 var statusCode = 200
-                var httpError: NSError?
+                var error: NSError? = err
                 
                 if let httpResponse = response as? NSHTTPURLResponse {
                     statusCode = httpResponse.statusCode
@@ -94,29 +105,54 @@ class ProcessingViewController: UIViewController {
                         let userInfo = [
                             NSLocalizedDescriptionKey: NSHTTPURLResponse.localizedStringForStatusCode(statusCode)
                         ]
-                        httpError = NSError(domain: "Tokenization Request Error", code: statusCode, userInfo: userInfo)
+                        error = NSError(domain: "Tokenization Request Error", code: statusCode, userInfo: userInfo)
                     }
                 }
 
-                if httpError != nil {
-                    if let processingClosure = self.processingClosure {
-                        processingClosure(jsonToken: nil, error: httpError)
-                    }
+                var result = Dictionary<String, AnyObject>()
+                
+                if let address = self.shippingAddress {
+                    var shippingInfo = Dictionary<String, String>()
+                    shippingInfo["name"] = address.name
+                    shippingInfo["address_line1"] = address.street
+                    shippingInfo["postal_code"] = address.postalCode
+                    shippingInfo["city"] = address.city
+                    shippingInfo["province"] = address.province
+                    shippingInfo["country"] = address.country
+                    result["shippingAddress"] = shippingInfo
                 }
-                else if error != nil {
+                
+                if let address = self.billingAddress {
+                    var billingInfo = Dictionary<String, String>()
+                    billingInfo["name"] = address.name
+                    billingInfo["address_line1"] = address.street
+                    billingInfo["postal_code"] = address.postalCode
+                    billingInfo["city"] = address.city
+                    billingInfo["province"] = address.province
+                    billingInfo["country"] = address.country
+                    result["billingAddress"] = billingInfo
+                }
+                
+                if error != nil {
                     if let processingClosure = self.processingClosure {
-                        processingClosure(jsonToken: nil, error: error)
+                        processingClosure(result: (result.count > 0 ? result : nil), error: error)
                     }
                 }
                 else {
-                    var json: Dictionary<String, AnyObject>?
-                    
                     do {
-                        json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0)) as? Dictionary<String, AnyObject>
+                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0)) as? Dictionary<String, AnyObject>
+                        
+                        if let json = json, let token = json["token"] as? String {
+                            var cardInfo = Dictionary<String, String>()
+                            cardInfo["code"] = token
+                            cardInfo["name"] = (self.name == nil ? "" : self.name)
+                            cardInfo["email"] = (self.email == nil ? "" : self.email)
+                            result["cardInfo"] = cardInfo
+                        }
                     } catch {}
                     
                     if let processingClosure = self.processingClosure {
-                        processingClosure(jsonToken: json, error: nil)
+                        processingClosure(result: result, error: nil)
                     }
                 }
                 
@@ -127,4 +163,8 @@ class ProcessingViewController: UIViewController {
             task.resume()
         }
     }
+}
+
+extension ProcessingViewController: NSURLSessionDelegate {
+    
 }

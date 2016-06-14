@@ -22,7 +22,9 @@ class PaymentViewController: UITableViewController {
     // MARK: - Properties
     
     var amountStr: String?
-    var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    var shippingAddress: Address?
+    var billingAddress: Address?
     
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
@@ -31,6 +33,7 @@ class PaymentViewController: UITableViewController {
     private var doTableUpdatesWhenValidating = true
     
     private var emailTextField: UITextField?
+    private var nameTextField: UITextField?
     private var cardTextField: UITextField?
     private var expiryTextField: UITextField?
     private var cvvTextField: UITextField?
@@ -49,14 +52,19 @@ class PaymentViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let controller = segue.destinationViewController as? ProcessingViewController {
-            controller.amountStr = amountStr
-            controller.processingClosure = self.processingClosure
+            controller.name = nameTextField?.text
+            controller.email = emailTextField?.text
             controller.number = cardTextField?.text
             controller.cvd = cvvTextField?.text
 
             let monthYear = self.getSelectedMonthYear()
             controller.expiryMonth = String(monthYear.month)    // 6 == June
             controller.expiryYear = String(monthYear.year)      // 2016 == current year
+            
+            controller.amountStr = amountStr
+            controller.processingClosure = self.processingClosure
+            controller.billingAddress = self.billingAddress
+            controller.shippingAddress = self.shippingAddress
         }
     }
 
@@ -147,6 +155,9 @@ class PaymentViewController: UITableViewController {
                 cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
                 if let borderedCell = self.setupBorderedCell(cell) {
                     borderedCell.drawTop(true)
+                    if let textField = borderedCell.textField() {
+                        self.nameTextField = textField
+                    }
                 }
                 
             case Row.Card.rawValue:
@@ -210,10 +221,7 @@ class PaymentViewController: UITableViewController {
                 
                 payCell.setTitleText(title)
                 payCell.drawTop(true)
-                
-                if let color = Settings.primaryColor {
-                    payCell.setBorderColor(color)
-                }
+                payCell.setBorderColor(Settings.primaryColor)
             }
         }
         

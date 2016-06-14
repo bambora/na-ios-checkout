@@ -17,7 +17,7 @@ public struct Address {
     var name: String
     var street: String
     var city: String
-    var state: String
+    var province: String
     var postalCode: String
     var country: String
 }

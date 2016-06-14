@@ -155,7 +155,7 @@
         <!--Processing-->
         <scene sceneID="Nrq-9p-Gkh">
             <objects>
-                <viewController title="Processing" id="zbg-ky-5M2" customClass="ProcessingViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProcessingViewController" title="Processing" id="zbg-ky-5M2" customClass="ProcessingViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T7V-4c-82D"/>
                         <viewControllerLayoutGuide type="bottom" id="iGZ-wC-v9E"/>
@@ -581,7 +581,7 @@
         <!--Payment-->
         <scene sceneID="o3P-gi-lgp">
             <objects>
-                <tableViewController title="Payment" id="Wzw-lC-oKO" customClass="PaymentViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PaymentViewController" title="Payment" id="Wzw-lC-oKO" customClass="PaymentViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIV-Td-nfV">
                         <rect key="frame" x="0.0" y="0.0" width="560" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

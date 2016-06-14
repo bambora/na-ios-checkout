@@ -19,7 +19,7 @@ class AddressViewController: UITableViewController {
     private enum Row: Int {
         case Name = 0
         case Street
-        case ZipCity
+        case PostalcodeCity
         case ProvinceCountry
         case BillingSame
         case Error
@@ -29,10 +29,14 @@ class AddressViewController: UITableViewController {
 
     var addressType: AddressType = .Shipping
     var amountStr: String?
-    var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    var billingAddressRequired: Bool = false
+    var shippingAddress: Address?
+    var billingAddress: Address?
     
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
+    private var keyedFields = Dictionary<String, UITextField>()
     
     private let NUM_ROWS_OK     = 5
     private let NUM_ROWS_ERROR  = 6
@@ -48,19 +52,28 @@ class AddressViewController: UITableViewController {
         }
         else {
             self.title = NSLocalizedString("Shipping", comment: "Address view title when used in Shipping mode")
+            if !self.billingAddressRequired {
+                self.billingAddressIsSame = true // sets UI as needed
+            }
         }
     }
     
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        self.createAddressInfo()
+        
         if let controller = segue.destinationViewController as? AddressViewController {
             controller.amountStr = amountStr
             controller.processingClosure = self.processingClosure
+            controller.shippingAddress = self.shippingAddress
+            controller.billingAddress = self.billingAddress
         }
         else if let controller = segue.destinationViewController as? PaymentViewController {
             controller.amountStr = amountStr
             controller.processingClosure = self.processingClosure
+            controller.shippingAddress = self.shippingAddress
+            controller.billingAddress = self.billingAddress
         }
     }
     
@@ -79,9 +92,14 @@ class AddressViewController: UITableViewController {
                 
                 if addressType == .Shipping && !self.billingAddressIsSame {
                     if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
+                        self.createAddressInfo()
+                        
                         controller.addressType = .Billing
                         controller.amountStr = self.amountStr
                         controller.processingClosure = self.processingClosure
+                        controller.shippingAddress = self.shippingAddress
+                        controller.billingAddress = self.billingAddress
+                        
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
                 }
@@ -100,7 +118,7 @@ class AddressViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if self.addressType == .Billing && indexPath.row == Row.BillingSame.rawValue {
+        if indexPath.row == Row.BillingSame.rawValue && (self.addressType == .Billing || !self.billingAddressRequired) {
             return 0
         }
         else {
@@ -130,21 +148,21 @@ class AddressViewController: UITableViewController {
             switch indexPath.row {
             case Row.Name.rawValue:
                 cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
-                if let borderedCell = self.setupBorderedCell(cell) {
+                if let borderedCell = self.setupBorderedCell(cell, key: "name") {
                     borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
                 }
                 
             case Row.Street.rawValue:
                 cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
-                self.setupBorderedCell(cell)
+                self.setupBorderedCell(cell, key: "street")
                 
-            case Row.ZipCity.rawValue:
+            case Row.PostalcodeCity.rawValue:
                 cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
-                self.setupDualBorderedCell(cell)
+                self.setupDualBorderedCell(cell, leftKey: "postalCode", rightKey: "city")
                 
             case Row.ProvinceCountry.rawValue:
                 cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
-                self.setupDualBorderedCell(cell)
+                self.setupDualBorderedCell(cell, leftKey: "province", rightKey: "country")
                 
             case Row.BillingSame.rawValue:
                 cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
@@ -187,10 +205,7 @@ class AddressViewController: UITableViewController {
                 }
                 nextStepCell.setTitleText(title)
                 nextStepCell.drawTop(true)
-                
-                if let color = Settings.primaryColor {
-                    nextStepCell.setBorderColor(color)
-                }
+                nextStepCell.setBorderColor(Settings.primaryColor)
             }
         }
         
@@ -208,13 +223,14 @@ class AddressViewController: UITableViewController {
     
     // MARK: - Private methods
     
-    private func setupBorderedCell(cell: UITableViewCell) -> BorderedViewCell? {
+    private func setupBorderedCell(cell: UITableViewCell, key: String) -> BorderedViewCell? {
         if let borderedCell = cell as? BorderedViewCell {
             if let textField = borderedCell.textField() {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
                 }
+                self.keyedFields[key] = textField
             }
             return borderedCell
         }
@@ -222,19 +238,21 @@ class AddressViewController: UITableViewController {
         return nil
     }
 
-    private func setupDualBorderedCell(cell: UITableViewCell) -> DualBorderedViewCell? {
+    private func setupDualBorderedCell(cell: UITableViewCell, leftKey: String, rightKey: String) -> DualBorderedViewCell? {
         if let dualBorderedCell = cell as? DualBorderedViewCell {
             if let textField = dualBorderedCell.textField(.Left) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
                 }
+                self.keyedFields[leftKey] = textField
             }
             if let textField = dualBorderedCell.textField(.Right) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
                 }
+                self.keyedFields[rightKey] = textField
             }
             return dualBorderedCell
         }
@@ -265,6 +283,25 @@ class AddressViewController: UITableViewController {
         return valid
     }
     
+    private func createAddressInfo() {
+        if let name = self.keyedFields["name"]?.text, let street = self.keyedFields["street"]?.text,
+            let city = self.keyedFields["city"]?.text, let province = self.keyedFields["province"]?.text,
+            let postalCode = self.keyedFields["postalCode"]?.text, let country = self.keyedFields["country"]?.text {
+            
+            let address = Address(name: name, street: street, city: city, province: province, postalCode: postalCode, country: country)
+            
+            if self.addressType == .Shipping {
+                self.shippingAddress = address
+                
+                if self.billingAddressIsSame {
+                    self.billingAddress = self.shippingAddress
+                }
+            }
+            else {
+                self.billingAddress = address
+            }
+        }
+    }
 }
 
 extension AddressViewController: UITextFieldDelegate {
