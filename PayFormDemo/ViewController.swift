@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var statusLabel: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        statusLabel.text = ""
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -22,6 +29,25 @@ class ViewController: UIViewController {
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
             controller.primaryColor = "#067aed".hexColor
+            
+            controller.processingClosure = { (jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
+                if let error = error {
+                    let msg  = "error (\(error.code)): \(error.localizedDescription)"
+                    print(msg)
+                    self.statusLabel.text = msg
+                    self.statusLabel.textColor = UIColor.redColor()
+                }
+                else if let json = jsonToken, let token = json["token"] as? String {
+                    print("jsonToken: \(json)")
+                    self.statusLabel.text = "token: \(token)"
+                    self.statusLabel.textColor = UIColor.blackColor()
+                }
+                else {
+                    let msg = "Yikes! No error and no JSON token!"
+                    self.statusLabel.text = msg
+                    self.statusLabel.textColor = UIColor.redColor()
+                }
+            }
             
             self.presentViewController(controller, animated: true, completion: nil)
         }

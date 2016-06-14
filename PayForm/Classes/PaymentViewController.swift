@@ -22,6 +22,7 @@ class PaymentViewController: UITableViewController {
     // MARK: - Properties
     
     var amountStr: String?
+    var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
     
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
@@ -44,6 +45,21 @@ class PaymentViewController: UITableViewController {
     private let ccValidator = CreditCardValidator()
     private let emailValidator = EmailValidator()
     
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let controller = segue.destinationViewController as? ProcessingViewController {
+            controller.amountStr = amountStr
+            controller.processingClosure = self.processingClosure
+            controller.number = cardTextField?.text
+            controller.cvd = cvvTextField?.text
+
+            let monthYear = self.getSelectedMonthYear()
+            controller.expiryMonth = String(monthYear.month)    // 6 == June
+            controller.expiryYear = String(monthYear.year)      // 2016 == current year
+        }
+    }
+
     // MARK: - Table view delegate
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -496,7 +512,7 @@ extension PaymentViewController: UITextFieldDelegate {
             guard let text = textField.text else { return true }
             
             // Ensure a number is typed even with an external non-numeric keyboard
-            if Int(string) == nil {
+            if string != "" && Int(string) == nil {
                 return false
             }
             
@@ -657,6 +673,18 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM/yy"
             
+            let monthYear = getSelectedMonthYear()
+            
+            if let date = dateFormatter.dateFromString("\(monthYear.month)/\(monthYear.year)") {
+                textField.text = dateFormatter.stringFromDate(date)
+            }
+        }
+    }
+    
+    func getSelectedMonthYear() -> (month: Int, year: Int) {
+        var monthYear: (month: Int, year: Int) = (0, 0)
+        
+        if let pickerView = self.expiryPicker {
             var monthOffset = 0
             if pickerView.selectedRowInComponent(1) == 0 {
                 monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
@@ -666,9 +694,9 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             var year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
             year += pickerView.selectedRowInComponent(1)
             
-            if let date = dateFormatter.dateFromString("\(month)/\(year)") {
-                textField.text = dateFormatter.stringFromDate(date)
-            }
+            monthYear = (month, year)
         }
+        
+        return monthYear
     }
 }

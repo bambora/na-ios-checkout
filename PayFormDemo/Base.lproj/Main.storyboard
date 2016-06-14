@@ -68,10 +68,19 @@
                                     <action selector="payAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZmC-sd-yJk"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cYY-Ly-6c6">
+                                <rect key="frame" x="20" y="362" width="560" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="cYY-Ly-6c6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="1ev-gO-HiC"/>
+                            <constraint firstItem="cYY-Ly-6c6" firstAttribute="top" secondItem="qT7-Kw-x3a" secondAttribute="bottom" constant="40" id="ClF-Cb-cEq"/>
                             <constraint firstItem="QP6-gS-5MC" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Mtr-se-CG5"/>
+                            <constraint firstItem="cYY-Ly-6c6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Tf0-uw-84x"/>
                             <constraint firstItem="qT7-Kw-x3a" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="U2c-to-qvx"/>
                             <constraint firstItem="QP6-gS-5MC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Ylo-QK-KKZ"/>
                             <constraint firstItem="qT7-Kw-x3a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="agD-sd-f9X"/>
@@ -80,6 +89,9 @@
                             <constraint firstItem="gOZ-ir-E00" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="p1Z-WM-GJE"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="statusLabel" destination="cYY-Ly-6c6" id="HXP-Id-oeJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

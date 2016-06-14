@@ -32,6 +32,7 @@ public class PayFormViewController: UIViewController {
     // MARK: - Private properties
 
     @IBOutlet private weak var headerView: UIView!
+    @IBOutlet private weak var footerView: UIView!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var amountLabel: UILabel!
@@ -50,11 +51,14 @@ public class PayFormViewController: UIViewController {
     public var billingAddressRequired: Bool?
     public var shippingAddress: Address?
     public var billingAddress: Address?
+    
     public var primaryColor: UIColor? {
         didSet {
             Settings.primaryColor = primaryColor
         }
     }
+    
+    public var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
     
     // MARK: - View controller methods
     
@@ -96,7 +100,22 @@ public class PayFormViewController: UIViewController {
         
         if let controller = self.shippingAddressController {
             controller.amountStr = self.amountLabel.text
+            controller.processingClosure = self.processingClosure
         }
+        
+        self.footerView.alpha = 0
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(showFooter),
+            name: "ShowFooter",
+            object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(hideFooter),
+            name: "HideFooter",
+            object: nil)
     }
 
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -120,6 +139,20 @@ public class PayFormViewController: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func showFooter() {
+        UILabel.beginAnimations(nil, context: nil)
+        UILabel.setAnimationDuration(0.25)
+        self.footerView.alpha = 1
+        UILabel.commitAnimations()
+    }
+
+    func hideFooter() {
+        UILabel.beginAnimations(nil, context: nil)
+        UILabel.setAnimationDuration(0.25)
+        self.footerView.alpha = 0
+        UILabel.commitAnimations()
+    }
+
     // MARK: - Private methods
     
     private static func localizedCurrencyAmount(amount:NSDecimalNumber, currencyCode:String) -> String {

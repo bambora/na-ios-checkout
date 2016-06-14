@@ -29,6 +29,7 @@ class AddressViewController: UITableViewController {
 
     var addressType: AddressType = .Shipping
     var amountStr: String?
+    var processingClosure: ((jsonToken: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
     
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
@@ -38,7 +39,7 @@ class AddressViewController: UITableViewController {
     private var numRows = 5
     
     // MARK: - View controller methods
-
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -55,9 +56,11 @@ class AddressViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let controller = segue.destinationViewController as? AddressViewController {
             controller.amountStr = amountStr
+            controller.processingClosure = self.processingClosure
         }
         else if let controller = segue.destinationViewController as? PaymentViewController {
             controller.amountStr = amountStr
+            controller.processingClosure = self.processingClosure
         }
     }
     
@@ -78,6 +81,7 @@ class AddressViewController: UITableViewController {
                     if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
                         controller.addressType = .Billing
                         controller.amountStr = self.amountStr
+                        controller.processingClosure = self.processingClosure
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
                 }

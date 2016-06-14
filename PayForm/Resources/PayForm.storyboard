@@ -92,6 +92,19 @@
                                     <constraint firstItem="LIk-wf-OiK" firstAttribute="top" secondItem="zUC-IR-Xim" secondAttribute="bottom" id="wyy-iu-evJ"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u6Z-fX-bo0">
+                                <rect key="frame" x="0.0" y="436" width="600" height="120"/>
+                                <color key="backgroundColor" red="0.30588235289999999" green="0.67843137249999996" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="gHL-an-rwO"/>
+                                </constraints>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YkQ-FS-5uj">
+                                <rect key="frame" x="20" y="128" width="560" height="428"/>
+                                <connections>
+                                    <segue destination="EiE-KN-dk0" kind="embed" identifier="navController" id="9Sn-Ho-NZs"/>
+                                </connections>
+                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LaE-wY-rC4">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <subviews>
@@ -108,30 +121,28 @@
                                     <constraint firstItem="zbk-dB-DA7" firstAttribute="leading" secondItem="LaE-wY-rC4" secondAttribute="leading" constant="20" id="gQD-48-aq2"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YkQ-FS-5uj">
-                                <rect key="frame" x="40" y="128" width="520" height="428"/>
-                                <connections>
-                                    <segue destination="EiE-KN-dk0" kind="embed" identifier="navController" id="9Sn-Ho-NZs"/>
-                                </connections>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="LaE-wY-rC4" firstAttribute="top" secondItem="YkQ-FS-5uj" secondAttribute="bottom" id="0Ro-Nf-eK4"/>
+                            <constraint firstAttribute="trailing" secondItem="YkQ-FS-5uj" secondAttribute="trailing" constant="20" id="A2y-Wn-BSy"/>
                             <constraint firstItem="Fdw-xo-iNN" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leading" id="A9T-nD-fEc"/>
-                            <constraint firstItem="YkQ-FS-5uj" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leadingMargin" constant="20" id="ENu-xs-SML"/>
                             <constraint firstItem="z63-3C-Uqu" firstAttribute="top" secondItem="LaE-wY-rC4" secondAttribute="bottom" id="LmV-zn-uns"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="YkQ-FS-5uj" secondAttribute="trailing" constant="20" id="TQy-wy-WA9"/>
+                            <constraint firstAttribute="trailing" secondItem="LaE-wY-rC4" secondAttribute="trailing" id="OAT-Ru-zKd"/>
                             <constraint firstItem="Fdw-xo-iNN" firstAttribute="top" secondItem="34m-2c-mF2" secondAttribute="bottom" constant="-20" id="V7z-JV-Q7z"/>
-                            <constraint firstItem="LaE-wY-rC4" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leadingMargin" constant="-20" id="YbT-LY-kQf"/>
                             <constraint firstAttribute="trailing" secondItem="Fdw-xo-iNN" secondAttribute="trailing" id="ZHC-8Z-xnd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LaE-wY-rC4" secondAttribute="trailing" constant="-20" id="iTQ-kq-VfS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="u6Z-fX-bo0" secondAttribute="trailing" constant="-20" id="edx-Dq-bOP"/>
+                            <constraint firstItem="YkQ-FS-5uj" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leading" constant="20" id="r0s-yf-W43"/>
+                            <constraint firstItem="LaE-wY-rC4" firstAttribute="top" secondItem="u6Z-fX-bo0" secondAttribute="bottom" id="sZQ-nn-1jt"/>
                             <constraint firstItem="YkQ-FS-5uj" firstAttribute="top" secondItem="Fdw-xo-iNN" secondAttribute="bottom" constant="8" id="snK-Vz-lDn"/>
+                            <constraint firstItem="LaE-wY-rC4" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leading" id="u01-Jd-Khe"/>
+                            <constraint firstItem="u6Z-fX-bo0" firstAttribute="leading" secondItem="mrD-4g-OgQ" secondAttribute="leadingMargin" constant="-20" id="zaq-mA-6Dc"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="amountLabel" destination="LIk-wf-OiK" id="5db-YP-ZEg"/>
                         <outlet property="descriptionLabel" destination="9yY-Kt-2k1" id="YYu-3Y-w8t"/>
+                        <outlet property="footerView" destination="u6Z-fX-bo0" id="Ezi-H2-4uD"/>
                         <outlet property="headerView" destination="Fdw-xo-iNN" id="JA3-Bd-S7Q"/>
                         <outlet property="imageView" destination="ied-Hv-smX" id="e87-R5-vCS"/>
                         <outlet property="nameLabel" destination="zUC-IR-Xim" id="gH5-NP-rTC"/>
@@ -150,19 +161,92 @@
                         <viewControllerLayoutGuide type="bottom" id="iGZ-wC-v9E"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9rj-KB-TZu">
-                        <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
+                        <rect key="frame" x="0.0" y="0.0" width="560" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="3nY-r9-AGo">
-                                <rect key="frame" x="250" y="204" width="20" height="20"/>
-                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HlH-Fa-bRi">
+                                <rect key="frame" x="0.0" y="44" width="560" height="264"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="3nY-r9-AGo">
+                                        <rect key="frame" x="270" y="122" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="processing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7H6-Ek-tfW">
+                                        <rect key="frame" x="20" y="150" width="520" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="30"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hC-pI-fsa">
+                                        <rect key="frame" x="20" y="71" width="520" height="43"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="36"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="payment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr0-rc-Gox">
+                                        <rect key="frame" x="20" y="27" width="520" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="30"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="3hC-pI-fsa" secondAttribute="trailing" constant="20" id="0Yz-tA-zbw"/>
+                                    <constraint firstItem="Rr0-rc-Gox" firstAttribute="leading" secondItem="HlH-Fa-bRi" secondAttribute="leading" constant="20" id="4qe-gc-EKt"/>
+                                    <constraint firstItem="3nY-r9-AGo" firstAttribute="top" secondItem="3hC-pI-fsa" secondAttribute="bottom" constant="8" id="9wl-UX-K5E"/>
+                                    <constraint firstItem="3nY-r9-AGo" firstAttribute="centerX" secondItem="HlH-Fa-bRi" secondAttribute="centerX" id="D1O-RP-vIK"/>
+                                    <constraint firstItem="7H6-Ek-tfW" firstAttribute="leading" secondItem="HlH-Fa-bRi" secondAttribute="leading" constant="20" id="RIX-eC-RQ8"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rr0-rc-Gox" secondAttribute="trailing" constant="20" id="T3Q-8E-s1T"/>
+                                    <constraint firstItem="3nY-r9-AGo" firstAttribute="centerY" secondItem="HlH-Fa-bRi" secondAttribute="centerY" id="Yvn-c7-GuS"/>
+                                    <constraint firstItem="3hC-pI-fsa" firstAttribute="top" secondItem="Rr0-rc-Gox" secondAttribute="bottom" constant="8" id="aY9-wp-z8a"/>
+                                    <constraint firstItem="7H6-Ek-tfW" firstAttribute="top" secondItem="3nY-r9-AGo" secondAttribute="bottom" constant="8" id="j64-UU-UjL"/>
+                                    <constraint firstItem="3hC-pI-fsa" firstAttribute="leading" secondItem="HlH-Fa-bRi" secondAttribute="leading" constant="20" id="mfr-HK-qSV"/>
+                                    <constraint firstAttribute="trailing" secondItem="7H6-Ek-tfW" secondAttribute="trailing" constant="20" id="zQI-Eh-y3D"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="prc-8S-a0a">
+                                <rect key="frame" x="0.0" y="308" width="560" height="120"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_verified_user_black_48dp" translatesAutoresizingMaskIntoConstraints="NO" id="CNt-7y-ZZu">
+                                        <rect key="frame" x="256" y="21" width="48" height="48"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="S3M-zp-mgp"/>
+                                            <constraint firstAttribute="width" constant="48" id="avA-nA-1LA"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="secured by beanstream" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy6-Ae-amn">
+                                        <rect key="frame" x="8" y="79" width="544" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.30588235289999999" green="0.67843137249999996" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="CNt-7y-ZZu" firstAttribute="centerX" secondItem="prc-8S-a0a" secondAttribute="centerX" id="Btb-Kg-3Zl"/>
+                                    <constraint firstAttribute="bottom" secondItem="gy6-Ae-amn" secondAttribute="bottom" constant="20" id="VBe-Zt-Hot"/>
+                                    <constraint firstItem="gy6-Ae-amn" firstAttribute="top" secondItem="CNt-7y-ZZu" secondAttribute="bottom" constant="10" id="WTI-aM-CsP"/>
+                                    <constraint firstItem="gy6-Ae-amn" firstAttribute="leading" secondItem="prc-8S-a0a" secondAttribute="leading" constant="8" id="Yaw-2Z-8Ud"/>
+                                    <constraint firstAttribute="trailing" secondItem="gy6-Ae-amn" secondAttribute="trailing" constant="8" id="i3o-qU-4hK"/>
+                                    <constraint firstAttribute="height" constant="120" id="mu4-Lw-cdI"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3nY-r9-AGo" firstAttribute="centerX" secondItem="9rj-KB-TZu" secondAttribute="centerX" id="CsI-XL-MR6"/>
-                            <constraint firstItem="3nY-r9-AGo" firstAttribute="centerY" secondItem="9rj-KB-TZu" secondAttribute="centerY" id="Ngw-fK-0Sz"/>
+                            <constraint firstItem="prc-8S-a0a" firstAttribute="top" secondItem="HlH-Fa-bRi" secondAttribute="bottom" id="5eE-F1-0oD"/>
+                            <constraint firstItem="prc-8S-a0a" firstAttribute="leading" secondItem="9rj-KB-TZu" secondAttribute="leadingMargin" constant="-20" id="BtR-9b-Pue"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="HlH-Fa-bRi" secondAttribute="trailing" constant="-20" id="HFi-bf-4iK"/>
+                            <constraint firstItem="iGZ-wC-v9E" firstAttribute="top" secondItem="prc-8S-a0a" secondAttribute="bottom" id="M8B-Ys-WjY"/>
+                            <constraint firstItem="HlH-Fa-bRi" firstAttribute="leading" secondItem="9rj-KB-TZu" secondAttribute="leadingMargin" constant="-20" id="gCG-hZ-pAZ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="prc-8S-a0a" secondAttribute="trailing" constant="-20" id="lGw-4b-pIl"/>
+                            <constraint firstItem="HlH-Fa-bRi" firstAttribute="top" secondItem="T7V-4c-82D" secondAttribute="bottom" id="sW4-pD-lta"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="amountLabel" destination="3hC-pI-fsa" id="MPC-Gn-3cW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TPs-Pw-bOM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -173,23 +257,23 @@
             <objects>
                 <tableViewController storyboardIdentifier="AddressViewController" title="Shipping" id="xtv-gs-FVv" customClass="AddressViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="kcb-xv-HPR">
-                        <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
+                        <rect key="frame" x="0.0" y="0.0" width="560" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" id="Pws-Fc-JC0" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="93.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="93.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pws-Fc-JC0" id="sZP-Ot-6Cu">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3Q-dt-dr7" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RoD-L7-kbA">
-                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="544" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -220,17 +304,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="streetCell" id="Le8-zs-Fem" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="137.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="137.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Le8-zs-Fem" id="rHS-Tq-LVO">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baV-Hl-Tsi" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="street address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zpU-o6-z43">
-                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="544" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -261,17 +345,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="zipCityCell" id="MgK-2h-Q7t" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="181.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="181.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MgK-2h-Q7t" id="4RM-sL-iJx">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfe-FV-deX" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="280" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="zip" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lKw-kx-ml6">
-                                                    <rect key="frame" x="8" y="1" width="244" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="264" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -293,10 +377,10 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EgT-ZR-GWF" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="260" y="0.0" width="260" height="44"/>
+                                            <rect key="frame" x="280" y="0.0" width="280" height="44"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="city" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Yf-h5-FJg">
-                                                    <rect key="frame" x="8" y="1" width="244" height="42"/>
+                                                    <rect key="frame" x="8" y="1" width="264" height="42"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -331,17 +415,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="provinceCountryCell" id="kPQ-9f-dgN" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="225.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="225.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kPQ-9f-dgN" id="sEN-gP-2pv">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3qx-Ib-U5t" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="280" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="province" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6fW-2n-D84">
-                                                    <rect key="frame" x="8" y="1" width="244" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="264" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -363,10 +447,10 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QXm-uM-gr9" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="260" y="0.0" width="260" height="44"/>
+                                            <rect key="frame" x="280" y="0.0" width="280" height="44"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="country" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="afe-tQ-4Om">
-                                                    <rect key="frame" x="8" y="1" width="244" height="42"/>
+                                                    <rect key="frame" x="8" y="1" width="264" height="42"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -401,17 +485,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="billingIsSameCell" id="p3Q-jS-hCx" customClass="BillingIsSameViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="269.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="269.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3Q-jS-hCx" id="SfN-bh-F7I">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kCW-vC-Mvx">
                                             <rect key="frame" x="8" y="6" width="51" height="31"/>
                                         </switch>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Billing address is same as shipping" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ssn-ZY-hL5">
-                                            <rect key="frame" x="77" y="13" width="435" height="17"/>
+                                            <rect key="frame" x="77" y="13" width="475" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -436,17 +520,17 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nextStepCell" id="H3l-Xx-LYk" userLabel="nextStepCell" customClass="NextStepCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="313.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="313.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H3l-Xx-LYk" id="yIj-8g-9OV">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBL-uX-Hgo" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BILLING ADDRESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msH-CV-q83">
-                                                    <rect key="frame" x="8" y="11" width="504" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="544" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -499,22 +583,22 @@
             <objects>
                 <tableViewController title="Payment" id="Wzw-lC-oKO" customClass="PaymentViewController" customModule="PayForm" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIV-Td-nfV">
-                        <rect key="frame" x="0.0" y="0.0" width="520" height="428"/>
+                        <rect key="frame" x="0.0" y="0.0" width="560" height="428"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="emailCell" id="RbJ-ls-n6Q" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="93.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="93.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RbJ-ls-n6Q" id="WqW-v4-ned">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGm-tO-CQA" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7OT-PU-KWN">
-                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="544" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 </textField>
@@ -545,17 +629,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" id="dUn-xH-OBx" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="137.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="137.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dUn-xH-OBx" id="GRB-vk-lo6">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hmg-BO-EZH" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fER-v9-gxN">
-                                                    <rect key="frame" x="8" y="1" width="504" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="544" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -586,22 +670,22 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cardCell" id="wpT-qX-qgy" customClass="BorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="181.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="181.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wpT-qX-qgy" id="Y6H-7K-hU3">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hio-KG-6HD" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="card number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nqH-79-hy9">
-                                                    <rect key="frame" x="8" y="1" width="472" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="512" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_credit_card_black_48dp" translatesAutoresizingMaskIntoConstraints="NO" id="pYX-KW-Y6c">
-                                                    <rect key="frame" x="488" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="528" y="10" width="24" height="24"/>
                                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="KmN-TZ-WS7"/>
@@ -637,22 +721,22 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="expiryCvvCell" id="E5m-ei-8Uj" customClass="DualBorderedViewCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="225.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="225.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E5m-ei-8Uj" id="STF-im-Vpb">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LMg-8W-2LY" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="280" height="43.5"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="expiry mm/yy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kf9-fo-QXQ">
-                                                    <rect key="frame" x="8" y="1" width="212" height="41.5"/>
+                                                    <rect key="frame" x="8" y="1" width="232" height="41.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_date_range_black_48dp" translatesAutoresizingMaskIntoConstraints="NO" id="Jzh-rs-O59">
-                                                    <rect key="frame" x="228" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="248" y="10" width="24" height="24"/>
                                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="ELS-q6-uZV"/>
@@ -680,15 +764,15 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmM-ed-NHb" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="260" y="0.0" width="260" height="44"/>
+                                            <rect key="frame" x="280" y="0.0" width="280" height="44"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="cvv" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vid-AX-afl">
-                                                    <rect key="frame" x="8" y="1" width="212" height="42"/>
+                                                    <rect key="frame" x="8" y="1" width="232" height="42"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_lock_outline_black_48dp" highlightedImage="cvc_hint_color" translatesAutoresizingMaskIntoConstraints="NO" id="LC3-g2-JeV">
-                                                    <rect key="frame" x="228" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="248" y="10" width="24" height="24"/>
                                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="11D-cw-dK8"/>
@@ -730,17 +814,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="payCell" id="YQM-Zd-XUy" userLabel="nextStepCell" customClass="NextStepCell" customModule="PayForm" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="269.5" width="520" height="44"/>
+                                <rect key="frame" x="0.0" y="269.5" width="560" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YQM-Zd-XUy" id="5jT-Qb-CUp">
-                                    <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PDv-d1-KF2" customClass="BorderedView" customModule="PayForm" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="520" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOw-cB-b20">
-                                                    <rect key="frame" x="8" y="11" width="504" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="544" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -818,5 +902,6 @@
         <image name="ic_date_range_black_48dp" width="48" height="48"/>
         <image name="ic_lock_outline_black_48dp" width="48" height="48"/>
         <image name="ic_toys_black_48dp" width="48" height="48"/>
+        <image name="ic_verified_user_black_48dp" width="48" height="48"/>
     </resources>
 </document>
