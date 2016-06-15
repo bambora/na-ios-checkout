@@ -53,8 +53,11 @@ class PaymentViewController: UITableViewController {
             controller.cvd = cvvTextField?.text
 
             let monthYear = self.getSelectedMonthYear()
-            controller.expiryMonth = String(monthYear.month)    // 6 == June
-            controller.expiryYear = String(monthYear.year)      // 2016 == current year
+            controller.expiryMonth = String(format: "%02d", monthYear.month)  // "06" == June
+            
+            var yearStr = String(monthYear.year)
+            yearStr = yearStr.substringFromIndex(yearStr.startIndex.advancedBy(2))
+            controller.expiryYear = yearStr  // "16" == current year == 2016
         }
     }
 
