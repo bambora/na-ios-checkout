@@ -34,7 +34,7 @@ class AddressViewController: UITableViewController {
     var shippingAddress: Address?
     var billingAddress: Address?
     
-    private var billingAddressIsSame: Bool = false
+    private var billingAddressIsSame: Bool = true
     private var viewFields = [BorderedView: UITextField]()
     private var keyedFields = Dictionary<String, UITextField>()
     
