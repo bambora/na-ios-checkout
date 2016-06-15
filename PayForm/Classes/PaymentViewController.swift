@@ -507,6 +507,10 @@ extension PaymentViewController: UITextFieldDelegate {
             
             self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
         }
+        else if textField == cardTextField {
+            // Reload so that card image can be updated if needed
+            self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: Row.Card.rawValue, inSection: 1)], withRowAnimation: .None)
+        }
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
@@ -574,6 +578,8 @@ extension PaymentViewController: UITextFieldDelegate {
         if let targetPosition = textField.positionFromPosition(textField.beginningOfDocument, offset: targetCursorPosition) {
             textField.selectedTextRange = textField.textRangeFromPosition(targetPosition, toPosition: targetPosition)
         }
+        
+        self.updateCardImage()
     }
     
     /*
@@ -582,7 +588,7 @@ extension PaymentViewController: UITextFieldDelegate {
      and a cursor position of `8`, the cursor position will be changed to
      `7` (keeping it between the '2' and the '3' after the spaces are removed).
      */
-    func removeNonDigits(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
+    private func removeNonDigits(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
         var digitsOnlyString = ""
         let originalCursorPosition = cursorPosition
         
@@ -606,7 +612,7 @@ extension PaymentViewController: UITextFieldDelegate {
      will be changed to `8` (keeping it between the '2' and the '3' after the
      spaces are added).
      */
-    func insertSpacesEveryFourDigitsIntoString(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
+    private func insertSpacesEveryFourDigitsIntoString(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
         var stringWithAddedSpaces = ""
         let cursorPositionInSpacelessString = cursorPosition
         
@@ -624,6 +630,37 @@ extension PaymentViewController: UITextFieldDelegate {
         return stringWithAddedSpaces
     }
 
+    private func updateCardImage() {
+        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath.init(forRow: Row.Card.rawValue, inSection: 1))
+        if let borderedCell = cell as? BorderedViewCell {
+            if let imageView = borderedCell.embeddedImageView() {
+                if let cardNumber = self.cardTextField?.text {
+                    let cardType = self.ccValidator.cardType(cardNumber)
+                    var imageName = "ic_credit_card_black_48dp"
+                    
+                    switch cardType {
+                    case .Visa:
+                        imageName = "visa"
+                    case .MasterCard:
+                        imageName = "mastercard"
+                    case .AMEX:
+                        imageName = "amex"
+                    case .Discover:
+                        imageName = "discover"
+                    case .DinersClub:
+                        imageName = "dinersclub"
+                    case .InvalidCard:
+                        imageName = "ic_credit_card_black_48dp"
+                    }
+                    
+                    imageView.image = UIImage(named: imageName)
+                    if cardType == .InvalidCard {
+                        imageView.image = imageView.image?.imageWithRenderingMode(.AlwaysTemplate)
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
