@@ -92,11 +92,8 @@ public class PayFormViewController: UIViewController {
         self.headerView.backgroundColor = self.primaryColor
         
         if self.image == nil {
-            // Set the default image to use template coloring
-            if let _ = self.imageView.image {
-                let color = self.headerView.backgroundColor
-                self.imageView.tintColor = color
-            }
+            // Set the default image to use template based color
+            self.imageView.tintColor = self.headerView.backgroundColor
         }
         else {
             self.imageView.image = self.image
