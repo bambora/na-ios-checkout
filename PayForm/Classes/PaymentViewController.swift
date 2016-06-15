@@ -347,7 +347,7 @@ class PaymentViewController: UITableViewController {
             }
         }
 
-        if let text = emailTextField?.text {
+        if let text = emailTextField?.text where text != "" {
             if emailValidator.validate(text) == false {
                 // Setup a message and make sure its always presented as the first message
                 let msg = NSLocalizedString("Please enter a valid email address.", comment: "Validation statement used when email entered is invalid.")
@@ -424,7 +424,7 @@ class PaymentViewController: UITableViewController {
                     self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: numRows-1, inSection: 1)], withRowAnimation: .Automatic)
                 }
             }
-            else if !showingError {
+            else if !valid {
                 // Add an error row
                 var indexPaths = [NSIndexPath]()
                 showingError = true
@@ -503,15 +503,9 @@ extension PaymentViewController: UITextFieldDelegate {
             }
             
             row += 1
-            
             indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
             
-            // 1.2 sec delayed dispatch to give time for table changes to
-            // happen on previous validateTextFields method call.
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
-                self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 1)], withRowAnimation: .Automatic)
-            }
+            self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
         }
     }
     

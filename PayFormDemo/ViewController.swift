@@ -30,9 +30,10 @@ class ViewController: UIViewController {
             controller.amount = NSDecimalNumber(double: 100.00)
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
-            controller.primaryColor = "#067aed".hexColor
-            controller.shippingAddressRequired = false
-            controller.billingAddressRequired = false
+            //controller.primaryColor = UIColor.blueColor()       // default: "#067aed"
+            //controller.shippingAddressRequired = true           // default: true
+            //controller.billingAddressRequired = true            // default: true
+            //controller.tokenRequestTimeoutSeconds = 6           // default: 6
             
             controller.processingClosure = { (result: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
                 if let error = error {
