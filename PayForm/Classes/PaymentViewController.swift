@@ -150,61 +150,63 @@ class PaymentViewController: UITableViewController {
             }
         }
         else if indexPath.section == 1 {
-            switch indexPath.row {
-            case Row.Name.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
-                if let borderedCell = self.setupBorderedCell(cell) {
-                    borderedCell.drawTop(true)
-                    if let textField = borderedCell.textField() {
-                        self.nameTextField = textField
-                    }
-                }
-                
-            case Row.Card.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("cardCell", forIndexPath: indexPath)
-                if let borderedCell = self.setupBorderedCell(cell) {
-                    if let textField = borderedCell.textField() {
-                        self.cardTextField = textField
-                        textField.addTarget(self, action: #selector(reformatAsCardNumber(_:)), forControlEvents: .EditingChanged)
-                    }
-                }
-                
-            case Row.ExpiryCvv.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("expiryCvvCell", forIndexPath: indexPath)
-                if let dualBorderedCell = self.setupDualBorderedCell(cell) {
-                    if let textField = dualBorderedCell.textField(.Left) {
-                        self.expiryTextField = textField
-                        
-                        if self.expiryPicker == nil {
-                            let picker = UIPickerView()
-                            picker.delegate = self
-                            picker.dataSource = self
-                            
-                            self.expiryPicker = picker
-                            textField.inputView = picker
+            if let row = Row(rawValue: indexPath.row) {
+                switch row {
+                case Row.Name:
+                    cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
+                    if let borderedCell = self.setupBorderedCell(cell) {
+                        borderedCell.drawTop(true)
+                        if let textField = borderedCell.textField() {
+                            self.nameTextField = textField
                         }
                     }
-                    if let textField = dualBorderedCell.textField(.Right) {
-                        self.cvvTextField = textField
+                    
+                case Row.Card:
+                    cell = tableView.dequeueReusableCellWithIdentifier("cardCell", forIndexPath: indexPath)
+                    if let borderedCell = self.setupBorderedCell(cell) {
+                        if let textField = borderedCell.textField() {
+                            self.cardTextField = textField
+                            textField.addTarget(self, action: #selector(reformatAsCardNumber(_:)), forControlEvents: .EditingChanged)
+                        }
                     }
-                }
-                
-            case Row.Spacer.rawValue:
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "spacer")
-                cell.selectionStyle = .None
-                
-            case Row.Info.rawValue:
-                if showingCvvInfo {
-                    cell = self.dequeueCvvInfoCell()
-                }
-                else {
+                    
+                case Row.ExpiryCvv:
+                    cell = tableView.dequeueReusableCellWithIdentifier("expiryCvvCell", forIndexPath: indexPath)
+                    if let dualBorderedCell = self.setupDualBorderedCell(cell) {
+                        if let textField = dualBorderedCell.textField(.Left) {
+                            self.expiryTextField = textField
+                            
+                            if self.expiryPicker == nil {
+                                let picker = UIPickerView()
+                                picker.delegate = self
+                                picker.dataSource = self
+                                
+                                self.expiryPicker = picker
+                                textField.inputView = picker
+                            }
+                        }
+                        if let textField = dualBorderedCell.textField(.Right) {
+                            self.cvvTextField = textField
+                        }
+                    }
+                    
+                case Row.Spacer:
+                    cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "spacer")
+                    cell.selectionStyle = .None
+                    
+                case Row.Info:
+                    if showingCvvInfo {
+                        cell = self.dequeueCvvInfoCell()
+                    }
+                    else {
+                        cell = self.dequeueErrorCell()
+                    }
+                    
+                case Row.Error:
                     cell = self.dequeueErrorCell()
                 }
-                
-            case Row.Error.rawValue:
-                cell = self.dequeueErrorCell()
-                
-            default:
+            }
+            else {
                 print(">>> Should not have happend. Have a wierd row!!! \(indexPath.row)")
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "Ooops!"

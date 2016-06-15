@@ -145,50 +145,52 @@ class AddressViewController: UITableViewController {
         var cell: UITableViewCell;
         
         if indexPath.section == 0 {
-            switch indexPath.row {
-            case Row.Name.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
-                if let borderedCell = self.setupBorderedCell(cell, key: "name") {
-                    borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
-                }
-                
-            case Row.Street.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
-                self.setupBorderedCell(cell, key: "street")
-                
-            case Row.PostalcodeCity.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
-                self.setupDualBorderedCell(cell, leftKey: "postalCode", rightKey: "city")
-                
-            case Row.ProvinceCountry.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
-                self.setupDualBorderedCell(cell, leftKey: "province", rightKey: "country")
-                
-            case Row.BillingSame.rawValue:
-                cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
-                if let billingIsSameCell = cell as? BillingIsSameViewCell {
-                    billingIsSameCell.useShippingSwitch.addTarget(self, action: #selector(billingIsSameValueChanged(_:)), forControlEvents: .ValueChanged)
-                    billingIsSameCell.useShippingSwitch.on = self.billingAddressIsSame
-                }
+            if let row = Row(rawValue: indexPath.row) {
+                switch row {
+                case Row.Name:
+                    cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
+                    if let borderedCell = self.setupBorderedCell(cell, key: "name") {
+                        borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
+                    }
+                    
+                case Row.Street:
+                    cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
+                    self.setupBorderedCell(cell, key: "street")
+                    
+                case Row.PostalcodeCity:
+                    cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
+                    self.setupDualBorderedCell(cell, leftKey: "postalCode", rightKey: "city")
+                    
+                case Row.ProvinceCountry:
+                    cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
+                    self.setupDualBorderedCell(cell, leftKey: "province", rightKey: "country")
+                    
+                case Row.BillingSame:
+                    cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
+                    if let billingIsSameCell = cell as? BillingIsSameViewCell {
+                        billingIsSameCell.useShippingSwitch.addTarget(self, action: #selector(billingIsSameValueChanged(_:)), forControlEvents: .ValueChanged)
+                        billingIsSameCell.useShippingSwitch.on = self.billingAddressIsSame
+                    }
 
-            case Row.Error.rawValue:
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
-                cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
-                cell.selectionStyle = .None
-                cell.textLabel?.text = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Address view.")
-                cell.textLabel?.textColor = "#b71c1c".hexColor
-                cell.imageView?.tintColor = "#b71c1c".hexColor
-                
-                var image = UIImage.init(named: "ic_error_outline_black_48dp")
-                let imageRect = CGRectMake(0, 0, 24, 24)
-                
-                UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
-                image?.drawInRect(imageRect)
-                image = UIGraphicsGetImageFromCurrentImageContext()
-                cell.imageView?.image = image?.imageWithRenderingMode(.AlwaysTemplate)
-                UIGraphicsEndImageContext()
-                
-            default:
+                case Row.Error:
+                    cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
+                    cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
+                    cell.selectionStyle = .None
+                    cell.textLabel?.text = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Address view.")
+                    cell.textLabel?.textColor = "#b71c1c".hexColor
+                    cell.imageView?.tintColor = "#b71c1c".hexColor
+                    
+                    var image = UIImage.init(named: "ic_error_outline_black_48dp")
+                    let imageRect = CGRectMake(0, 0, 24, 24)
+                    
+                    UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
+                    image?.drawInRect(imageRect)
+                    image = UIGraphicsGetImageFromCurrentImageContext()
+                    cell.imageView?.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+                    UIGraphicsEndImageContext()
+                }
+            }
+            else {
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "fubar"
             }
