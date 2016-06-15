@@ -24,7 +24,6 @@ import UIKit
    purchaseDescription: a description of the purchase
    shippingAddress: if the shipping address is required – true/false
    billingAddress: if the billing address is required – true/false
--->   submitForm: if the form’s default action should be executed – true/false
    primaryColor: the primary header color of the form. Default is blue.
  */
 public class PayFormViewController: UIViewController {
