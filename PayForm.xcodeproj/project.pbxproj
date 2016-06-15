@@ -52,6 +52,8 @@
 		BCA6B5201D0B509D0070B92C /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B51D1D0B4EAD0070B92C /* EmailValidator.swift */; };
 		BCA6B5221D0F64110070B92C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5211D0F64110070B92C /* Settings.swift */; };
 		BCA6B5231D0F64110070B92C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5211D0F64110070B92C /* Settings.swift */; };
+		BCA6B5251D11D4AF0070B92C /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5241D11D4AF0070B92C /* State.swift */; };
+		BCA6B5261D11D4AF0070B92C /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5241D11D4AF0070B92C /* State.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +98,7 @@
 		BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardValidator.swift; sourceTree = "<group>"; };
 		BCA6B51D1D0B4EAD0070B92C /* EmailValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
 		BCA6B5211D0F64110070B92C /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BCA6B5241D11D4AF0070B92C /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +193,7 @@
 				BCA6B5191D09E5560070B92C /* CreditCardValidator.swift */,
 				BCA6B51D1D0B4EAD0070B92C /* EmailValidator.swift */,
 				BCA6B5211D0F64110070B92C /* Settings.swift */,
+				BCA6B5241D11D4AF0070B92C /* State.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -369,6 +373,7 @@
 				BC9AF2D01D00F67B003AD818 /* BorderedView.swift in Sources */,
 				BCA6B4DC1D02128F0070B92C /* BillingIsSameViewCell.swift in Sources */,
 				BCA6B4DE1D02173A0070B92C /* Address.swift in Sources */,
+				BCA6B5251D11D4AF0070B92C /* State.swift in Sources */,
 				BC9AF2C41CFF6BB6003AD818 /* ProcessingViewController.swift in Sources */,
 				BC9AF2CA1D00F20B003AD818 /* AddressViewController.swift in Sources */,
 				BCA6B5221D0F64110070B92C /* Settings.swift in Sources */,
@@ -404,6 +409,7 @@
 				BCA6B51F1D0B4EAD0070B92C /* EmailValidator.swift in Sources */,
 				BCA6B5091D023FB40070B92C /* PayFormViewController.swift in Sources */,
 				BCA6B5081D023FB00070B92C /* NavigationController.swift in Sources */,
+				BCA6B5261D11D4AF0070B92C /* State.swift in Sources */,
 				BCA6B5121D023FD90070B92C /* NextStepCell.swift in Sources */,
 				BCA6B5151D0777B50070B92C /* StringHexColor.swift in Sources */,
 				BCA6B50A1D023FB80070B92C /* AddressViewController.swift in Sources */,

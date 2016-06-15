@@ -37,11 +37,6 @@ public class PayFormViewController: UIViewController {
     @IBOutlet private weak var amountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     
-    // Either an AddressViewController (billing or shipping) or a 
-    // PaymentViewController will be loaded as the root controller.
-    private weak var addressController: AddressViewController?
-    private weak var paymentController: PaymentViewController?
-    
     // MARK: - Public properties
     
     public var amount: NSDecimalNumber = NSDecimalNumber(double:1.0)
@@ -76,6 +71,7 @@ public class PayFormViewController: UIViewController {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             self.modalPresentationStyle = .FormSheet
         }
+        State.sharedInstance.reset()
     }
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -83,10 +79,15 @@ public class PayFormViewController: UIViewController {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             self.modalPresentationStyle = .FormSheet
         }
+        State.sharedInstance.reset()
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        State.sharedInstance.amountStr = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
+        State.sharedInstance.processingClosure = self.processingClosure
+        State.sharedInstance.billingAddressRequired = self.billingAddressRequired
         
         self.headerView.backgroundColor = self.primaryColor
         
@@ -102,23 +103,8 @@ public class PayFormViewController: UIViewController {
         }
         
         self.nameLabel.text = self.name
-        self.amountLabel.text = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
+        self.amountLabel.text = State.sharedInstance.amountStr
         self.descriptionLabel.text = self.purchaseDescription
-        
-        if let controller = self.addressController {
-            controller.amountStr = self.amountLabel.text
-            controller.processingClosure = self.processingClosure
-            controller.billingAddressRequired = self.billingAddressRequired
-            controller.shippingAddress = self.shippingAddress
-            controller.billingAddress = self.billingAddress
-        }
-        else if let controller = self.paymentController {
-            controller.amountStr = self.amountLabel.text
-            controller.processingClosure = self.processingClosure
-            controller.shippingAddress = self.shippingAddress
-            controller.billingAddress = self.billingAddress
-        }
-        
         self.footerView.alpha = 0
         
         NSNotificationCenter.defaultCenter().addObserver(
@@ -147,17 +133,7 @@ public class PayFormViewController: UIViewController {
                 // Re-jig the nav controller to have a PaymentViewController as its root
                 let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
                 if let paymentController = storyboard.instantiateViewControllerWithIdentifier("PaymentViewController") as? PaymentViewController {
-                    self.paymentController = paymentController
                     navController.viewControllers = [paymentController]
-                }
-            }
-            else {
-                // Figure out what root view controller we are dealing with and set
-                // it as an instance var so that it can be further setup in viewDidLoad.
-                if let addressController = navController.viewControllers.first as? AddressViewController {
-                    self.addressController = addressController
-                } else if let paymentController = navController.viewControllers.first as? PaymentViewController {
-                    self.paymentController = paymentController
                 }
             }
         }

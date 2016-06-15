@@ -28,11 +28,6 @@ class AddressViewController: UITableViewController {
     // MARK: - Properties
 
     var addressType: AddressType = .Shipping
-    var amountStr: String?
-    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
-    var billingAddressRequired: Bool = false
-    var shippingAddress: Address?
-    var billingAddress: Address?
     
     private var billingAddressIsSame: Bool = true
     private var viewFields = [BorderedView: UITextField]()
@@ -52,7 +47,7 @@ class AddressViewController: UITableViewController {
         }
         else {
             self.title = NSLocalizedString("Shipping", comment: "Address view title when used in Shipping mode")
-            if !self.billingAddressRequired {
+            if !State.sharedInstance.billingAddressRequired {
                 self.billingAddressIsSame = true // sets UI as needed
             }
         }
@@ -61,20 +56,7 @@ class AddressViewController: UITableViewController {
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        self.createAddressInfo()
-        
-        if let controller = segue.destinationViewController as? AddressViewController {
-            controller.amountStr = amountStr
-            controller.processingClosure = self.processingClosure
-            controller.shippingAddress = self.shippingAddress
-            controller.billingAddress = self.billingAddress
-        }
-        else if let controller = segue.destinationViewController as? PaymentViewController {
-            controller.amountStr = amountStr
-            controller.processingClosure = self.processingClosure
-            controller.shippingAddress = self.shippingAddress
-            controller.billingAddress = self.billingAddress
-        }
+        self.setupAddressInfo()
     }
     
     // MARK: - Table view delegate
@@ -92,14 +74,8 @@ class AddressViewController: UITableViewController {
                 
                 if addressType == .Shipping && !self.billingAddressIsSame {
                     if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
-                        self.createAddressInfo()
-                        
+                        self.setupAddressInfo()
                         controller.addressType = .Billing
-                        controller.amountStr = self.amountStr
-                        controller.processingClosure = self.processingClosure
-                        controller.shippingAddress = self.shippingAddress
-                        controller.billingAddress = self.billingAddress
-                        
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
                 }
@@ -118,7 +94,7 @@ class AddressViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == Row.BillingSame.rawValue && (self.addressType == .Billing || !self.billingAddressRequired) {
+        if indexPath.row == Row.BillingSame.rawValue && (self.addressType == .Billing || !State.sharedInstance.billingAddressRequired) {
             return 0
         }
         else {
@@ -285,22 +261,21 @@ class AddressViewController: UITableViewController {
         return valid
     }
     
-    private func createAddressInfo() {
+    private func setupAddressInfo() {
         if let name = self.keyedFields["name"]?.text, let street = self.keyedFields["street"]?.text,
             let city = self.keyedFields["city"]?.text, let province = self.keyedFields["province"]?.text,
-            let postalCode = self.keyedFields["postalCode"]?.text, let country = self.keyedFields["country"]?.text {
-            
+            let postalCode = self.keyedFields["postalCode"]?.text, let country = self.keyedFields["country"]?.text
+        {
             let address = Address(name: name, street: street, city: city, province: province, postalCode: postalCode, country: country)
             
             if self.addressType == .Shipping {
-                self.shippingAddress = address
-                
+                State.sharedInstance.shippingAddress = address
                 if self.billingAddressIsSame {
-                    self.billingAddress = self.shippingAddress
+                    State.sharedInstance.billingAddress = address
                 }
             }
             else {
-                self.billingAddress = address
+                State.sharedInstance.billingAddress = address
             }
         }
     }

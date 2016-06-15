@@ -19,12 +19,6 @@ class ProcessingViewController: UIViewController {
     var expiryYear: String?
     var cvd: String?
     
-    var amountStr: String?
-    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
-    
-    var shippingAddress: Address?
-    var billingAddress: Address?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = ""
@@ -33,7 +27,7 @@ class ProcessingViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let amountStr = self.amountStr {
+        if let amountStr = State.sharedInstance.amountStr {
             self.amountLabel.text = amountStr
         }
         NSNotificationCenter.defaultCenter().postNotificationName("ShowFooter", object: self)
@@ -46,8 +40,9 @@ class ProcessingViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if let number = number, let expiryYear = expiryYear, let expiryMonth = expiryMonth, let cvd = cvd where amountStr != nil && processingClosure != nil {
-            
+        if let number = number, let expiryYear = expiryYear, let expiryMonth = expiryMonth, let cvd = cvd
+            where State.sharedInstance.amountStr != nil && State.sharedInstance.processingClosure != nil
+        {
             let params = ["number": number,
                           "expiry_month": expiryMonth,
                           "expiry_year": expiryYear,
@@ -76,7 +71,7 @@ class ProcessingViewController: UIViewController {
             do {
                 try data = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(rawValue: 0))
             } catch let error as NSError {
-                if let processingClosure = self.processingClosure {
+                if let processingClosure = State.sharedInstance.processingClosure {
                     processingClosure(result: nil, error: error)
                 }
                 return
@@ -111,7 +106,7 @@ class ProcessingViewController: UIViewController {
 
                 var result = Dictionary<String, AnyObject>()
                 
-                if let address = self.shippingAddress {
+                if let address = State.sharedInstance.shippingAddress {
                     var shippingInfo = Dictionary<String, String>()
                     shippingInfo["name"] = address.name
                     shippingInfo["address_line1"] = address.street
@@ -122,7 +117,7 @@ class ProcessingViewController: UIViewController {
                     result["shippingAddress"] = shippingInfo
                 }
                 
-                if let address = self.billingAddress {
+                if let address = State.sharedInstance.billingAddress {
                     var billingInfo = Dictionary<String, String>()
                     billingInfo["name"] = address.name
                     billingInfo["address_line1"] = address.street
@@ -134,7 +129,7 @@ class ProcessingViewController: UIViewController {
                 }
                 
                 if error != nil {
-                    if let processingClosure = self.processingClosure {
+                    if let processingClosure = State.sharedInstance.processingClosure {
                         processingClosure(result: (result.count > 0 ? result : nil), error: error)
                     }
                 }
@@ -151,7 +146,7 @@ class ProcessingViewController: UIViewController {
                         }
                     } catch {}
                     
-                    if let processingClosure = self.processingClosure {
+                    if let processingClosure = State.sharedInstance.processingClosure {
                         processingClosure(result: result, error: nil)
                     }
                 }

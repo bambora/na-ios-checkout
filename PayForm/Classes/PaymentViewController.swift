@@ -21,11 +21,6 @@ class PaymentViewController: UITableViewController {
 
     // MARK: - Properties
     
-    var amountStr: String?
-    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
-    var shippingAddress: Address?
-    var billingAddress: Address?
-    
     private var billingAddressIsSame: Bool = false
     private var viewFields = [BorderedView: UITextField]()
     private var showingCvvInfo = false
@@ -60,11 +55,6 @@ class PaymentViewController: UITableViewController {
             let monthYear = self.getSelectedMonthYear()
             controller.expiryMonth = String(monthYear.month)    // 6 == June
             controller.expiryYear = String(monthYear.year)      // 2016 == current year
-            
-            controller.amountStr = amountStr
-            controller.processingClosure = self.processingClosure
-            controller.billingAddress = self.billingAddress
-            controller.shippingAddress = self.shippingAddress
         }
     }
 
@@ -217,7 +207,7 @@ class PaymentViewController: UITableViewController {
             if let payCell = cell as? NextStepCell {
                 var title = NSLocalizedString("PAY", comment: "Button title to used to enter Payment")
                 
-                if let amountStr = self.amountStr {
+                if let amountStr = State.sharedInstance.amountStr {
                     title = String(format: NSLocalizedString("PAY %@", comment: "Button title to used to enter Payment"), amountStr)
                 }
                 
@@ -508,10 +498,6 @@ extension PaymentViewController: UITextFieldDelegate {
             indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
             
             self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
-        }
-        else if textField == cardTextField {
-            // Reload so that card image can be updated if needed
-            self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: Row.Card.rawValue, inSection: 1)], withRowAnimation: .None)
         }
     }
     
