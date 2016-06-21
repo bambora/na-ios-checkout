@@ -125,21 +125,21 @@ class AddressViewController: UITableViewController {
                 switch row {
                 case Row.Name:
                     cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
-                    if let borderedCell = self.setupBorderedCell(cell, key: "name") {
+                    if let borderedCell = self.setupBorderedCell(cell, key: "name", tag: 0) {
                         borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
                     }
                     
                 case Row.Street:
                     cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
-                    self.setupBorderedCell(cell, key: "street")
+                    self.setupBorderedCell(cell, key: "street", tag: 1)
                     
                 case Row.PostalcodeCity:
                     cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
-                    self.setupDualBorderedCell(cell, leftKey: "postalCode", rightKey: "city")
+                    self.setupDualBorderedCell(cell, leftKey: "postalCode", leftTag: 2, rightKey: "city", rightTag: 3)
                     
                 case Row.ProvinceCountry:
                     cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
-                    self.setupDualBorderedCell(cell, leftKey: "province", rightKey: "country")
+                    self.setupDualBorderedCell(cell, leftKey: "province", leftTag: 4, rightKey: "country", rightTag: 5)
                     
                 case Row.BillingSame:
                     cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
@@ -201,7 +201,7 @@ class AddressViewController: UITableViewController {
     
     // MARK: - Private methods
     
-    private func setupBorderedCell(cell: UITableViewCell, key: String) -> BorderedViewCell? {
+    private func setupBorderedCell(cell: UITableViewCell, key: String, tag: Int) -> BorderedViewCell? {
         if let borderedCell = cell as? BorderedViewCell {
             if let textField = borderedCell.textField() {
                 textField.delegate = self
@@ -209,6 +209,7 @@ class AddressViewController: UITableViewController {
                     viewFields[borderedView] = textField
                 }
                 self.keyedFields[key] = textField
+                textField.tag = tag
             }
             return borderedCell
         }
@@ -216,7 +217,7 @@ class AddressViewController: UITableViewController {
         return nil
     }
 
-    private func setupDualBorderedCell(cell: UITableViewCell, leftKey: String, rightKey: String) -> DualBorderedViewCell? {
+    private func setupDualBorderedCell(cell: UITableViewCell, leftKey: String, leftTag: Int, rightKey: String, rightTag: Int) -> DualBorderedViewCell? {
         if let dualBorderedCell = cell as? DualBorderedViewCell {
             if let textField = dualBorderedCell.textField(.Left) {
                 textField.delegate = self
@@ -224,6 +225,7 @@ class AddressViewController: UITableViewController {
                     viewFields[borderedView] = textField
                 }
                 self.keyedFields[leftKey] = textField
+                textField.tag = leftTag
             }
             if let textField = dualBorderedCell.textField(.Right) {
                 textField.delegate = self
@@ -231,6 +233,7 @@ class AddressViewController: UITableViewController {
                     viewFields[borderedView] = textField
                 }
                 self.keyedFields[rightKey] = textField
+                textField.tag = rightTag
             }
             return dualBorderedCell
         }
@@ -301,6 +304,23 @@ extension AddressViewController: UITextFieldDelegate {
         if self.tableView.numberOfRowsInSection(0) == NUM_ROWS_ERROR {
             self.validateTextFields()
         }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        var tag = textField.tag
+        if let lastField = self.keyedFields["country"] where tag < lastField.tag {
+            tag += 1
+            for nextField in self.keyedFields.values {
+                if nextField.tag == tag {
+                    nextField.becomeFirstResponder()
+                    break
+                }
+            }
+        }
+        else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
     
 }

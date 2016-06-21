@@ -17,6 +17,14 @@ class ViewController: UIViewController {
         statusLabel.text = ""
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Found on iOS 9 that this was needed in case payform completes in a different
+        // orientation than was originally launched in (iOS 8.3 - 9.3 with iPhone 4).
+        self.view.setNeedsLayout()
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -43,8 +51,7 @@ class ViewController: UIViewController {
                     self.statusLabel.textColor = UIColor.redColor()
                 }
                 else if let result = result {
-                    if let cardInfo = result["cardInfo"] as? Dictionary<String, String> {
-                        let token = cardInfo["code"]
+                    if let cardInfo = result["cardInfo"] as? Dictionary<String, String>, let token = cardInfo["code"] as String! {
                         print("cardInfo: \(cardInfo)")
                         self.statusLabel.text = "token: \(token)"
                         self.statusLabel.textColor = UIColor.blackColor()

@@ -34,6 +34,8 @@ class PaymentViewController: UITableViewController {
     private var cvvTextField: UITextField?
     private var expiryPicker: UIPickerView?
     
+    private var textFields = [UITextField]()
+    
     // Used for CC number formatting
     private var previousTextFieldContent: String?
     private var previousSelection: UITextRange?
@@ -42,6 +44,34 @@ class PaymentViewController: UITableViewController {
     private let messageIconWidth: CGFloat = 24.0
     private let ccValidator = CreditCardValidator()
     private let emailValidator = EmailValidator()
+    
+    // MARK: - UIViewController
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
+            let orient = UIApplication.sharedApplication().statusBarOrientation
+            self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
+            let orient = UIApplication.sharedApplication().statusBarOrientation
+            self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+        }
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
+            coordinator.animateAlongsideTransition({ (context) in
+                let orient = UIApplication.sharedApplication().statusBarOrientation
+                self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+            }, completion: nil)
+        }
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    }
     
     // MARK: - Navigation
     
@@ -139,6 +169,8 @@ class PaymentViewController: UITableViewController {
                 borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
                 if let textField = borderedCell.textField() {
                     self.emailTextField = textField
+                    textField.tag = 0
+                    textFields.append(textField)
                 }
             }
         }
@@ -151,6 +183,8 @@ class PaymentViewController: UITableViewController {
                         borderedCell.drawTop(true)
                         if let textField = borderedCell.textField() {
                             self.nameTextField = textField
+                            textField.tag = 1
+                            textFields.append(textField)
                         }
                     }
                     
@@ -160,6 +194,9 @@ class PaymentViewController: UITableViewController {
                         if let textField = borderedCell.textField() {
                             self.cardTextField = textField
                             textField.addTarget(self, action: #selector(reformatAsCardNumber(_:)), forControlEvents: .EditingChanged)
+                            textField.tag = 2
+                            textFields.append(textField)
+                            self.checkAndSetupAccessoryViews()
                         }
                     }
                     
@@ -171,15 +208,22 @@ class PaymentViewController: UITableViewController {
                             
                             if self.expiryPicker == nil {
                                 let picker = UIPickerView()
+                                picker.autoresizingMask = .FlexibleHeight;
                                 picker.delegate = self
                                 picker.dataSource = self
                                 
                                 self.expiryPicker = picker
                                 textField.inputView = picker
+                                textField.tag = 3
+                                textFields.append(textField)
+                                self.checkAndSetupAccessoryViews()
                             }
                         }
                         if let textField = dualBorderedCell.textField(.Right) {
                             self.cvvTextField = textField
+                            textField.tag = 4
+                            textFields.append(textField)
+                            self.checkAndSetupAccessoryViews()
                         }
                     }
                     
@@ -438,6 +482,43 @@ class PaymentViewController: UITableViewController {
         return valid
     }
     
+    private func checkAndSetupAccessoryViews() {
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            return
+        }
+        
+        if let cardTextField = cardTextField, let expiryTextField = expiryTextField, let cvvTextField =  cvvTextField where cvvTextField.inputAccessoryView == nil {
+            self.addInputAccessoryFor(cardTextField, nextField: expiryTextField)
+            self.addInputAccessoryFor(expiryTextField, nextField: cvvTextField)
+            self.addInputAccessoryFor(cvvTextField, dismissable: true, nextField: nil)
+        }
+    }
+    
+    private func addInputAccessoryFor(textField: UITextField, dismissable: Bool = false, nextField: UITextField?) {
+        let toolbar: UIToolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        var items = [UIBarButtonItem]()
+        if let nextField = nextField {
+            let nextTitle = NSLocalizedString("Next", comment: "Title to use for Next button on text field accessory views.")
+            let nextButton = UIBarButtonItem(title: nextTitle, style: .Plain, target: nil, action: nil)
+            nextButton.width = 30
+            nextButton.target = nextField
+            nextButton.action = #selector(UITextField.becomeFirstResponder)
+            
+            items.append(nextButton)
+        }
+        
+        if dismissable {
+            let spacer = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: view, action: #selector(UIView.endEditing))
+            items.appendContentsOf([spacer, doneButton])
+        }
+        
+        toolbar.setItems(items, animated: false)
+        textField.inputAccessoryView = toolbar
+    }
+    
 }
 
 extension PaymentViewController: UITextFieldDelegate {
@@ -468,6 +549,32 @@ extension PaymentViewController: UITextFieldDelegate {
             indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
             
             self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+        }
+        
+        if textField == expiryTextField {
+            // Delay 1 second
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) {
+                if let expiryPicker = self.expiryPicker, let text = self.expiryTextField?.text where text != "" {
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "MM/yy"
+                    
+                    if let date = dateFormatter.dateFromString(text) {
+                        let month = NSCalendar.currentCalendar().component(.Month, fromDate: date)
+                        let currentYear = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
+                        let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
+                        
+                        var monthOffset = 0
+                        if year == currentYear {
+                            monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
+                        }
+                        
+                        expiryPicker.selectRow(year - currentYear, inComponent: 1, animated: true)
+                        expiryPicker.reloadComponent(0)
+                        expiryPicker.selectRow(month - monthOffset - 1, inComponent: 0, animated: true)
+                    }
+                }
+            }
         }
     }
     
@@ -529,6 +636,23 @@ extension PaymentViewController: UITextFieldDelegate {
         }
 
         return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        var tag = textField.tag
+        if let lastField = self.cvvTextField where tag < lastField.tag {
+            tag += 1
+            for nextField in self.textFields {
+                if nextField.tag == tag {
+                    nextField.becomeFirstResponder()
+                    break
+                }
+            }
+        }
+        else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
     
     //
@@ -677,14 +801,18 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            // Month
             var monthOffset = 0
             if pickerView.selectedRowInComponent(1) == 0 {
                 monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
             }
-
+            
             let df = NSDateFormatter.init()
-            let monthName = df.monthSymbols[row + monthOffset]
+            var row = row + monthOffset
+            if row >= df.monthSymbols.count {
+                row = 0
+            }
+            
+            let monthName = df.monthSymbols[row]
             return monthName
         }
         else {
@@ -729,4 +857,5 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         
         return monthYear
     }
+    
 }

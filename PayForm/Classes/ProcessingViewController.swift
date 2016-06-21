@@ -22,7 +22,7 @@ class ProcessingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = ""
-        self.navigationItem.setHidesBackButton(true, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -53,6 +53,7 @@ class ProcessingViewController: UIViewController {
         else {
             print("ProcessingViewController was shown without needed vars!!!")
             self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
     }
     

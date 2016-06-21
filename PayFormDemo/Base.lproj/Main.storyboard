@@ -45,7 +45,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to launch the PayForm demo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOZ-ir-E00">
                                 <rect key="frame" x="174" y="242" width="252" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qT7-Kw-x3a" customClass="PayButton" customModule="PayFormDemo" customModuleProvider="target">
@@ -71,7 +71,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cYY-Ly-6c6">
                                 <rect key="frame" x="20" y="362" width="560" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -79,7 +79,7 @@
                         <constraints>
                             <constraint firstItem="cYY-Ly-6c6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="1ev-gO-HiC"/>
                             <constraint firstItem="cYY-Ly-6c6" firstAttribute="top" secondItem="qT7-Kw-x3a" secondAttribute="bottom" constant="40" id="ClF-Cb-cEq"/>
-                            <constraint firstItem="QP6-gS-5MC" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Mtr-se-CG5"/>
+                            <constraint firstItem="QP6-gS-5MC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="Onu-Fg-M6b"/>
                             <constraint firstItem="cYY-Ly-6c6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Tf0-uw-84x"/>
                             <constraint firstItem="qT7-Kw-x3a" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="U2c-to-qvx"/>
                             <constraint firstItem="QP6-gS-5MC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Ylo-QK-KKZ"/>
