@@ -662,6 +662,7 @@
 				BCA6B4F41D021D730070B92C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
