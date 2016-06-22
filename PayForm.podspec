@@ -12,7 +12,6 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.ios.deployment_target = '8.2'
 
-  spec.libraries = 'z', 'c++', 'Beanstream.SDK'
   spec.framework = 'Foundation, UIKit'
 
   spec.source_files = "PayForm/**/*.{swift}"
