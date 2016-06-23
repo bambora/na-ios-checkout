@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
 
   spec.name     = 'PayForm'
-  spec.version  = '0.1.1'
+  spec.version  = '0.1.2'
   spec.license  = { :type => "MIT", :file => "LICENSE" }
   spec.summary  = 'A delightful Payments UI framework to be helpful with Beanstream related development.'
   spec.homepage = 'http://developer.beanstream.com'
