@@ -70,7 +70,7 @@ plugin 'cocoapods-art', :sources => [
   'bic-pods-local'
 ]
 
-target 'PayFormTest' do
+target 'MyProject' do
   pod 'PayForm'
 end
 ```
