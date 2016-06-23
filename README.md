@@ -51,10 +51,19 @@ The optional parameters are:
 The first step is to install CocoaPods on your development machine. Then you will also need to install an Artifactory plugin for CocoaPods. You will then add the needed Beanstream Cocoapods reposotory and add the PayForm Pod to your app project. You can also supply several parameters to configure the form, such as your company name, logo, product description, price, currency, and whether billing/shipping addresses should be displayed. Here is an example:
 * Go to https://cocoapods.org on how to setup CocoaPods. This framework was validated with CocoaPods v1.0.1.
 * Setup the Artifactory plugin
-   > gem install cocoapods-art
+
+```bash
+> gem install cocoapods-art
+```
+
 * Add the Beanstream CocoaPods repo
-   > pod repo-art add bic-pods-local "https://beanstream.artifactoryonline.com/beanstream/api/pods/bic-pods-local"
+
+```bash
+> pod repo-art add bic-pods-local "https://beanstream.artifactoryonline.com/beanstream/api/pods/bic-pods-local"
+```
+
 * After having executed a 'pod init' in your iOS project directory, add the Artifactory plugin and PayForm pod to your Podfile as follows and then execute the standard 'pod install' command.
+
 ```bash
 use_frameworks!
 
@@ -66,11 +75,13 @@ target 'PayFormTest' do
   pod 'PayForm'
 end
 ```
+
 * Note that 'pod update' does not update Artifactory based pod indexes as expected and instead use 'pod repo-art update'.
 
 ### Step 1: Add PayForm To Your App
 Here is an example, written in Swift of how PayForm is wired to a button action that simply updated a status label.
 asdf
+
 ```swift
 @IBAction func buttonAction(sender: AnyObject) {
     let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
