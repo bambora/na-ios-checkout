@@ -1,4 +1,5 @@
-PayForm
+<img src="http://www.beanstream.com/wp-content/uploads/2015/08/Beanstream-logo.png" />
+# Beanstream PayForm for iOS
 =================
 ##### Table of Contents  
 
