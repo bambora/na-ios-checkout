@@ -14,8 +14,8 @@ Pod::Spec.new do |spec|
 
   spec.framework = 'Foundation, UIKit'
 
-  spec.source_files = "PayForm/**/*.{swift}"
-  spec.resources    = "PayForm/**/*.{png,jpeg,jpg,storyboard,xib}"
+  spec.source_files    = "PayForm/**/*.{swift}"
+  spec.resource_bundles = { 'PayForm' => ["PayForm/**/*.{png,jpeg,jpg,storyboard,xib}"] }
 
 end
 
