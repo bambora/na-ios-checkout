@@ -80,7 +80,7 @@ target 'MyProject' do
 end
 ```
 
-* Note that 'pod update' does not update Artifactory based pod indexes as expected and instead use 'pod repo-art update'.
+* Note that 'pod update' alone does not update Artifactory based pod indexes as expected and use 'pod repo-art update' first and then use 'pod update'.
 
 ### Step 1: Add PayForm To Your App
 Here is an example, written in Swift of how PayForm is wired to a button action that simply updated a status label.
