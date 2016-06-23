@@ -1,6 +1,6 @@
 <img src="http://www.beanstream.com/wp-content/uploads/2015/08/Beanstream-logo.png" />
 # Beanstream PayForm for iOS
-=================
+
 ##### Table of Contents  
 
 * [Overview](#overview)
@@ -11,7 +11,6 @@
 * [Building Locally and Contributing](#contributing)
 
 ## Overview <a name="overview"/>
-The PayForm project umbrella covers two related products: PayForm and PayFields.
 
 Payform is a Beanstream client-side iOS framework that handles customer credit card input within the merchant's app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
 
