@@ -88,7 +88,8 @@ asdf
 
 ```swift
 @IBAction func buttonAction(sender: AnyObject) {
-    let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
+    let bundle = NSBundle.init(forClass: PayFormViewController.classForCoder())
+    let storyboard = UIStoryboard(name: "PayForm", bundle: bundle)
     if let controller = storyboard.instantiateInitialViewController() as? PayFormViewController {
         self.statusLabel.text = ""
         
