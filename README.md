@@ -10,27 +10,32 @@
  * [Integration Guide](#payform-integration-guide)
 * [Building Locally and Contributing](#contributing)
 
-## Overview <a name="overview"/>
+<a name="overview"/>
+## Overview
 
 Payform is a Beanstream client-side iOS framework that handles customer credit card input within the merchant's app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
 
 By integrating PayForm a developer can easily provide a way for users to accept payments in an iOS app. PayForm provides some client-side validation, smart field data formatting and a design that works in all iOS device form factors.
 
-## iOS Support <a name="platform-support"/>
+<a name="platform-support"/>
+## iOS Support
  * iOS 8.2+
  * iPhone
  * iPad
 
-# PayForm <a name="payform"/>
+<a name="payform"/>
+# PayForm
 
 PayForm is a small iOS (Swift) framework project that implemented as a view controller that you can add to your app project. Most apps will let users launch PayForm to gather credit card details from something like a button action.
 
-## How It Works <a name="payform-functionality"/>
+<a name="payform-functionality"/>
+## How It Works
 The PayForm controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
 Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended allow the the app developer define a block of code to do any additoinal background processsing and to then dismiss the form.
 
-## Integration <a name="payform-integration-guide"/>
+<a name="payform-integration-guide"/>
+## Integration
 Adding PayForm to your app could not be easier. You simply use CocoaPods and our Artifactory repository to addat the PayForm framework. PayForm is configured by setting properties on the PayFormViewController instance you create and present. It can be configured to collect shipping and billing addresses in addition to the card details.
 
 The required parameters are:
