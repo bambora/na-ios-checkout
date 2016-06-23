@@ -153,7 +153,6 @@ class ProcessingViewController: UIViewController {
                 }
                 
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             })
             
             task.resume()
