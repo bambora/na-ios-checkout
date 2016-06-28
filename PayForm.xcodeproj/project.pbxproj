@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC08BD611D231A300082445F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC08BD631D231A300082445F /* Localizable.strings */; };
+		BC08BD651D231B350082445F /* PayForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC08BD681D231B350082445F /* PayForm.storyboard */; };
+		BC08BD661D231B350082445F /* PayForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC08BD681D231B350082445F /* PayForm.storyboard */; };
 		BC9AF2A81CFF6B31003AD818 /* PayForm.h in Headers */ = {isa = PBXBuildFile; fileRef = BC9AF2A71CFF6B31003AD818 /* PayForm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC9AF2AF1CFF6B32003AD818 /* PayForm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC9AF2A41CFF6B31003AD818 /* PayForm.framework */; };
 		BC9AF2B41CFF6B32003AD818 /* PayFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2B31CFF6B32003AD818 /* PayFormTests.swift */; };
 		BC9AF2C21CFF6BAE003AD818 /* PayFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2C11CFF6BAE003AD818 /* PayFormViewController.swift */; };
 		BC9AF2C41CFF6BB6003AD818 /* ProcessingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2C31CFF6BB6003AD818 /* ProcessingViewController.swift */; };
-		BC9AF2C61CFF6BC3003AD818 /* PayForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC9AF2C51CFF6BC3003AD818 /* PayForm.storyboard */; };
 		BC9AF2C81CFF6BCA003AD818 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9AF2C71CFF6BCA003AD818 /* Images.xcassets */; };
 		BC9AF2CA1D00F20B003AD818 /* AddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2C91D00F20B003AD818 /* AddressViewController.swift */; };
 		BC9AF2CE1D00F28E003AD818 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2CD1D00F28E003AD818 /* PaymentViewController.swift */; };
@@ -29,7 +31,6 @@
 		BCA6B4F01D021D730070B92C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA6B4EE1D021D730070B92C /* LaunchScreen.storyboard */; };
 		BCA6B4FF1D021DB10070B92C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9AF2C71CFF6BCA003AD818 /* Images.xcassets */; };
 		BCA6B5011D021E620070B92C /* PayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5001D021E620070B92C /* PayButton.swift */; };
-		BCA6B5021D02235E0070B92C /* PayForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC9AF2C51CFF6BC3003AD818 /* PayForm.storyboard */; };
 		BCA6B5061D023EF50070B92C /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5051D023EF50070B92C /* NavigationController.swift */; };
 		BCA6B5081D023FB00070B92C /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA6B5051D023EF50070B92C /* NavigationController.swift */; };
 		BCA6B5091D023FB40070B92C /* PayFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9AF2C11CFF6BAE003AD818 /* PayFormViewController.swift */; };
@@ -67,6 +68,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BC08BD5D1D231A040082445F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Main.strings"; sourceTree = "<group>"; };
+		BC08BD5E1D231A040082445F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		BC08BD621D231A300082445F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BC08BD641D231A330082445F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		BC08BD671D231B350082445F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PayForm.storyboard; sourceTree = "<group>"; };
+		BC08BD6A1D231B390082445F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/PayForm.strings"; sourceTree = "<group>"; };
 		BC9AF2A41CFF6B31003AD818 /* PayForm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayForm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9AF2A71CFF6B31003AD818 /* PayForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayForm.h; sourceTree = "<group>"; };
 		BC9AF2A91CFF6B31003AD818 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,7 +82,6 @@
 		BC9AF2B51CFF6B32003AD818 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC9AF2C11CFF6BAE003AD818 /* PayFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayFormViewController.swift; sourceTree = "<group>"; };
 		BC9AF2C31CFF6BB6003AD818 /* ProcessingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessingViewController.swift; sourceTree = "<group>"; };
-		BC9AF2C51CFF6BC3003AD818 /* PayForm.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PayForm.storyboard; sourceTree = "<group>"; };
 		BC9AF2C71CFF6BCA003AD818 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC9AF2C91D00F20B003AD818 /* AddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressViewController.swift; sourceTree = "<group>"; };
 		BC9AF2CD1D00F28E003AD818 /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
@@ -201,8 +207,9 @@
 		BC9AF2C01CFF6B9A003AD818 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BC9AF2C51CFF6BC3003AD818 /* PayForm.storyboard */,
+				BC08BD681D231B350082445F /* PayForm.storyboard */,
 				BC9AF2C71CFF6BCA003AD818 /* Images.xcassets */,
+				BC08BD631D231A300082445F /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -317,6 +324,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"fr-CA",
 			);
 			mainGroup = BC9AF29A1CFF6B31003AD818;
 			productRefGroup = BC9AF2A51CFF6B31003AD818 /* Products */;
@@ -335,7 +343,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC9AF2C61CFF6BC3003AD818 /* PayForm.storyboard in Resources */,
+				BC08BD651D231B350082445F /* PayForm.storyboard in Resources */,
+				BC08BD611D231A300082445F /* Localizable.strings in Resources */,
 				BC9AF2C81CFF6BCA003AD818 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,7 +364,7 @@
 				BCA6B4FF1D021DB10070B92C /* Images.xcassets in Resources */,
 				BCA6B4ED1D021D730070B92C /* Assets.xcassets in Resources */,
 				BCA6B4EB1D021D730070B92C /* Main.storyboard in Resources */,
-				BCA6B5021D02235E0070B92C /* PayForm.storyboard in Resources */,
+				BC08BD661D231B350082445F /* PayForm.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,10 +441,29 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BC08BD631D231A300082445F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC08BD621D231A300082445F /* en */,
+				BC08BD641D231A330082445F /* fr-CA */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		BC08BD681D231B350082445F /* PayForm.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC08BD671D231B350082445F /* Base */,
+				BC08BD6A1D231B390082445F /* fr-CA */,
+			);
+			name = PayForm.storyboard;
+			sourceTree = "<group>";
+		};
 		BCA6B4E91D021D730070B92C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BCA6B4EA1D021D730070B92C /* Base */,
+				BC08BD5D1D231A040082445F /* fr-CA */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -444,6 +472,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BCA6B4EF1D021D730070B92C /* Base */,
+				BC08BD5E1D231A040082445F /* fr-CA */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
