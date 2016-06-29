@@ -76,6 +76,7 @@ class ViewController: UIViewController {
                 }
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
+                self.view.setNeedsLayout() // Needed in case of view orientation change
             }
             
             self.presentViewController(controller, animated: true, completion: nil)
