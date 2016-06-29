@@ -74,6 +74,8 @@ class ViewController: UIViewController {
                     self.statusLabel.text = msg
                     self.statusLabel.textColor = UIColor.redColor()
                 }
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
             
             self.presentViewController(controller, animated: true, completion: nil)
