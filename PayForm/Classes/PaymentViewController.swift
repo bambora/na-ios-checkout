@@ -425,6 +425,27 @@ class PaymentViewController: UITableViewController {
             }
         }
         
+        if let expiryDateText = expiryTextField?.text where expiryTextField != "" {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM/yy"
+            
+            if let date = dateFormatter.dateFromString(expiryDateText) {
+                let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
+                let currentYear = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
+                let month = NSCalendar.currentCalendar().component(.Month, fromDate: date)
+                let currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init())
+                
+                if year < currentYear || (year == currentYear && month < currentMonth) {
+                    let msg = NSLocalizedString("Expiry Month/Year must be greater than, or equal to, current date.", comment: "Validation statement used when Expiry Month/Year is less than current date.")
+                    errorMessages.append(msg)
+                    
+                    if let borderedView = expiryTextField?.superview as? BorderedView {
+                        borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                    }
+                }
+            }
+        }
+        
         if let cvvNumber = cvvTextField?.text where cvvNumber != "" {
             let minCvvLength = ccValidator.lengthOfCvvForType(cardType)
             
@@ -545,36 +566,8 @@ extension PaymentViewController: UITextFieldDelegate {
             }
 
             row += 1
-            
             indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
-            
             self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
-        }
-        
-        if textField == expiryTextField {
-            // Delay 1 second
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
-                if let expiryPicker = self.expiryPicker, let text = self.expiryTextField?.text where text != "" {
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = "MM/yy"
-                    
-                    if let date = dateFormatter.dateFromString(text) {
-                        let month = NSCalendar.currentCalendar().component(.Month, fromDate: date)
-                        let currentYear = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
-                        let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
-                        
-                        var monthOffset = 0
-                        if year == currentYear {
-                            monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
-                        }
-                        
-                        expiryPicker.selectRow(year - currentYear, inComponent: 1, animated: true)
-                        expiryPicker.reloadComponent(0)
-                        expiryPicker.selectRow(month - monthOffset - 1, inComponent: 0, animated: true)
-                    }
-                }
-            }
         }
     }
     
@@ -606,7 +599,6 @@ extension PaymentViewController: UITextFieldDelegate {
             
             row += 1
             indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
-            
             self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
         }
     }
@@ -657,6 +649,7 @@ extension PaymentViewController: UITextFieldDelegate {
     
     //
     // Found on http://stackoverflow.com/questions/12083605/formatting-a-uitextfield-for-credit-card-input-like-xxxx-xxxx-xxxx-xxxx
+    // --> Enhanced to follow a cardFormat string rather than just space every 4 digits.
     //
     func reformatAsCardNumber(textField: UITextField) {
         // In order to make the cursor end up positioned correctly, we need to
@@ -687,14 +680,16 @@ extension PaymentViewController: UITextFieldDelegate {
             return
         }
     
-        let cardNumberWithSpaces = self.insertSpacesEveryFourDigitsIntoString(cardNumberWithoutSpaces, andPreserveCursorPosition: &targetCursorPosition)
+        let cardType = self.ccValidator.cardType(cardNumberWithoutSpaces)
+        let cardFormat = self.cardFormat(cardType)
+        let cardNumberWithSpaces = self.insertSpacesIntoCCString(cardNumberWithoutSpaces, cardFormat: cardFormat, andPreserveCursorPosition: &targetCursorPosition)
         textField.text = cardNumberWithSpaces
         
         if let targetPosition = textField.positionFromPosition(textField.beginningOfDocument, offset: targetCursorPosition) {
             textField.selectedTextRange = textField.textRangeFromPosition(targetPosition, toPosition: targetPosition)
         }
         
-        self.updateCardImage()
+        self.updateCardImage(cardType)
     }
     
     /*
@@ -727,17 +722,24 @@ extension PaymentViewController: UITextFieldDelegate {
      will be changed to `8` (keeping it between the '2' and the '3' after the
      spaces are added).
      */
-    private func insertSpacesEveryFourDigitsIntoString(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
+    private func insertSpacesIntoCCString(string: String, cardFormat: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
         var stringWithAddedSpaces = ""
+        var formatIndex = cardFormat.startIndex
         let cursorPositionInSpacelessString = cursorPosition
         
         for i in 0.stride(to: string.characters.count, by: 1) {
-            if i > 0 && (i % 4) == 0 {
+            if formatIndex != cardFormat.endIndex && cardFormat.characters[formatIndex] == " " {
                 stringWithAddedSpaces.appendContentsOf(" ")
                 if i < cursorPositionInSpacelessString {
                     cursorPosition += 1
                 }
+                formatIndex = formatIndex.advancedBy(1)
             }
+            
+            if formatIndex != cardFormat.endIndex {
+                formatIndex = formatIndex.advancedBy(1)
+            }
+            
             let characterToAdd = string[string.startIndex.advancedBy(i)]
             stringWithAddedSpaces.append(characterToAdd)
         }
@@ -745,37 +747,54 @@ extension PaymentViewController: UITextFieldDelegate {
         return stringWithAddedSpaces
     }
 
-    private func updateCardImage() {
+    private func updateCardImage(cardType: CardType) {
         let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath.init(forRow: Row.Card.rawValue, inSection: 1))
-        if let borderedCell = cell as? BorderedViewCell {
-            if let imageView = borderedCell.embeddedImageView() {
-                if let cardNumber = self.cardTextField?.text {
-                    let cardType = self.ccValidator.cardType(cardNumber)
-                    var imageName = "ic_credit_card_black_48dp"
-                    
-                    switch cardType {
-                    case .Visa:
-                        imageName = "visa"
-                    case .MasterCard:
-                        imageName = "mastercard"
-                    case .AMEX:
-                        imageName = "amex"
-                    case .Discover:
-                        imageName = "discover"
-                    case .DinersClub:
-                        imageName = "dinersclub"
-                    case .InvalidCard:
-                        imageName = "ic_credit_card_black_48dp"
-                    }
-                    
-                    imageView.image = UIImage(named: imageName)
-                    if cardType == .InvalidCard {
-                        imageView.image = imageView.image?.imageWithRenderingMode(.AlwaysTemplate)
-                    }
-                }
-            }
+        guard let borderedCell = cell as? BorderedViewCell else { return }
+        guard let imageView = borderedCell.embeddedImageView() else { return }
+        
+        var imageName = "ic_credit_card_black_48dp"
+        
+        switch cardType {
+        case .Visa:
+            imageName = "visa"
+        case .MasterCard:
+            imageName = "mastercard"
+        case .AMEX:
+            imageName = "amex"
+        case .Discover:
+            imageName = "discover"
+        case .DinersClub:
+            imageName = "dinersclub"
+        case .JCB:
+            imageName = "jcb"
+        case .InvalidCard:
+            imageName = "ic_credit_card_black_48dp"
+        }
+        
+        imageView.image = UIImage(named: imageName)
+        if cardType == .InvalidCard {
+            imageView.image = imageView.image?.imageWithRenderingMode(.AlwaysTemplate)
         }
     }
+    
+    private func cardFormat(cardType: CardType) -> String {
+        var format = ""
+        
+        switch cardType {
+        case .Visa, .MasterCard, .Discover, .JCB, .InvalidCard:
+            // {4-4-4-4}
+            format = "XXXX XXXX XXXX XXXX "
+        case .AMEX:
+            // {4-6-5}
+            format = "XXXX XXXXXX XXXXX "
+        case .DinersClub:
+            // {4-6-4}
+            format = "XXXX XXXXXX XXXX "
+        }
+        
+        return format
+    }
+    
 }
 
 extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
@@ -786,13 +805,7 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
-            var num = 12 // twelves months in a year
-            if pickerView.numberOfComponents == 2 && pickerView.selectedRowInComponent(1) == 0 {
-                // only show months available from current day onwards
-                let month = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
-                num -= month
-            }
-            return num
+            return 12 // twelves months in a year
         }
         else {
             return 20 // up to 20 years from the current year
@@ -801,22 +814,11 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            var monthOffset = 0
-            if pickerView.selectedRowInComponent(1) == 0 {
-                monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
-            }
-            
             let df = NSDateFormatter.init()
-            var row = row + monthOffset
-            if row >= df.monthSymbols.count {
-                row = 0
-            }
-            
             let monthName = df.monthSymbols[row]
             return monthName
         }
         else {
-            // Year
             let year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
             return "\(year+row)"
         }
@@ -843,15 +845,8 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         var monthYear: (month: Int, year: Int) = (0, 0)
         
         if let pickerView = self.expiryPicker {
-            var monthOffset = 0
-            if pickerView.selectedRowInComponent(1) == 0 {
-                monthOffset = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init()) - 1
-            }
-            
-            let month = pickerView.selectedRowInComponent(0) + 1 + monthOffset
-            var year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
-            year += pickerView.selectedRowInComponent(1)
-            
+            let month = pickerView.selectedRowInComponent(0) + 1
+            let year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init()) + pickerView.selectedRowInComponent(1)
             monthYear = (month, year)
         }
         
