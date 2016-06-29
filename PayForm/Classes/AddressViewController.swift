@@ -29,6 +29,7 @@ class AddressViewController: UITableViewController {
 
     var addressType: AddressType = .Shipping
     
+    private var address: Address?
     private var billingAddressIsSame: Bool = true
     private var viewFields = [BorderedView: UITextField]()
     private var keyedFields = Dictionary<String, UITextField>()
@@ -44,19 +45,24 @@ class AddressViewController: UITableViewController {
         
         if addressType == .Billing {
             self.title = NSLocalizedString("Billing", comment: "Address view title when used in Billing mode")
+            self.address = State.sharedInstance.billingAddress
         }
         else {
             self.title = NSLocalizedString("Shipping", comment: "Address view title when used in Shipping mode")
             if !State.sharedInstance.billingAddressRequired {
                 self.billingAddressIsSame = true // sets UI as needed
             }
+            self.address = State.sharedInstance.shippingAddress
+        }
+
+        if self.address == nil {
+            address = Address()
         }
     }
     
-    // MARK: - Navigation
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        self.setupAddressInfo()
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.updateAddressInfo()
     }
     
     // MARK: - Table view delegate
@@ -74,7 +80,6 @@ class AddressViewController: UITableViewController {
                 
                 if addressType == .Shipping && !self.billingAddressIsSame {
                     if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
-                        self.setupAddressInfo()
                         controller.addressType = .Billing
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
@@ -127,19 +132,27 @@ class AddressViewController: UITableViewController {
                     cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
                     if let borderedCell = self.setupBorderedCell(cell, key: "name", tag: 0) {
                         borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
+                        borderedCell.textField()?.text = address?.name
                     }
-                    
                 case Row.Street:
                     cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
-                    self.setupBorderedCell(cell, key: "street", tag: 1)
+                    if let borderedCell = self.setupBorderedCell(cell, key: "street", tag: 1) {
+                        borderedCell.textField()?.text = address?.street
+                    }
                     
                 case Row.PostalcodeCity:
                     cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
-                    self.setupDualBorderedCell(cell, leftKey: "postalCode", leftTag: 2, rightKey: "city", rightTag: 3)
+                    if let dualBorderedCell = self.setupDualBorderedCell(cell, leftKey: "postalCode", leftTag: 2, rightKey: "city", rightTag: 3) {
+                        dualBorderedCell.textField(.Left)?.text = address?.postalCode
+                        dualBorderedCell.textField(.Right)?.text = address?.city
+                    }
                     
                 case Row.ProvinceCountry:
                     cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
-                    self.setupDualBorderedCell(cell, leftKey: "province", leftTag: 4, rightKey: "country", rightTag: 5)
+                    if let dualBorderedCell = self.setupDualBorderedCell(cell, leftKey: "province", leftTag: 4, rightKey: "country", rightTag: 5) {
+                        dualBorderedCell.textField(.Left)?.text = address?.province
+                        dualBorderedCell.textField(.Right)?.text = address?.country
+                    }
                     
                 case Row.BillingSame:
                     cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
@@ -264,22 +277,15 @@ class AddressViewController: UITableViewController {
         return valid
     }
     
-    private func setupAddressInfo() {
-        if let name = self.keyedFields["name"]?.text, let street = self.keyedFields["street"]?.text,
-            let city = self.keyedFields["city"]?.text, let province = self.keyedFields["province"]?.text,
-            let postalCode = self.keyedFields["postalCode"]?.text, let country = self.keyedFields["country"]?.text
-        {
-            let address = Address(name: name, street: street, city: city, province: province, postalCode: postalCode, country: country)
-            
-            if self.addressType == .Shipping {
-                State.sharedInstance.shippingAddress = address
-                if self.billingAddressIsSame {
-                    State.sharedInstance.billingAddress = address
-                }
-            }
-            else {
+    private func updateAddressInfo() {
+        if self.addressType == .Shipping {
+            State.sharedInstance.shippingAddress = address
+            if self.billingAddressIsSame {
                 State.sharedInstance.billingAddress = address
             }
+        }
+        else {
+            State.sharedInstance.billingAddress = address
         }
     }
 }
@@ -303,6 +309,16 @@ extension AddressViewController: UITextFieldDelegate {
         // Re-check validation only when an error condidion pre-exists
         if self.tableView.numberOfRowsInSection(0) == NUM_ROWS_ERROR {
             self.validateTextFields()
+        }
+        
+        // Update address
+        if self.address != nil, let text = textField.text {
+            if textField == self.keyedFields["name"] { self.address!.name = text }
+            else if textField == self.keyedFields["street"] { self.address!.street = text }
+            else if textField == self.keyedFields["postalCode"] { self.address!.postalCode = text }
+            else if textField == self.keyedFields["city"] { self.address!.city = text }
+            else if textField == self.keyedFields["province"] { self.address!.province = text }
+            else if textField == self.keyedFields["country"] { self.address!.country = text }
         }
     }
     

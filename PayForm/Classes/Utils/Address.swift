@@ -14,10 +14,10 @@ public enum AddressType {
 }
 
 public struct Address {
-    var name: String
-    var street: String
-    var city: String
-    var province: String
-    var postalCode: String
-    var country: String
+    var name: String = ""
+    var street: String = ""
+    var city: String = ""
+    var province: String = ""
+    var postalCode: String = ""
+    var country: String = ""
 }
