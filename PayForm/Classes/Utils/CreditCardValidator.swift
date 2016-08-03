@@ -27,14 +27,14 @@ class CreditCardValidator {
 
     // Regex validation expressions
     let VISA                = "^4[0-9]{15}?"                        // VISA 16
-    let MC                  = "^5[1-5][0-9]{14}$"                   // MC 16
+    let MC                  = "^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$"                   // MC 16
     let AMEX                = "^3[47][0-9]{13}$"					// AMEX 15
     let DISCOVER            = "^6(?:011|5[0-9]{2})[0-9]{12}$"       // Discover 16
     let DINERS_CLUB         = "^3(?:0[0-5]|[68][0-9])[0-9]{11}$"	// DinersClub 14
     let JCB                 = "^(?:2131|1800|35[0-9]{3})[0-9]{11}$" // JCB cards beginning with 2131 or 1800 have 15 digits. JCB cards beginning with 35 have 16 digits
     
     let VISA_TYPE           = "^4[0-9]{3}?"                         // VISA
-    let MC_TYPE             = "^5[1-5][0-9]{2}$"					// MC
+    let MC_TYPE             = "^5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720$"					// MC
     let AMEX_TYPE           = "^3[47][0-9]{2}$"                     // AMEX
     let DISCOVER_TYPE       = "^6(?:011|5[0-9]{2})$"				// Discover
     let DINERS_CLUB_TYPE    = "^3(?:0[0-5]|[68][0-9])[0-9]$"		// DinersClub
