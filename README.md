@@ -84,7 +84,6 @@ end
 
 ### Step 1: Add PayForm To Your App
 Here is an example, written in Swift of how PayForm is wired to a button action that simply updated a status label.
-asdf
 
 ```swift
 @IBAction func buttonAction(sender: AnyObject) {
@@ -97,6 +96,7 @@ asdf
         controller.amount = NSDecimalNumber(double: 100.00)
         controller.currencyCode = "CAD"
         controller.purchaseDescription = "item, item, item..."
+        //controller.image = UIImage(named: "icon")
         //controller.primaryColor = UIColor.blueColor()       // default: "#067aed"
         //controller.shippingAddressRequired = true           // default: true
         //controller.billingAddressRequired = true            // default: true

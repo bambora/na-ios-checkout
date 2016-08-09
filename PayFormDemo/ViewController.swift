@@ -38,6 +38,7 @@ class ViewController: UIViewController {
             controller.amount = NSDecimalNumber(double: 100.00)
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
+            //controller.image = UIImage(named: "icon")
             //controller.primaryColor = UIColor.blueColor()       // default: "#067aed"
             //controller.shippingAddressRequired = true           // default: true
             //controller.billingAddressRequired = true            // default: true
