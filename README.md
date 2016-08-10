@@ -63,7 +63,7 @@ The first step is to install CocoaPods on your development machine. Then you wil
 * Add the Beanstream CocoaPods repo
 
 ```bash
-> pod repo-art add bic-pods-local "https://beanstream.artifactoryonline.com/beanstream/api/pods/bic-pods-local"
+> pod repo-art add beanstream-public "https://beanstream.artifactoryonline.com/beanstream/api/pods/beanstream-public"
 ```
 
 * After having executed a 'pod init' in your iOS project directory, add the Artifactory plugin and PayForm pod to your Podfile as follows and then execute the standard 'pod install' command.
