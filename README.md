@@ -52,6 +52,8 @@ The optional parameters are:
 * processingClosure: the block of code to be executed after a token is received
 
 ### Step 1: Setup Dev Tools
+This project was compiled with Xcode 7.3.1 and uses Swift 2.2.
+
 The first step is to install CocoaPods on your development machine. Then you will also need to install an Artifactory plugin for CocoaPods. You will then add the needed Beanstream Cocoapods reposotory and add the PayForm Pod to your app project. You can also supply several parameters to configure the form, such as your company name, logo, product description, price, currency, and whether billing/shipping addresses should be displayed. Here is an example:
 * Go to https://cocoapods.org on how to setup CocoaPods. This framework was validated with CocoaPods v1.0.1.
 * Setup the Artifactory plugin
@@ -72,7 +74,7 @@ The first step is to install CocoaPods on your development machine. Then you wil
 use_frameworks!
 
 plugin 'cocoapods-art', :sources => [
-  'bic-pods-local'
+  'beanstream-public'
 ]
 
 target 'MyProject' do
@@ -80,7 +82,7 @@ target 'MyProject' do
 end
 ```
 
-* Note that 'pod update' alone does not update Artifactory based pod indexes as expected and use 'pod repo-art update' first and then use 'pod update'.
+* Note that 'pod update' alone does not update Artifactory based pod indexes as expected and use 'pod repo-art update beanstream-public' first and then use 'pod update'.
 
 ### Step 1: Add PayForm To Your App
 Here is an example, written in Swift of how PayForm is wired to a button action that simply updated a status label.
