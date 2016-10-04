@@ -1,11 +1,11 @@
 <img src="http://www.beanstream.com/wp-content/uploads/2015/08/Beanstream-logo.png" />
 # Beanstream PayForm for iOS
 
-##### Table of Contents  
+##### Table of Contents
 
 * [Overview](#overview)
 * [Platform Support](#platform-support)
-* [PayForm](#payform) 
+* [PayForm](#payform)
  * [How It Works](#payform-functionality)
  * [Integration Guide](#payform-integration-guide)
 * [Building Locally and Contributing](#contributing)
@@ -13,7 +13,7 @@
 <a name="overview"/>
 ## Overview
 
-Payform is a Beanstream client-side iOS framework that handles customer credit card input within the merchant's app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
+PayForm is a Beanstream client-side iOS framework that handles customer credit card input within the merchant's app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
 
 By integrating PayForm a developer can easily provide a way for users to accept payments in an iOS app. PayForm provides some client-side validation, smart field data formatting and a design that works in all iOS device form factors.
 
@@ -32,11 +32,11 @@ PayForm is a small iOS (Swift) framework project that implemented as a view cont
 ## How It Works
 The PayForm controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
-Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended allow the the app developer define a block of code to do any additoinal background processsing and to then dismiss the form.
+Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
 <a name="payform-integration-guide"/>
 ## Integration
-Adding PayForm to your app could not be easier. You simply use CocoaPods and our Artifactory repository to addat the PayForm framework. PayForm is configured by setting properties on the PayFormViewController instance you create and present. It can be configured to collect shipping and billing addresses in addition to the card details.
+Adding PayForm to your app could not be easier. You simply use CocoaPods and our Artifactory repository to add the PayForm framework. PayForm is configured by setting properties on the PayFormViewController instance you create and present. It can be configured to collect shipping and billing addresses in addition to the card details.
 
 The required parameters are:
 * amount: the amount you are going to charge the customer
@@ -45,7 +45,7 @@ The required parameters are:
 The optional parameters are:
 * name: your company name
 * image: your company logo
-* primaryColor: the them color to use - default is #067aed
+* primaryColor: the theme color to use - default is #067aed
 * purchaseDescription: a description of the purchase
 * shippingAddressRequired: if the shipping address is required - true/false
 * billingAddressRequired: if the billing address is required - true/false
@@ -54,7 +54,9 @@ The optional parameters are:
 ### Step 1: Setup Dev Tools
 This project was compiled with Xcode 7.3.1 and uses Swift 2.2.
 
-The first step is to install CocoaPods on your development machine. Then you will also need to install an Artifactory plugin for CocoaPods. You will then add the needed Beanstream Cocoapods reposotory and add the PayForm Pod to your app project. You can also supply several parameters to configure the form, such as your company name, logo, product description, price, currency, and whether billing/shipping addresses should be displayed. Here is an example:
+The first step is to install CocoaPods on your development machine. Then you will also need to install an Artifactory plugin for CocoaPods. You will then add the needed Beanstream Cocoapods repository and add the PayForm pod to your app project. You can also supply several parameters to configure the form, such as your company name, logo, product description, price, currency, and whether billing/shipping addresses should be displayed.
+
+***Example:***
 * Go to https://cocoapods.org on how to setup CocoaPods. This framework was validated with CocoaPods v1.0.1.
 * Setup the Artifactory plugin
 
@@ -82,7 +84,7 @@ target 'MyProject' do
 end
 ```
 
-* Note that 'pod update' alone does not update Artifactory based pod indexes as expected and use 'pod repo-art update beanstream-public' first and then use 'pod update'.
+* Note that 'pod update' alone does not update Artifactory based pod indexes as expected. Use 'pod repo-art update beanstream-public' first and then use 'pod update'.
 
 ### Step 1: Add PayForm To Your App
 Here is an example, written in Swift of how PayForm is wired to a button action that simply updated a status label.
@@ -93,7 +95,7 @@ Here is an example, written in Swift of how PayForm is wired to a button action 
     let storyboard = UIStoryboard(name: "PayForm", bundle: bundle)
     if let controller = storyboard.instantiateInitialViewController() as? PayFormViewController {
         self.statusLabel.text = ""
-        
+
         controller.name = "Lollipop Shop"
         controller.amount = NSDecimalNumber(double: 100.00)
         controller.currencyCode = "CAD"
@@ -103,7 +105,7 @@ Here is an example, written in Swift of how PayForm is wired to a button action 
         //controller.shippingAddressRequired = true           // default: true
         //controller.billingAddressRequired = true            // default: true
         //controller.tokenRequestTimeoutSeconds = 6           // default: 6
-        
+
         controller.processingClosure = { (result: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
             if let error = error {
                 let msg  = "error (\(error.code)): \(error.localizedDescription)"
@@ -116,11 +118,11 @@ Here is an example, written in Swift of how PayForm is wired to a button action 
                 else {
                     self.statusLabel.text = "No Token!"
                 }
-                
+
                 if let shippingInfo = result["shippingAddress"] as? Dictionary<String, String> {
                     print("shipping: \(shippingInfo)")
                 }
-                
+
                 if let billingInfo = result["billingAddress"] as? Dictionary<String, String> {
                     print("billing: \(billingInfo)")
                 }
@@ -129,11 +131,11 @@ Here is an example, written in Swift of how PayForm is wired to a button action 
                 let msg = "No error and no result data!"
                 self.statusLabel.text = msg
             }
-            
+
             self.dismissViewControllerAnimated(true, completion: nil)
             self.view.setNeedsLayout() // Needed in case of view orientation change
         }
-        
+
         self.presentViewController(controller, animated: true, completion: nil)
     }
 }
