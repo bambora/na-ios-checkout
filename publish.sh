@@ -32,6 +32,7 @@ echo "-----------------------------"
 package="PayForm-$version.tar.gz"
 
 echo "Package: $package"
+export COPYFILE_DISABLE=true
 tar -cvzf $package PayForm/ PayForm.podspec LICENSE
 echo
 
