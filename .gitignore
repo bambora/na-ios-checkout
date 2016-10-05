@@ -5,6 +5,9 @@
 ## Build generated
 build/
 DerivedData
+*.log
+*.gz
+*.tar
 
 ## Various settings
 *.pbxuser
@@ -54,4 +57,4 @@ fastlane/screenshots
 
 # Artifactory
 .netrc
-
+artifactory.properties
