@@ -1,5 +1,5 @@
 <img src="http://www.beanstream.com/wp-content/uploads/2015/08/Beanstream-logo.png" />
-# Beanstream PayForm for iOS
+# PayForm for iOS
 
 ##### Table of Contents
 
@@ -36,7 +36,7 @@ The PayForm controller is instantiated and presented by your app code. The resul
 Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
 <a name="payform-demo"/>
-# Demo App
+## Demo App
 Use this [demo](https://github.com/Beanstream/beanstream-ios-payform-demo) to see how to integrate PayForm
 
 <a name="payform-integration-guide"/>
