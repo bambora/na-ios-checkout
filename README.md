@@ -6,8 +6,9 @@
 * [Overview](#overview)
 * [Platform Support](#platform-support)
 * [PayForm](#payform)
- * [How It Works](#payform-functionality)
- * [Integration Guide](#payform-integration-guide)
+* [How It Works](#payform-functionality)
+* [Demo App](#payform-demo)
+* [Integration Guide](#payform-integration-guide)
 * [Building Locally and Contributing](#contributing)
 
 <a name="overview"/>
@@ -33,6 +34,10 @@ PayForm is a small iOS (Swift) framework project that implemented as a view cont
 The PayForm controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
 Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
+
+<a name="payform-demo"/>
+# Demo App
+Use this [demo](https://github.com/Beanstream/beanstream-ios-payform-demo) to see how to integrate PayForm
 
 <a name="payform-integration-guide"/>
 ## Integration
@@ -67,7 +72,7 @@ The first step is to install CocoaPods on your development machine. Then you wil
 * Add the Beanstream CocoaPods repo
 
 ```bash
-> pod repo-art add beanstream-public "https://beanstream.artifactoryonline.com/beanstream/api/pods/beanstream-public"
+> pod repo-art add beanstream-public "https://beanstream.jfrog.io/beanstream/api/pods/beanstream-public"
 ```
 
 * After having executed a 'pod init' in your iOS project directory, add the Artifactory plugin and PayForm pod to your Podfile as follows and then execute the standard 'pod install' command.
