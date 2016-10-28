@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
 
   spec.name     = 'PayForm'
-  spec.version  = '0.3.1'
+  spec.version  = '0.3.2'
   spec.license  = { :type => "MIT", :file => "LICENSE" }
   spec.summary  = 'A delightful Payments UI framework to be helpful with Beanstream related development.'
   spec.homepage = 'http://developer.beanstream.com'
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
 
   spec.framework        = 'Foundation, UIKit'
   spec.source_files     = 'PayForm/**/*.{swift}'
-  spec.resource_bundle = { 'PayForm' => ['PayForm/Resources/**/*'] }
+  spec.resources = 'PayForm/Resources/**/*'
 
 end
 
