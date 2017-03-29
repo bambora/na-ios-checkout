@@ -13,7 +13,7 @@ class State {
     static let sharedInstance = State()
     
     var amountStr: String?
-    var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    var processingClosure: ((_ result: Dictionary<String, AnyObject>?, _ error: NSError?) -> Void)?
 
     var shippingAddressRequired: Bool = true
     var shippingAddress: Address?
@@ -21,7 +21,7 @@ class State {
     var billingAddressRequired: Bool = true
     var billingAddress: Address?
 
-    private init() {
+    fileprivate init() {
         // Private initialization to ensure just one instance is created.
     }
 

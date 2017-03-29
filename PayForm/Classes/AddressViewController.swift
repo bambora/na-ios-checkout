@@ -16,34 +16,34 @@ import UIKit
 // title text that read "Pay >".
 class AddressViewController: UITableViewController {
     
-    private enum Row: Int {
-        case Name = 0
-        case Street
-        case PostalcodeCity
-        case ProvinceCountry
-        case BillingSame
-        case Error
+    fileprivate enum Row: Int {
+        case name = 0
+        case street
+        case postalcodeCity
+        case provinceCountry
+        case billingSame
+        case error
     }
     
     // MARK: - Properties
 
-    var addressType: AddressType = .Shipping
+    var addressType: AddressType = .shipping
     
-    private var address: Address?
-    private var billingAddressIsSame: Bool = true
-    private var viewFields = [BorderedView: UITextField]()
-    private var keyedFields = Dictionary<String, UITextField>()
+    fileprivate var address: Address?
+    fileprivate var billingAddressIsSame: Bool = true
+    fileprivate var viewFields = [BorderedView: UITextField]()
+    fileprivate var keyedFields = Dictionary<String, UITextField>()
     
-    private let NUM_ROWS_OK     = 5
-    private let NUM_ROWS_ERROR  = 6
-    private var numRows = 5
+    fileprivate let NUM_ROWS_OK     = 5
+    fileprivate let NUM_ROWS_ERROR  = 6
+    fileprivate var numRows = 5
     
     // MARK: - View controller methods
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if addressType == .Billing {
+        if addressType == .billing {
             self.title = NSLocalizedString("Billing", comment: "Address view title when used in Billing mode")
             self.address = State.sharedInstance.billingAddress
         }
@@ -60,14 +60,14 @@ class AddressViewController: UITableViewController {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateAddressInfo()
     }
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == 1 {
             // Next Step button
             self.view.endEditing(true)
@@ -75,31 +75,31 @@ class AddressViewController: UITableViewController {
             if self.validateTextFields() {
                 if self.numRows == NUM_ROWS_ERROR {
                     self.numRows = NUM_ROWS_OK
-                    self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow: Row.Error.rawValue, inSection: 0)], withRowAnimation: .Automatic)
+                    self.tableView.deleteRows(at: [IndexPath.init(row: Row.error.rawValue, section: 0)], with: .automatic)
                 }
                 
-                if addressType == .Shipping && !self.billingAddressIsSame {
-                    if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("AddressViewController") as? AddressViewController {
-                        controller.addressType = .Billing
+                if addressType == .shipping && !self.billingAddressIsSame {
+                    if let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddressViewController") as? AddressViewController {
+                        controller.addressType = .billing
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
                 }
                 else {
-                    self.performSegueWithIdentifier("payment", sender: self)
+                    self.performSegue(withIdentifier: "payment", sender: self)
                 }
             }
             else {
                 if self.numRows == NUM_ROWS_OK {
                     self.numRows = NUM_ROWS_ERROR
-                    self.tableView.insertRowsAtIndexPaths([NSIndexPath.init(forRow: Row.Error.rawValue, inSection: 0)], withRowAnimation: .Automatic)
+                    self.tableView.insertRows(at: [IndexPath.init(row: Row.error.rawValue, section: 0)], with: .automatic)
                 }
             }
         }
         return nil; // Disable cell selection
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == Row.BillingSame.rawValue && (self.addressType == .Billing || !State.sharedInstance.billingAddressRequired) {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == Row.billingSame.rawValue && (self.addressType == .billing || !State.sharedInstance.billingAddressRequired) {
             return 0
         }
         else {
@@ -109,11 +109,11 @@ class AddressViewController: UITableViewController {
 
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return numRows
         }
@@ -122,73 +122,73 @@ class AddressViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell;
         
         if indexPath.section == 0 {
             if let row = Row(rawValue: indexPath.row) {
                 switch row {
-                case Row.Name:
-                    cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
+                case Row.name:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "nameCell", for: indexPath)
                     if let borderedCell = self.setupBorderedCell(cell, key: "name", tag: 0) {
                         borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
                         borderedCell.textField()?.text = address?.name
                     }
-                case Row.Street:
-                    cell = tableView.dequeueReusableCellWithIdentifier("streetCell", forIndexPath: indexPath)
+                case Row.street:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "streetCell", for: indexPath)
                     if let borderedCell = self.setupBorderedCell(cell, key: "street", tag: 1) {
                         borderedCell.textField()?.text = address?.street
                     }
                     
-                case Row.PostalcodeCity:
-                    cell = tableView.dequeueReusableCellWithIdentifier("zipCityCell", forIndexPath: indexPath)
+                case Row.postalcodeCity:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "zipCityCell", for: indexPath)
                     if let dualBorderedCell = self.setupDualBorderedCell(cell, leftKey: "postalCode", leftTag: 2, rightKey: "city", rightTag: 3) {
-                        dualBorderedCell.textField(.Left)?.text = address?.postalCode
-                        dualBorderedCell.textField(.Right)?.text = address?.city
+                        dualBorderedCell.textField(.left)?.text = address?.postalCode
+                        dualBorderedCell.textField(.right)?.text = address?.city
                     }
                     
-                case Row.ProvinceCountry:
-                    cell = tableView.dequeueReusableCellWithIdentifier("provinceCountryCell", forIndexPath: indexPath)
+                case Row.provinceCountry:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "provinceCountryCell", for: indexPath)
                     if let dualBorderedCell = self.setupDualBorderedCell(cell, leftKey: "province", leftTag: 4, rightKey: "country", rightTag: 5) {
-                        dualBorderedCell.textField(.Left)?.text = address?.province
-                        dualBorderedCell.textField(.Right)?.text = address?.country
+                        dualBorderedCell.textField(.left)?.text = address?.province
+                        dualBorderedCell.textField(.right)?.text = address?.country
                     }
                     
-                case Row.BillingSame:
-                    cell = tableView.dequeueReusableCellWithIdentifier("billingIsSameCell", forIndexPath: indexPath)
+                case Row.billingSame:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "billingIsSameCell", for: indexPath)
                     if let billingIsSameCell = cell as? BillingIsSameViewCell {
-                        billingIsSameCell.useShippingSwitch.addTarget(self, action: #selector(billingIsSameValueChanged(_:)), forControlEvents: .ValueChanged)
-                        billingIsSameCell.useShippingSwitch.on = self.billingAddressIsSame
+                        billingIsSameCell.useShippingSwitch.addTarget(self, action: #selector(billingIsSameValueChanged(_:)), for: .valueChanged)
+                        billingIsSameCell.useShippingSwitch.isOn = self.billingAddressIsSame
                     }
 
-                case Row.Error:
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
-                    cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
-                    cell.selectionStyle = .None
+                case Row.error:
+                    cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "error")
+                    cell.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+                    cell.selectionStyle = .none
                     cell.textLabel?.text = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Address view.")
                     cell.textLabel?.textColor = "#b71c1c".hexColor
                     cell.imageView?.tintColor = "#b71c1c".hexColor
                     
                     var image = UIImage.init(named: "ic_error_outline_black_48dp")
-                    let imageRect = CGRectMake(0, 0, 24, 24)
+                    let imageRect = CGRect(x: 0, y: 0, width: 24, height: 24)
                     
-                    UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
-                    image?.drawInRect(imageRect)
+                    UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.main.scale)
+                    image?.draw(in: imageRect)
                     image = UIGraphicsGetImageFromCurrentImageContext()
-                    cell.imageView?.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+                    cell.imageView?.image = image?.withRenderingMode(.alwaysTemplate)
                     UIGraphicsEndImageContext()
                 }
             }
             else {
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "fubar")
+                cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "fubar"
             }
         }
         else {
-            cell = tableView.dequeueReusableCellWithIdentifier("nextStepCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: "nextStepCell", for: indexPath)
             if let nextStepCell = cell as? NextStepCell {
                 var title = ""
-                if addressType == .Shipping && !self.billingAddressIsSame {
+                if addressType == .shipping && !self.billingAddressIsSame {
                     title = NSLocalizedString("BILLING ADDRESS >", comment: "Button title to use to enter Billing Address view")
                 }
                 else {
@@ -205,16 +205,16 @@ class AddressViewController: UITableViewController {
     
     // MARK: - Custom action methods
     
-    func billingIsSameValueChanged(sender: UISwitch) {
+    func billingIsSameValueChanged(_ sender: UISwitch) {
         self.view.endEditing(true)
-        self.billingAddressIsSame = sender.on
-        let nextStepIndexPath = NSIndexPath(forRow: 0, inSection: 1)
-        self.tableView.reloadRowsAtIndexPaths([nextStepIndexPath], withRowAnimation: .Automatic)
+        self.billingAddressIsSame = sender.isOn
+        let nextStepIndexPath = IndexPath(row: 0, section: 1)
+        self.tableView.reloadRows(at: [nextStepIndexPath], with: .automatic)
     }
     
     // MARK: - Private methods
     
-    private func setupBorderedCell(cell: UITableViewCell, key: String, tag: Int) -> BorderedViewCell? {
+    fileprivate func setupBorderedCell(_ cell: UITableViewCell, key: String, tag: Int) -> BorderedViewCell? {
         if let borderedCell = cell as? BorderedViewCell {
             if let textField = borderedCell.textField() {
                 textField.delegate = self
@@ -230,9 +230,9 @@ class AddressViewController: UITableViewController {
         return nil
     }
 
-    private func setupDualBorderedCell(cell: UITableViewCell, leftKey: String, leftTag: Int, rightKey: String, rightTag: Int) -> DualBorderedViewCell? {
+    fileprivate func setupDualBorderedCell(_ cell: UITableViewCell, leftKey: String, leftTag: Int, rightKey: String, rightTag: Int) -> DualBorderedViewCell? {
         if let dualBorderedCell = cell as? DualBorderedViewCell {
-            if let textField = dualBorderedCell.textField(.Left) {
+            if let textField = dualBorderedCell.textField(.left) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
@@ -240,7 +240,7 @@ class AddressViewController: UITableViewController {
                 self.keyedFields[leftKey] = textField
                 textField.tag = leftTag
             }
-            if let textField = dualBorderedCell.textField(.Right) {
+            if let textField = dualBorderedCell.textField(.right) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
@@ -254,31 +254,31 @@ class AddressViewController: UITableViewController {
         return nil
     }
 
-    private func validateTextFields() -> Bool {
+    fileprivate func validateTextFields() -> Bool {
         var valid = true
         
         for (borderedView, textField) in viewFields {
             if textField.text == nil ||
-                textField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
+                textField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == ""
             {
                 valid = false
-                borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
             }
             else {
-                borderedView.innerBorderColor = UIColor.clearColor()
+                borderedView.innerBorderColor = UIColor.clear
             }
         }
         
         if valid && self.numRows == NUM_ROWS_ERROR {
             self.numRows = NUM_ROWS_OK
-            self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow: Row.Error.rawValue, inSection: 0)], withRowAnimation: .Automatic)
+            self.tableView.deleteRows(at: [IndexPath.init(row: Row.error.rawValue, section: 0)], with: .automatic)
         }
 
         return valid
     }
     
-    private func updateAddressInfo() {
-        if self.addressType == .Shipping {
+    fileprivate func updateAddressInfo() {
+        if self.addressType == .shipping {
             State.sharedInstance.shippingAddress = address
             if self.billingAddressIsSame {
                 State.sharedInstance.billingAddress = address
@@ -292,23 +292,23 @@ class AddressViewController: UITableViewController {
 
 extension AddressViewController: UITextFieldDelegate {
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
             //var highlightColor = borderedView.innerBorder?.borderColor
-            borderedView.innerBorderColor = UIColor.blackColor()
+            borderedView.innerBorderColor = UIColor.black
             borderedView.setNeedsDisplay()
         }
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
-            borderedView.innerBorderColor = UIColor.clearColor()
+            borderedView.innerBorderColor = UIColor.clear
             borderedView.setNeedsDisplay()
         }
         
         // Re-check validation only when an error condidion pre-exists
-        if self.tableView.numberOfRowsInSection(0) == NUM_ROWS_ERROR {
-            self.validateTextFields()
+        if self.tableView.numberOfRows(inSection: 0) == NUM_ROWS_ERROR {
+            _ = self.validateTextFields()
         }
         
         // Update address
@@ -322,9 +322,9 @@ extension AddressViewController: UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         var tag = textField.tag
-        if let lastField = self.keyedFields["country"] where tag < lastField.tag {
+        if let lastField = self.keyedFields["country"], tag < lastField.tag {
             tag += 1
             for nextField in self.keyedFields.values {
                 if nextField.tag == tag {

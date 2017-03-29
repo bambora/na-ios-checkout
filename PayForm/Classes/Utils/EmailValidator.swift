@@ -13,8 +13,8 @@ class EmailValidator {
     // http://stackoverflow.com/questions/25471114/how-to-validate-an-e-mail-address-in-swift
     let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     
-    func validate(email: String) -> Bool {
-        let matches = email.rangeOfString(regex, options: .RegularExpressionSearch)
+    func validate(_ email: String) -> Bool {
+        let matches = email.range(of: regex, options: .regularExpression)
         if let _ = matches {
             return true
         }

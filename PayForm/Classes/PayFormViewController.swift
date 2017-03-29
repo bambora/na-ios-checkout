@@ -26,39 +26,39 @@ import UIKit
    billingAddress: if the billing address is required – true/false
    primaryColor: the primary header color of the form. Default is blue.
  */
-public class PayFormViewController: UIViewController {
+open class PayFormViewController: UIViewController {
     
     // MARK: - Private properties
 
-    @IBOutlet private weak var headerView: UIView!
-    @IBOutlet private weak var footerView: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var amountLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet fileprivate weak var headerView: UIView!
+    @IBOutlet fileprivate weak var footerView: UIView!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var nameLabel: UILabel!
+    @IBOutlet fileprivate weak var amountLabel: UILabel!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
     
     // MARK: - Public properties
     
-    public var amount: NSDecimalNumber = NSDecimalNumber(double:1.0)
-    public var currencyCode: String = "CAD"
-    public var name: String?
-    public var image: UIImage?
-    public var purchaseDescription: String?
+    open var amount: NSDecimalNumber = NSDecimalNumber(value: 1.0 as Double)
+    open var currencyCode: String = "CAD"
+    open var name: String?
+    open var image: UIImage?
+    open var purchaseDescription: String?
     
-    public var shippingAddressRequired: Bool = true
-    public var billingAddressRequired: Bool = true
-    public var shippingAddress: Address?
-    public var billingAddress: Address?
+    open var shippingAddressRequired: Bool = true
+    open var billingAddressRequired: Bool = true
+    open var shippingAddress: Address?
+    open var billingAddress: Address?
     
-    public var primaryColor: UIColor = Settings.primaryColor {
+    open var primaryColor: UIColor = Settings.primaryColor {
         didSet {
             Settings.primaryColor = primaryColor
         }
     }
     
-    public var processingClosure: ((result: Dictionary<String, AnyObject>?, error: NSError?) -> Void)?
+    open var processingClosure: ((_ result: Dictionary<String, AnyObject>?, _ error: NSError?) -> Void)?
     
-    public var tokenRequestTimeoutSeconds = Settings.tokenRequestTimeout {
+    open var tokenRequestTimeoutSeconds = Settings.tokenRequestTimeout {
         didSet {
             Settings.tokenRequestTimeout = tokenRequestTimeoutSeconds
         }
@@ -68,21 +68,21 @@ public class PayFormViewController: UIViewController {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.modalPresentationStyle = .FormSheet
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.modalPresentationStyle = .formSheet
         }
         State.sharedInstance.reset()
     }
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.modalPresentationStyle = .FormSheet
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.modalPresentationStyle = .formSheet
         }
         State.sharedInstance.reset()
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         State.sharedInstance.amountStr = PayFormViewController.localizedCurrencyAmount(self.amount, currencyCode: self.currencyCode)
@@ -104,32 +104,32 @@ public class PayFormViewController: UIViewController {
         self.descriptionLabel.text = self.purchaseDescription
         self.footerView.alpha = 0
         
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(showFooter),
-            name: "ShowFooter",
+            name: NSNotification.Name(rawValue: "ShowFooter"),
             object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(hideFooter),
-            name: "HideFooter",
+            name: NSNotification.Name(rawValue: "HideFooter"),
             object: nil)
     }
 
-    override public func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override open var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: - Navigation
     
     // This method is executed before viewDidLoad.
-    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let navController = segue.destinationViewController as? UINavigationController where segue.identifier == "navController" {
+    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navController = segue.destination as? UINavigationController, segue.identifier == "navController" {
             if !self.billingAddressRequired && !self.shippingAddressRequired {
                 // Re-jig the nav controller to have a PaymentViewController as its root
                 let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
-                if let paymentController = storyboard.instantiateViewControllerWithIdentifier("PaymentViewController") as? PaymentViewController {
+                if let paymentController = storyboard.instantiateViewController(withIdentifier: "PaymentViewController") as? PaymentViewController {
                     navController.viewControllers = [paymentController]
                 }
             }
@@ -138,8 +138,8 @@ public class PayFormViewController: UIViewController {
     
     // MARK: - Custom action methods
     
-    @IBAction func closeButtonAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func closeButtonAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func showFooter() {
@@ -158,11 +158,11 @@ public class PayFormViewController: UIViewController {
 
     // MARK: - Private methods
     
-    private static func localizedCurrencyAmount(amount:NSDecimalNumber, currencyCode:String) -> String {
-        let formatter = NSNumberFormatter()
+    fileprivate static func localizedCurrencyAmount(_ amount:NSDecimalNumber, currencyCode:String) -> String {
+        let formatter = NumberFormatter()
         formatter.currencyCode = currencyCode
-        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
-        if let localized = formatter.stringFromNumber(amount) {
+        formatter.numberStyle = NumberFormatter.Style.currency
+        if let localized = formatter.string(from: amount) {
             return localized
         }
         else {

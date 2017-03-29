@@ -14,13 +14,13 @@
 import Foundation
 
 public enum CardType: Int {
-    case Visa = 0
-    case MasterCard
-    case AMEX
-    case Discover
-    case DinersClub
-    case JCB
-    case InvalidCard
+    case visa = 0
+    case masterCard
+    case amex
+    case discover
+    case dinersClub
+    case jcb
+    case invalidCard
 }
 
 class CreditCardValidator {
@@ -49,10 +49,10 @@ class CreditCardValidator {
     // - Appears to potentially look valid.
     // - Is definitely Luhn valid.
     //
-    func validate(cardNumber: String) -> Bool {
+    func validate(_ cardNumber: String) -> Bool {
         let cardType = self.cardType(cardNumber)
-        if cardType != .InvalidCard {
-            let cleanCard = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+        if cardType != .invalidCard {
+            let cleanCard = cardNumber.replacingOccurrences(of: " ", with: "")
             let len = self.lengthOfStringForType(cardType)
             if len == cleanCard.characters.count {
                 if self.isValidNumber(cardNumber) && self.isLuhnValid(cardNumber) {
@@ -64,34 +64,34 @@ class CreditCardValidator {
         return false
     }
     
-    func cardType(cardNumber: String) -> CardType {
-        let ccnumber = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+    func cardType(_ cardNumber: String) -> CardType {
+        let ccnumber = cardNumber.replacingOccurrences(of: " ", with: "")
         
         if ccnumber.characters.count < CC_LEN_FOR_TYPE {
-            return .InvalidCard
+            return .invalidCard
         }
         
         var regex: String
         
-        for cardType in CardType.Visa.rawValue...CardType.InvalidCard.rawValue {
+        for cardType in CardType.visa.rawValue...CardType.invalidCard.rawValue {
             switch cardType {
-            case CardType.Visa.rawValue:
+            case CardType.visa.rawValue:
                 regex = VISA_TYPE
-            case CardType.MasterCard.rawValue:
+            case CardType.masterCard.rawValue:
                 regex = MC_TYPE
-            case CardType.AMEX.rawValue:
+            case CardType.amex.rawValue:
                 regex = AMEX_TYPE
-            case CardType.Discover.rawValue:
+            case CardType.discover.rawValue:
                 regex = DISCOVER_TYPE
-            case CardType.DinersClub.rawValue:
+            case CardType.dinersClub.rawValue:
                 regex = DINERS_CLUB_TYPE
-            case CardType.JCB.rawValue:
+            case CardType.jcb.rawValue:
                 regex = JCB_TYPE
             default:
                 regex = "fu"
             }
 
-            let matches = ccnumber.rangeOfString(regex, options: .RegularExpressionSearch, range: ccnumber.startIndex..<ccnumber.startIndex.advancedBy(CC_LEN_FOR_TYPE))
+            let matches = ccnumber.range(of: regex, options: .regularExpression, range: ccnumber.startIndex..<ccnumber.characters.index(ccnumber.startIndex, offsetBy: CC_LEN_FOR_TYPE))
             if let _ = matches {
                 if let type = CardType(rawValue: cardType) {
                     return type
@@ -99,32 +99,32 @@ class CreditCardValidator {
             }
         }
         
-        return .InvalidCard
+        return .invalidCard
     }
 
-    func isValidNumber(cardNumber: String) -> Bool {
-        let ccnumber = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+    func isValidNumber(_ cardNumber: String) -> Bool {
+        let ccnumber = cardNumber.replacingOccurrences(of: " ", with: "")
         var regex: String
         
-        for cardType in CardType.Visa.rawValue...CardType.InvalidCard.rawValue {
+        for cardType in CardType.visa.rawValue...CardType.invalidCard.rawValue {
             switch cardType {
-            case CardType.Visa.rawValue:
+            case CardType.visa.rawValue:
                 regex = VISA
-            case CardType.MasterCard.rawValue:
+            case CardType.masterCard.rawValue:
                 regex = MC
-            case CardType.AMEX.rawValue:
+            case CardType.amex.rawValue:
                 regex = AMEX
-            case CardType.Discover.rawValue:
+            case CardType.discover.rawValue:
                 regex = DISCOVER
-            case CardType.DinersClub.rawValue:
+            case CardType.dinersClub.rawValue:
                 regex = DINERS_CLUB
-            case CardType.JCB.rawValue:
+            case CardType.jcb.rawValue:
                 regex = JCB
             default:
                 regex = "fu"
             }
             
-            let matches = ccnumber.rangeOfString(regex, options: .RegularExpressionSearch)
+            let matches = ccnumber.range(of: regex, options: .regularExpression)
             if let _ = matches {
                 return true
             }
@@ -133,13 +133,13 @@ class CreditCardValidator {
         return false
     }
     
-    func isLuhnValid(cardNumber: String) -> Bool {
-        var ccnumber = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
-        ccnumber = String(ccnumber.characters.reverse())
+    func isLuhnValid(_ cardNumber: String) -> Bool {
+        var ccnumber = cardNumber.replacingOccurrences(of: " ", with: "")
+        ccnumber = String(ccnumber.characters.reversed())
         
         var luhn = ""
-        for i in 0.stride(to: ccnumber.characters.count, by: 1) {
-            let c = ccnumber[ccnumber.startIndex.advancedBy(i)]
+        for i in stride(from: 0, to: ccnumber.characters.count, by: 1) {
+            let c = ccnumber[ccnumber.characters.index(ccnumber.startIndex, offsetBy: i)]
             if i % 2 == 0 {
                 luhn += String(c)
             }
@@ -151,8 +151,8 @@ class CreditCardValidator {
         }
         
         var sum = 0
-        for i in 0.stride(to: luhn.characters.count, by: 1) {
-            let c = luhn[luhn.startIndex.advancedBy(i)]
+        for i in stride(from: 0, to: luhn.characters.count, by: 1) {
+            let c = luhn[luhn.characters.index(luhn.startIndex, offsetBy: i)]
             if let val = Int(String(c)) {
                 sum += val
             }
@@ -166,18 +166,18 @@ class CreditCardValidator {
         }
     }
     
-    func lengthOfStringForType(cardType: CardType) -> Int {
+    func lengthOfStringForType(_ cardType: CardType) -> Int {
         var length: Int
         
         switch(cardType) {
-        case .Visa, .MasterCard, .Discover, .JCB:
+        case .visa, .masterCard, .discover, .jcb:
             // 4-4-4-4
             length = 16;
-        case .AMEX:
+        case .amex:
             // 4-6-5
             length = 15;
             break;
-        case .DinersClub:
+        case .dinersClub:
             // 4-6-4
             length = 14;
             break;
@@ -188,8 +188,8 @@ class CreditCardValidator {
         return length;
     }
     
-    func lengthOfCvvForType(cardType: CardType) -> Int {
-        return cardType == .AMEX ? 4 : 3
+    func lengthOfCvvForType(_ cardType: CardType) -> Int {
+        return cardType == .amex ? 4 : 3
     }
     
 }

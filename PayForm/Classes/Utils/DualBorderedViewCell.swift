@@ -9,8 +9,8 @@
 import UIKit
 
 enum Side {
-    case Left
-    case Right
+    case left
+    case right
 }
 
 // Works when cell contentView has just "left" and "right" BorderView based subviews.
@@ -32,26 +32,26 @@ class DualBorderedViewCell: UITableViewCell {
     
     // MARK: - Public methods
 
-    func setBorderColor(color: UIColor, side: Side) {
-        let view = (side == .Left ? self.contentView.subviews.first : self.contentView.subviews.last)
+    func setBorderColor(_ color: UIColor, side: Side) {
+        let view = (side == .left ? self.contentView.subviews.first : self.contentView.subviews.last)
         if let borderedView = view as? BorderedView {
             borderedView.borderColor = color
         }
     }
     
-    func setHighlightColor(color: UIColor, side: Side) {
-        let view = (side == .Left ? self.contentView.subviews.first : self.contentView.subviews.last)
+    func setHighlightColor(_ color: UIColor, side: Side) {
+        let view = (side == .left ? self.contentView.subviews.first : self.contentView.subviews.last)
         if let borderedView = view as? BorderedView {
             borderedView.innerBorderColor = color
         }
     }
     
-    func textField(side: Side) -> UITextField? {
+    func textField(_ side: Side) -> UITextField? {
         var borderedView: BorderedView? = nil
-        if let view = self.contentView.subviews.first as? BorderedView where side == .Left {
+        if let view = self.contentView.subviews.first as? BorderedView, side == .left {
             borderedView = view;
         }
-        else if let view = self.contentView.subviews.last as? BorderedView where side == .Right {
+        else if let view = self.contentView.subviews.last as? BorderedView, side == .right {
             borderedView = view;
         }
         if let textField = borderedView?.subviews.first as? UITextField {
@@ -60,12 +60,12 @@ class DualBorderedViewCell: UITableViewCell {
         return nil
     }
 
-    func embeddedImageView(side: Side) -> UIImageView? {
+    func embeddedImageView(_ side: Side) -> UIImageView? {
         var borderedView: BorderedView? = nil
-        if let view = self.contentView.subviews.first as? BorderedView where side == .Left {
+        if let view = self.contentView.subviews.first as? BorderedView, side == .left {
             borderedView = view;
         }
-        else if let view = self.contentView.subviews.last as? BorderedView where side == .Right {
+        else if let view = self.contentView.subviews.last as? BorderedView, side == .right {
             borderedView = view;
         }
         if let imageView = borderedView?.subviews.last as? UIImageView {
@@ -76,14 +76,14 @@ class DualBorderedViewCell: UITableViewCell {
 
     // MARK: - Private methods
     
-    private func setupLeftView() {
+    fileprivate func setupLeftView() {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.drawLeft = true
         }
     }
     
-    private func setupRightView() {
+    fileprivate func setupRightView() {
         let view = self.contentView.subviews.last
         if let borderedView = view as? BorderedView {
             borderedView.drawLeft = false

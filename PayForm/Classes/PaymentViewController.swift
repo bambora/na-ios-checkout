@@ -10,73 +10,73 @@ import UIKit
 
 class PaymentViewController: UITableViewController {
 
-    private enum Row: Int {
-        case Name = 0
-        case Card
-        case ExpiryCvv
-        case Spacer
-        case Info
-        case Error
+    fileprivate enum Row: Int {
+        case name = 0
+        case card
+        case expiryCvv
+        case spacer
+        case info
+        case error
     }
 
     // MARK: - Properties
     
-    private var billingAddressIsSame: Bool = false
-    private var viewFields = [BorderedView: UITextField]()
-    private var showingCvvInfo = false
-    private var showingError = false
-    private var doTableUpdatesWhenValidating = true
+    fileprivate var billingAddressIsSame: Bool = false
+    fileprivate var viewFields = [BorderedView: UITextField]()
+    fileprivate var showingCvvInfo = false
+    fileprivate var showingError = false
+    fileprivate var doTableUpdatesWhenValidating = true
     
-    private var emailTextField: UITextField?
-    private var nameTextField: UITextField?
-    private var cardTextField: UITextField?
-    private var expiryTextField: UITextField?
-    private var cvvTextField: UITextField?
-    private var expiryPicker: UIPickerView?
+    fileprivate var emailTextField: UITextField?
+    fileprivate var nameTextField: UITextField?
+    fileprivate var cardTextField: UITextField?
+    fileprivate var expiryTextField: UITextField?
+    fileprivate var cvvTextField: UITextField?
+    fileprivate var expiryPicker: UIPickerView?
     
-    private var textFields = [UITextField]()
+    fileprivate var textFields = [UITextField]()
     
     // Used for CC number formatting
-    private var previousTextFieldContent: String?
-    private var previousSelection: UITextRange?
+    fileprivate var previousTextFieldContent: String?
+    fileprivate var previousSelection: UITextRange?
 
-    private var errorMessages: [String]?
-    private let messageIconWidth: CGFloat = 24.0
-    private let ccValidator = CreditCardValidator()
-    private let emailValidator = EmailValidator()
+    fileprivate var errorMessages: [String]?
+    fileprivate let messageIconWidth: CGFloat = 24.0
+    fileprivate let ccValidator = CreditCardValidator()
+    fileprivate let emailValidator = EmailValidator()
     
     // MARK: - UIViewController
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
-            let orient = UIApplication.sharedApplication().statusBarOrientation
-            self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            let orient = UIApplication.shared.statusBarOrientation
+            self.navigationController?.setNavigationBarHidden((orient == .landscapeLeft || orient == .landscapeRight) ? true : false, animated: true)
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
-            let orient = UIApplication.sharedApplication().statusBarOrientation
-            self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            let orient = UIApplication.shared.statusBarOrientation
+            self.navigationController?.setNavigationBarHidden((orient == .landscapeLeft || orient == .landscapeRight) ? true : false, animated: true)
         }
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        if UIDevice.currentDevice().userInterfaceIdiom != .Pad {
-            coordinator.animateAlongsideTransition({ (context) in
-                let orient = UIApplication.sharedApplication().statusBarOrientation
-                self.navigationController?.setNavigationBarHidden((orient == .LandscapeLeft || orient == .LandscapeRight) ? true : false, animated: true)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            coordinator.animate(alongsideTransition: { (context) in
+                let orient = UIApplication.shared.statusBarOrientation
+                self.navigationController?.setNavigationBarHidden((orient == .landscapeLeft || orient == .landscapeRight) ? true : false, animated: true)
             }, completion: nil)
         }
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let controller = segue.destinationViewController as? ProcessingViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let controller = segue.destination as? ProcessingViewController {
             controller.name = nameTextField?.text
             controller.email = emailTextField?.text
             controller.number = cardTextField?.text
@@ -86,14 +86,14 @@ class PaymentViewController: UITableViewController {
             controller.expiryMonth = String(format: "%02d", monthYear.month)  // "06" == June
             
             var yearStr = String(monthYear.year)
-            yearStr = yearStr.substringFromIndex(yearStr.startIndex.advancedBy(2))
+            yearStr = yearStr.substring(from: yearStr.characters.index(yearStr.startIndex, offsetBy: 2))
             controller.expiryYear = yearStr  // "16" == current year == 2016
         }
     }
 
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == 2 {
             // Next Step (Pay) button
             doTableUpdatesWhenValidating = false
@@ -102,28 +102,28 @@ class PaymentViewController: UITableViewController {
             
             // endEditing will have indirectly causes validateTextFields to be called with updateTable:true.
             if self.validateTextFields() {
-                self.performSegueWithIdentifier("processing", sender: self)
+                self.performSegue(withIdentifier: "processing", sender: self)
             }
         }
         return nil; // Disable cell selection
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var h = tableView.rowHeight
         if indexPath.section == 1 {
-            if indexPath.row == Row.Spacer.rawValue {
+            if indexPath.row == Row.spacer.rawValue {
                 h = 10
             }
-            else if indexPath.row == Row.Info.rawValue || indexPath.row == Row.Error.rawValue {
-                let cell = self.tableView(self.tableView, cellForRowAtIndexPath: indexPath)
+            else if indexPath.row == Row.info.rawValue || indexPath.row == Row.error.rawValue {
+                let cell = self.tableView(self.tableView, cellForRowAt: indexPath)
                 if let textLabel = cell.textLabel {
                     // The imageView doesn't have a size and label doesn't have a frame..
                     // seems that 64 works for the imageView width along with 10 pixels 
                     // at the end for padding.
                     let w = cell.bounds.size.width - (64 + 10)
-                    let label:UILabel = UILabel(frame: CGRectMake(0, 0, w, CGFloat.max))
+                    let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: w, height: CGFloat.greatestFiniteMagnitude))
                     label.numberOfLines = 0
-                    label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+                    label.lineBreakMode = NSLineBreakMode.byWordWrapping
                     label.font = textLabel.font
                     label.text = textLabel.text
                     label.sizeToFit()
@@ -136,11 +136,11 @@ class PaymentViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numRows: Int
         
         switch section {
@@ -160,11 +160,11 @@ class PaymentViewController: UITableViewController {
         return numRows
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell;
         
         if indexPath.section == 0 {
-            cell = tableView.dequeueReusableCellWithIdentifier("emailCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: "emailCell", for: indexPath)
             if let borderedCell = self.setupBorderedCell(cell) {
                 borderedCell.drawTop(true) // needed for any row where a bordered row is not directly on top
                 if let textField = borderedCell.textField() {
@@ -177,8 +177,8 @@ class PaymentViewController: UITableViewController {
         else if indexPath.section == 1 {
             if let row = Row(rawValue: indexPath.row) {
                 switch row {
-                case Row.Name:
-                    cell = tableView.dequeueReusableCellWithIdentifier("nameCell", forIndexPath: indexPath)
+                case Row.name:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "nameCell", for: indexPath)
                     if let borderedCell = self.setupBorderedCell(cell) {
                         borderedCell.drawTop(true)
                         if let textField = borderedCell.textField() {
@@ -188,27 +188,27 @@ class PaymentViewController: UITableViewController {
                         }
                     }
                     
-                case Row.Card:
-                    cell = tableView.dequeueReusableCellWithIdentifier("cardCell", forIndexPath: indexPath)
+                case Row.card:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath)
                     if let borderedCell = self.setupBorderedCell(cell) {
                         if let textField = borderedCell.textField() {
                             self.cardTextField = textField
-                            textField.addTarget(self, action: #selector(reformatAsCardNumber(_:)), forControlEvents: .EditingChanged)
+                            textField.addTarget(self, action: #selector(reformatAsCardNumber(_:)), for: .editingChanged)
                             textField.tag = 2
                             textFields.append(textField)
                             self.checkAndSetupAccessoryViews()
                         }
                     }
                     
-                case Row.ExpiryCvv:
-                    cell = tableView.dequeueReusableCellWithIdentifier("expiryCvvCell", forIndexPath: indexPath)
+                case Row.expiryCvv:
+                    cell = tableView.dequeueReusableCell(withIdentifier: "expiryCvvCell", for: indexPath)
                     if let dualBorderedCell = self.setupDualBorderedCell(cell) {
-                        if let textField = dualBorderedCell.textField(.Left) {
+                        if let textField = dualBorderedCell.textField(.left) {
                             self.expiryTextField = textField
                             
                             if self.expiryPicker == nil {
                                 let picker = UIPickerView()
-                                picker.autoresizingMask = .FlexibleHeight;
+                                picker.autoresizingMask = .flexibleHeight;
                                 picker.delegate = self
                                 picker.dataSource = self
                                 
@@ -219,7 +219,7 @@ class PaymentViewController: UITableViewController {
                                 self.checkAndSetupAccessoryViews()
                             }
                         }
-                        if let textField = dualBorderedCell.textField(.Right) {
+                        if let textField = dualBorderedCell.textField(.right) {
                             self.cvvTextField = textField
                             textField.tag = 4
                             textFields.append(textField)
@@ -227,11 +227,11 @@ class PaymentViewController: UITableViewController {
                         }
                     }
                     
-                case Row.Spacer:
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "spacer")
-                    cell.selectionStyle = .None
+                case Row.spacer:
+                    cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "spacer")
+                    cell.selectionStyle = .none
                     
-                case Row.Info:
+                case Row.info:
                     if showingCvvInfo {
                         cell = self.dequeueCvvInfoCell()
                     }
@@ -239,18 +239,18 @@ class PaymentViewController: UITableViewController {
                         cell = self.dequeueErrorCell()
                     }
                     
-                case Row.Error:
+                case Row.error:
                     cell = self.dequeueErrorCell()
                 }
             }
             else {
                 print(">>> Should not have happend. Have a wierd row!!! \(indexPath.row)")
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "fubar")
+                cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "Ooops!"
             }
         }
         else {
-            cell = tableView.dequeueReusableCellWithIdentifier("payCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: "payCell", for: indexPath)
             if let payCell = cell as? NextStepCell {
                 var title = NSLocalizedString("PAY", comment: "Button title to used to enter Payment")
                 
@@ -269,15 +269,15 @@ class PaymentViewController: UITableViewController {
     
     // MARK: - Private methods
     
-    private func dequeueCvvInfoCell() -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "CvvInfoCell")
-        cell.selectionStyle = .None
+    fileprivate func dequeueCvvInfoCell() -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "CvvInfoCell")
+        cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = emailTextField?.font
         cell.imageView?.image = UIImage.init(named: "cvc_hint_color")
         
         if let cardnumber = cardTextField?.text {
-            if ccValidator.cardType(cardnumber) == .AMEX {
+            if ccValidator.cardType(cardnumber) == .amex {
                 cell.textLabel?.text = NSLocalizedString("The last 4 digits on the back of your card.", comment: "Info label for the 4 digit CVV field on the Payment view.")
             }
             else {
@@ -288,16 +288,16 @@ class PaymentViewController: UITableViewController {
         return cell
     }
 
-    private func dequeueErrorCell() -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "error")
-        cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.1)
-        cell.selectionStyle = .None
+    fileprivate func dequeueErrorCell() -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "error")
+        cell.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+        cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = emailTextField?.font
         cell.textLabel?.textColor = "#b71c1c".hexColor // deep red color
         cell.imageView?.tintColor = "#b71c1c".hexColor
 
-        if let errorMessages = self.errorMessages where errorMessages.count > 0 {
+        if let errorMessages = self.errorMessages, errorMessages.count > 0 {
             var text = ""
             for msg in errorMessages {
                 text += msg
@@ -309,18 +309,18 @@ class PaymentViewController: UITableViewController {
         }
         
         var image = UIImage.init(named: "ic_error_outline_black_48dp")
-        let imageRect = CGRectMake(0, 0, messageIconWidth, messageIconWidth)
+        let imageRect = CGRect(x: 0, y: 0, width: messageIconWidth, height: messageIconWidth)
         
-        UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.mainScreen().scale)
-        image?.drawInRect(imageRect)
+        UIGraphicsBeginImageContextWithOptions(imageRect.size, false, UIScreen.main.scale)
+        image?.draw(in: imageRect)
         image = UIGraphicsGetImageFromCurrentImageContext()
-        cell.imageView?.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+        cell.imageView?.image = image?.withRenderingMode(.alwaysTemplate)
         UIGraphicsEndImageContext()
         
         return cell
     }
 
-    private func setupBorderedCell(cell: UITableViewCell) -> BorderedViewCell? {
+    fileprivate func setupBorderedCell(_ cell: UITableViewCell) -> BorderedViewCell? {
         if let borderedCell = cell as? BorderedViewCell {
             if let textField = borderedCell.textField() {
                 textField.delegate = self
@@ -329,7 +329,7 @@ class PaymentViewController: UITableViewController {
                 }
             }
             if let imageView = borderedCell.embeddedImageView() {
-                imageView.tintColor = UIColor.lightGrayColor()
+                imageView.tintColor = UIColor.lightGray
             }
             return borderedCell
         }
@@ -337,28 +337,28 @@ class PaymentViewController: UITableViewController {
         return nil
     }
     
-    private func setupDualBorderedCell(cell: UITableViewCell) -> DualBorderedViewCell? {
+    fileprivate func setupDualBorderedCell(_ cell: UITableViewCell) -> DualBorderedViewCell? {
         if let dualBorderedCell = cell as? DualBorderedViewCell {
-            if let textField = dualBorderedCell.textField(.Left) {
+            if let textField = dualBorderedCell.textField(.left) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
                 }
             }
             
-            if let imageView = dualBorderedCell.embeddedImageView(.Left) {
-                imageView.tintColor = UIColor.lightGrayColor()
+            if let imageView = dualBorderedCell.embeddedImageView(.left) {
+                imageView.tintColor = UIColor.lightGray
             }
             
-            if let textField = dualBorderedCell.textField(.Right) {
+            if let textField = dualBorderedCell.textField(.right) {
                 textField.delegate = self
                 if let borderedView = textField.superview as? BorderedView {
                     viewFields[borderedView] = textField
                 }
             }
             
-            if let imageView = dualBorderedCell.embeddedImageView(.Right) {
-                imageView.tintColor = UIColor.lightGrayColor()
+            if let imageView = dualBorderedCell.embeddedImageView(.right) {
+                imageView.tintColor = UIColor.lightGray
             }
             
             return dualBorderedCell
@@ -367,43 +367,43 @@ class PaymentViewController: UITableViewController {
         return nil
     }
     
-    private func validateTextFields() -> Bool {
+    fileprivate func validateTextFields() -> Bool {
         var errorMessages = [String]()
         
         for (borderedView, textField) in viewFields {
             if textField.text == nil ||
-                textField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
+                textField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == ""
             {
                 if errorMessages.count == 0 {
                     let msg = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Payment view.")
                     errorMessages.append(msg)
                 }
                 
-                borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
             }
             else {
-                borderedView.innerBorderColor = UIColor.clearColor()
+                borderedView.innerBorderColor = UIColor.clear
             }
         }
 
-        if let text = emailTextField?.text where text != "" {
+        if let text = emailTextField?.text, text != "" {
             if emailValidator.validate(text) == false {
                 // Setup a message and make sure its always presented as the first message
                 let msg = NSLocalizedString("Please enter a valid email address.", comment: "Validation statement used when email entered is invalid.")
-                errorMessages.insert(msg, atIndex: 0)
+                errorMessages.insert(msg, at: 0)
                 
                 if let borderedView = emailTextField?.superview as? BorderedView {
-                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                    borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
                 }
             }
         }
         
-        var cardType = CardType.InvalidCard
+        var cardType = CardType.invalidCard
         
-        if let cardNumber = cardTextField?.text where cardNumber != "" {
+        if let cardNumber = cardTextField?.text, cardNumber != "" {
             cardType = ccValidator.cardType(cardNumber)
             
-            let cleanCard = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+            let cleanCard = cardNumber.replacingOccurrences(of: " ", with: "")
             let minCardLength = ccValidator.lengthOfStringForType(cardType)
             var cardInvalid = false
             
@@ -420,33 +420,33 @@ class PaymentViewController: UITableViewController {
             
             if cardInvalid {
                 if let borderedView = cardTextField?.superview as? BorderedView {
-                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                    borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
                 }
             }
         }
         
-        if let expiryDateText = expiryTextField?.text where expiryTextField != "" {
-            let dateFormatter = NSDateFormatter()
+        if let expiryDateText = expiryTextField?.text, expiryDateText != "" {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/yy"
             
-            if let date = dateFormatter.dateFromString(expiryDateText) {
-                let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
-                let currentYear = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
-                let month = NSCalendar.currentCalendar().component(.Month, fromDate: date)
-                let currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: NSDate.init())
+            if let date = dateFormatter.date(from: expiryDateText) {
+                let year = (Calendar.current as NSCalendar).component(.year, from: date)
+                let currentYear = (Calendar.current as NSCalendar).component(.year, from: Date.init())
+                let month = (Calendar.current as NSCalendar).component(.month, from: date)
+                let currentMonth = (Calendar.current as NSCalendar).component(.month, from: Date.init())
                 
                 if year < currentYear || (year == currentYear && month < currentMonth) {
                     let msg = NSLocalizedString("Expiry Month/Year must be greater than, or equal to, current date.", comment: "Validation statement used when Expiry Month/Year is less than current date.")
                     errorMessages.append(msg)
                     
                     if let borderedView = expiryTextField?.superview as? BorderedView {
-                        borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                        borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
                     }
                 }
             }
         }
         
-        if let cvvNumber = cvvTextField?.text where cvvNumber != "" {
+        if let cvvNumber = cvvTextField?.text, cvvNumber != "" {
             let minCvvLength = ccValidator.lengthOfCvvForType(cardType)
             
             if cvvNumber.characters.count < minCvvLength {
@@ -454,7 +454,7 @@ class PaymentViewController: UITableViewController {
                 errorMessages.append(msg)
                 
                 if let borderedView = cvvTextField?.superview as? BorderedView {
-                    borderedView.innerBorderColor = UIColor.redColor().colorWithAlphaComponent(0.5)
+                    borderedView.innerBorderColor = UIColor.red.withAlphaComponent(0.5)
                 }
             }
         }
@@ -463,66 +463,66 @@ class PaymentViewController: UITableViewController {
         if errorMessages.count > 0 { valid = false }
 
         if self.doTableUpdatesWhenValidating {
-            var numRows = self.tableView.numberOfRowsInSection(1)
+            var numRows = self.tableView.numberOfRows(inSection: 1)
             self.errorMessages = errorMessages
             
             if showingError {
-                var indexPaths = [NSIndexPath]()
+                var indexPaths = [IndexPath]()
                
                 if valid {
                     // Remove the error row
                     showingError = false
                     if !showingCvvInfo {
                         // Also remove the spacer
-                        indexPaths.append(NSIndexPath.init(forRow: numRows-2, inSection: 1))
+                        indexPaths.append(IndexPath.init(row: numRows-2, section: 1))
                     }
                     
-                    indexPaths.append(NSIndexPath.init(forRow: numRows-1, inSection: 1))
-                    self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                    indexPaths.append(IndexPath.init(row: numRows-1, section: 1))
+                    self.tableView.deleteRows(at: indexPaths, with: .automatic)
                 }
                 else {
-                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: numRows-1, inSection: 1)], withRowAnimation: .Automatic)
+                    self.tableView.reloadRows(at: [IndexPath.init(row: numRows-1, section: 1)], with: .automatic)
                 }
             }
             else if !valid {
                 // Add an error row
-                var indexPaths = [NSIndexPath]()
+                var indexPaths = [IndexPath]()
                 showingError = true
                 
                 if showingCvvInfo == false {
                     // Also add a spacer
-                    indexPaths.append(NSIndexPath.init(forRow: numRows, inSection: 1))
+                    indexPaths.append(IndexPath.init(row: numRows, section: 1))
                     numRows += 1
                 }
                 
-                indexPaths.append(NSIndexPath.init(forRow: numRows, inSection: 1))
-                self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                indexPaths.append(IndexPath.init(row: numRows, section: 1))
+                self.tableView.insertRows(at: indexPaths, with: .automatic)
             }
         }
         
         return valid
     }
     
-    private func checkAndSetupAccessoryViews() {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+    fileprivate func checkAndSetupAccessoryViews() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             return
         }
         
-        if let cardTextField = cardTextField, let expiryTextField = expiryTextField, let cvvTextField =  cvvTextField where cvvTextField.inputAccessoryView == nil {
+        if let cardTextField = cardTextField, let expiryTextField = expiryTextField, let cvvTextField =  cvvTextField, cvvTextField.inputAccessoryView == nil {
             self.addInputAccessoryFor(cardTextField, nextField: expiryTextField)
             self.addInputAccessoryFor(expiryTextField, nextField: cvvTextField)
             self.addInputAccessoryFor(cvvTextField, dismissable: true, nextField: nil)
         }
     }
     
-    private func addInputAccessoryFor(textField: UITextField, dismissable: Bool = false, nextField: UITextField?) {
+    fileprivate func addInputAccessoryFor(_ textField: UITextField, dismissable: Bool = false, nextField: UITextField?) {
         let toolbar: UIToolbar = UIToolbar()
         toolbar.sizeToFit()
         
         var items = [UIBarButtonItem]()
         if let nextField = nextField {
             let nextTitle = NSLocalizedString("Next", comment: "Title to use for Next button on text field accessory views.")
-            let nextButton = UIBarButtonItem(title: nextTitle, style: .Plain, target: nil, action: nil)
+            let nextButton = UIBarButtonItem(title: nextTitle, style: .plain, target: nil, action: nil)
             nextButton.width = 30
             nextButton.target = nextField
             nextButton.action = #selector(UITextField.becomeFirstResponder)
@@ -531,9 +531,9 @@ class PaymentViewController: UITableViewController {
         }
         
         if dismissable {
-            let spacer = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: view, action: #selector(UIView.endEditing))
-            items.appendContentsOf([spacer, doneButton])
+            let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: view, action: #selector(UIView.endEditing))
+            items.append(contentsOf: [spacer, doneButton])
         }
         
         toolbar.setItems(items, animated: false)
@@ -544,66 +544,66 @@ class PaymentViewController: UITableViewController {
 
 extension PaymentViewController: UITextFieldDelegate {
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
-            borderedView.innerBorderColor = UIColor.blackColor()
+            borderedView.innerBorderColor = UIColor.black
             borderedView.setNeedsDisplay()
 
             if let imageView = borderedView.subviews.last as? UIImageView {
-                imageView.highlighted = true
+                imageView.isHighlighted = true
             }
         }
 
         if textField == cvvTextField && !showingCvvInfo {
             showingCvvInfo = true
             
-            var row = Row.Spacer.rawValue
-            var indexPaths = [NSIndexPath]()
+            var row = Row.spacer.rawValue
+            var indexPaths = [IndexPath]()
             
             if !showingError {
                 // Also add the spacer
-                indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+                indexPaths.append(IndexPath.init(row: row, section: 1))
             }
 
             row += 1
-            indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
-            self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+            indexPaths.append(IndexPath.init(row: row, section: 1))
+            self.tableView.insertRows(at: indexPaths, with: .automatic)
         }
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if let borderedView = textField.superview as? BorderedView {
-            borderedView.innerBorderColor = UIColor.clearColor()
+            borderedView.innerBorderColor = UIColor.clear
             borderedView.setNeedsDisplay()
             
             if let imageView = borderedView.subviews.last as? UIImageView {
-                imageView.highlighted = false
+                imageView.isHighlighted = false
             }
         }
         
         // Re-check validation only when an error condidion pre-exists
         if showingError || showingCvvInfo {
-            self.validateTextFields()
+            _ = self.validateTextFields()
         }
         
         if textField == cvvTextField && showingCvvInfo {
             showingCvvInfo = false
             
-            var row = Row.Spacer.rawValue
-            var indexPaths = [NSIndexPath]()
+            var row = Row.spacer.rawValue
+            var indexPaths = [IndexPath]()
             
             if !showingError {
                 // Also remove the spacer
-                indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
+                indexPaths.append(IndexPath.init(row: row, section: 1))
             }
             
             row += 1
-            indexPaths.append(NSIndexPath.init(forRow: row, inSection: 1))
-            self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+            indexPaths.append(IndexPath.init(row: row, section: 1))
+            self.tableView.deleteRows(at: indexPaths, with: .automatic)
         }
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == cvvTextField {
             guard let text = textField.text else { return true }
             
@@ -613,7 +613,7 @@ extension PaymentViewController: UITextFieldDelegate {
             }
             
             var minLength = 3;
-            if let cardnumber = cardTextField?.text where ccValidator.cardType(cardnumber) == .AMEX {
+            if let cardnumber = cardTextField?.text, ccValidator.cardType(cardnumber) == .amex {
                 minLength = 4
             }
             
@@ -630,9 +630,9 @@ extension PaymentViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         var tag = textField.tag
-        if let lastField = self.cvvTextField where tag < lastField.tag {
+        if let lastField = self.cvvTextField, tag < lastField.tag {
             tag += 1
             for nextField in self.textFields {
                 if nextField.tag == tag {
@@ -651,14 +651,14 @@ extension PaymentViewController: UITextFieldDelegate {
     // Found on http://stackoverflow.com/questions/12083605/formatting-a-uitextfield-for-credit-card-input-like-xxxx-xxxx-xxxx-xxxx
     // --> Enhanced to follow a cardFormat string rather than just space every 4 digits.
     //
-    func reformatAsCardNumber(textField: UITextField) {
+    func reformatAsCardNumber(_ textField: UITextField) {
         // In order to make the cursor end up positioned correctly, we need to
         // explicitly reposition it after we inject spaces into the text.
         // targetCursorPosition keeps track of where the cursor needs to end up as
         // we modify the string, and at the end we set the cursor position to it.
         var targetCursorPosition = 0
         if let startPosition = textField.selectedTextRange?.start {
-            targetCursorPosition = textField.offsetFromPosition(textField.beginningOfDocument, toPosition: startPosition)
+            targetCursorPosition = textField.offset(from: textField.beginningOfDocument, to: startPosition)
         }
     
         var cardNumberWithoutSpaces = ""
@@ -685,8 +685,8 @@ extension PaymentViewController: UITextFieldDelegate {
         let cardNumberWithSpaces = self.insertSpacesIntoCCString(cardNumberWithoutSpaces, cardFormat: cardFormat, andPreserveCursorPosition: &targetCursorPosition)
         textField.text = cardNumberWithSpaces
         
-        if let targetPosition = textField.positionFromPosition(textField.beginningOfDocument, offset: targetCursorPosition) {
-            textField.selectedTextRange = textField.textRangeFromPosition(targetPosition, toPosition: targetPosition)
+        if let targetPosition = textField.position(from: textField.beginningOfDocument, offset: targetCursorPosition) {
+            textField.selectedTextRange = textField.textRange(from: targetPosition, to: targetPosition)
         }
         
         self.updateCardImage(cardType)
@@ -698,12 +698,12 @@ extension PaymentViewController: UITextFieldDelegate {
      and a cursor position of `8`, the cursor position will be changed to
      `7` (keeping it between the '2' and the '3' after the spaces are removed).
      */
-    private func removeNonDigits(string: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
+    fileprivate func removeNonDigits(_ string: String, andPreserveCursorPosition cursorPosition: inout Int) -> String {
         var digitsOnlyString = ""
         let originalCursorPosition = cursorPosition
         
-        for i in 0.stride(to: string.characters.count, by: 1) {
-            let characterToAdd = string[string.startIndex.advancedBy(i)]
+        for i in stride(from: 0, to: string.characters.count, by: 1) {
+            let characterToAdd = string[string.characters.index(string.startIndex, offsetBy: i)]
             if characterToAdd >= "0" && characterToAdd <= "9" {
                 digitsOnlyString.append(characterToAdd)
             }
@@ -722,72 +722,72 @@ extension PaymentViewController: UITextFieldDelegate {
      will be changed to `8` (keeping it between the '2' and the '3' after the
      spaces are added).
      */
-    private func insertSpacesIntoCCString(string: String, cardFormat: String, inout andPreserveCursorPosition cursorPosition: Int) -> String {
+    fileprivate func insertSpacesIntoCCString(_ string: String, cardFormat: String, andPreserveCursorPosition cursorPosition: inout Int) -> String {
         var stringWithAddedSpaces = ""
         var formatIndex = cardFormat.startIndex
         let cursorPositionInSpacelessString = cursorPosition
         
-        for i in 0.stride(to: string.characters.count, by: 1) {
+        for i in stride(from: 0, to: string.characters.count, by: 1) {
             if formatIndex != cardFormat.endIndex && cardFormat.characters[formatIndex] == " " {
-                stringWithAddedSpaces.appendContentsOf(" ")
+                stringWithAddedSpaces.append(" ")
                 if i < cursorPositionInSpacelessString {
                     cursorPosition += 1
                 }
-                formatIndex = formatIndex.advancedBy(1)
+                formatIndex = cardFormat.index(formatIndex, offsetBy: 1)
             }
             
             if formatIndex != cardFormat.endIndex {
-                formatIndex = formatIndex.advancedBy(1)
+                formatIndex = cardFormat.index(formatIndex, offsetBy: 1)
             }
             
-            let characterToAdd = string[string.startIndex.advancedBy(i)]
+            let characterToAdd = string[string.characters.index(string.startIndex, offsetBy: i)]
             stringWithAddedSpaces.append(characterToAdd)
         }
         
         return stringWithAddedSpaces
     }
 
-    private func updateCardImage(cardType: CardType) {
-        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath.init(forRow: Row.Card.rawValue, inSection: 1))
+    fileprivate func updateCardImage(_ cardType: CardType) {
+        let cell = self.tableView.cellForRow(at: IndexPath.init(row: Row.card.rawValue, section: 1))
         guard let borderedCell = cell as? BorderedViewCell else { return }
         guard let imageView = borderedCell.embeddedImageView() else { return }
         
         var imageName = "ic_credit_card_black_48dp"
         
         switch cardType {
-        case .Visa:
+        case .visa:
             imageName = "visa"
-        case .MasterCard:
+        case .masterCard:
             imageName = "mastercard"
-        case .AMEX:
+        case .amex:
             imageName = "amex"
-        case .Discover:
+        case .discover:
             imageName = "discover"
-        case .DinersClub:
+        case .dinersClub:
             imageName = "dinersclub"
-        case .JCB:
+        case .jcb:
             imageName = "jcb"
-        case .InvalidCard:
+        case .invalidCard:
             imageName = "ic_credit_card_black_48dp"
         }
         
         imageView.image = UIImage(named: imageName)
-        if cardType == .InvalidCard {
-            imageView.image = imageView.image?.imageWithRenderingMode(.AlwaysTemplate)
+        if cardType == .invalidCard {
+            imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
         }
     }
     
-    private func cardFormat(cardType: CardType) -> String {
+    fileprivate func cardFormat(_ cardType: CardType) -> String {
         var format = ""
         
         switch cardType {
-        case .Visa, .MasterCard, .Discover, .JCB, .InvalidCard:
+        case .visa, .masterCard, .discover, .jcb, .invalidCard:
             // {4-4-4-4}
             format = "XXXX XXXX XXXX XXXX "
-        case .AMEX:
+        case .amex:
             // {4-6-5}
             format = "XXXX XXXXXX XXXXX "
-        case .DinersClub:
+        case .dinersClub:
             // {4-6-4}
             format = "XXXX XXXXXX XXXX "
         }
@@ -799,11 +799,11 @@ extension PaymentViewController: UITextFieldDelegate {
 
 extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
             return 12 // twelves months in a year
         }
@@ -812,31 +812,31 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         }
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            let df = NSDateFormatter.init()
+            let df = DateFormatter.init()
             let monthName = df.monthSymbols[row]
             return monthName
         }
         else {
-            let year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init())
+            let year = (Calendar.current as NSCalendar).component(.year, from: Date.init())
             return "\(year+row)"
         }
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 1 {
             pickerView.reloadComponent(0)
         }
         
         if let textField = expiryTextField {
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/yy"
             
             let monthYear = getSelectedMonthYear()
             
-            if let date = dateFormatter.dateFromString("\(monthYear.month)/\(monthYear.year)") {
-                textField.text = dateFormatter.stringFromDate(date)
+            if let date = dateFormatter.date(from: "\(monthYear.month)/\(monthYear.year)") {
+                textField.text = dateFormatter.string(from: date)
             }
         }
     }
@@ -845,8 +845,8 @@ extension PaymentViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         var monthYear: (month: Int, year: Int) = (0, 0)
         
         if let pickerView = self.expiryPicker {
-            let month = pickerView.selectedRowInComponent(0) + 1
-            let year = NSCalendar.currentCalendar().component(.Year, fromDate: NSDate.init()) + pickerView.selectedRowInComponent(1)
+            let month = pickerView.selectedRow(inComponent: 0) + 1
+            let year = (Calendar.current as NSCalendar).component(.year, from: Date.init()) + pickerView.selectedRow(inComponent: 1)
             monthYear = (month, year)
         }
         
