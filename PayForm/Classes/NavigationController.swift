@@ -13,7 +13,7 @@ class NavigationController: UINavigationController {
     
     // MARK: - Properties
     
-    @IBInspectable var titleColor: UIColor = UIColor.blackColor() {
+    @IBInspectable var titleColor: UIColor = UIColor.black {
         didSet {
         }
     }
@@ -25,17 +25,17 @@ class NavigationController: UINavigationController {
         self.setupNavBar()
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.setupNavBar()
     }
     
     // MARK: - Private methods
     
-    private func setupNavBar() {
-        self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+    fileprivate func setupNavBar() {
+        self.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationBar.shadowImage = UIImage()
-        self.navigationBar.translucent = true
+        self.navigationBar.isTranslucent = true
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Settings.primaryColor]
         self.navigationBar.tintColor = Settings.primaryColor
     }

@@ -25,23 +25,22 @@ class ProcessingViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let amountStr = State.sharedInstance.amountStr {
             self.amountLabel.text = amountStr
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("ShowFooter", object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "ShowFooter"), object: self)
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().postNotificationName("HideFooter", object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "HideFooter"), object: self)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let number = number, let expiryYear = expiryYear, let expiryMonth = expiryMonth, let cvd = cvd
-            where State.sharedInstance.amountStr != nil && State.sharedInstance.processingClosure != nil
+        if let number = number, let expiryYear = expiryYear, let expiryMonth = expiryMonth, let cvd = cvd, State.sharedInstance.amountStr != nil && State.sharedInstance.processingClosure != nil
         {
             let params = ["number": number,
                           "expiry_month": expiryMonth,
@@ -52,28 +51,28 @@ class ProcessingViewController: UIViewController {
         }
         else {
             print("ProcessingViewController was shown without needed vars!!!")
-            self.navigationController?.popViewControllerAnimated(true)
+            _ = self.navigationController?.popViewController(animated: true)
             self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
     }
     
-    private func process(params: Dictionary<String, String>) {
-        if let url = NSURL(string: "https://www.beanstream.com/scripts/tokenization/tokens") {
+    fileprivate func process(_ params: Dictionary<String, String>) {
+        if let url = URL(string: "https://www.beanstream.com/scripts/tokenization/tokens") {
             
-            let urlconfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+            let urlconfig = URLSessionConfiguration.default
             urlconfig.timeoutIntervalForRequest = Settings.tokenRequestTimeout
             urlconfig.timeoutIntervalForResource = Settings.tokenRequestTimeout
             
-            let session = NSURLSession(configuration: urlconfig, delegate: self, delegateQueue: nil)
-            let request = NSMutableURLRequest(URL: url)
+            let session = URLSession(configuration: urlconfig, delegate: self, delegateQueue: nil)
+            let request = NSMutableURLRequest(url: url)
             
-            var data: NSData?
+            var data: Data?
             
             do {
-                try data = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(rawValue: 0))
+                try data = JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions(rawValue: 0))
             } catch let error as NSError {
                 if let processingClosure = State.sharedInstance.processingClosure {
-                    processingClosure(result: nil, error: error)
+                    processingClosure(nil, error)
                 }
                 return
             }
@@ -81,25 +80,25 @@ class ProcessingViewController: UIViewController {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-            request.HTTPMethod = "POST"
-            request.HTTPBody = data
+            request.httpMethod = "POST"
+            request.httpBody = data
             
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             // Force a 2 second sleep to ensure UX as the tokenization call alone is pretty fast
-            NSThread.sleepForTimeInterval(2)
+            Thread.sleep(forTimeInterval: 2)
             
-            let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, err) in
+            let task = session.dataTask(with: request as URLRequest) { data, response, err in
                 
                 var statusCode = 200
-                var error: NSError? = err
+                var error: Error? = err
                 
-                if let httpResponse = response as? NSHTTPURLResponse {
+                if let httpResponse = response as? HTTPURLResponse {
                     statusCode = httpResponse.statusCode
                     if statusCode != 200 {
                         print("HTTP Error \(statusCode) when getting token.")
                         let userInfo = [
-                            NSLocalizedDescriptionKey: NSHTTPURLResponse.localizedStringForStatusCode(statusCode)
+                            NSLocalizedDescriptionKey: HTTPURLResponse.localizedString(forStatusCode: statusCode)
                         ]
                         error = NSError(domain: "Tokenization Request Error", code: statusCode, userInfo: userInfo)
                     }
@@ -115,7 +114,7 @@ class ProcessingViewController: UIViewController {
                     shippingInfo["city"] = address.city
                     shippingInfo["province"] = address.province
                     shippingInfo["country"] = address.country
-                    result["shippingAddress"] = shippingInfo
+                    result["shippingAddress"] = shippingInfo as AnyObject?
                 }
                 
                 if let address = State.sharedInstance.billingAddress {
@@ -126,40 +125,40 @@ class ProcessingViewController: UIViewController {
                     billingInfo["city"] = address.city
                     billingInfo["province"] = address.province
                     billingInfo["country"] = address.country
-                    result["billingAddress"] = billingInfo
+                    result["billingAddress"] = billingInfo as AnyObject?
                 }
                 
                 if error != nil {
                     if let processingClosure = State.sharedInstance.processingClosure {
-                        processingClosure(result: (result.count > 0 ? result : nil), error: error)
+                        processingClosure((result.count > 0 ? result : nil), error as NSError?)
                     }
                 }
                 else {
                     do {
-                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0)) as? Dictionary<String, AnyObject>
+                        let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? Dictionary<String, AnyObject>
                         
                         if let json = json, let token = json["token"] as? String {
                             var cardInfo = Dictionary<String, String>()
                             cardInfo["code"] = token
                             cardInfo["name"] = (self.name == nil ? "" : self.name)
                             cardInfo["email"] = (self.email == nil ? "" : self.email)
-                            result["cardInfo"] = cardInfo
+                            result["cardInfo"] = cardInfo as AnyObject?
                         }
                     } catch {}
                     
                     if let processingClosure = State.sharedInstance.processingClosure {
-                        processingClosure(result: result, error: nil)
+                        processingClosure(result, nil)
                     }
                 }
                 
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            })
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
             
             task.resume()
         }
     }
 }
 
-extension ProcessingViewController: NSURLSessionDelegate {
+extension ProcessingViewController: URLSessionDelegate {
     
 }

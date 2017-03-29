@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         statusLabel.text = ""
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Found on iOS 9 that this was needed in case payform completes in a different
@@ -25,17 +25,17 @@ class ViewController: UIViewController {
         self.view.setNeedsLayout()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
 
-    @IBAction func payAction(sender: AnyObject) {
+    @IBAction func payAction(_ sender: AnyObject) {
         let storyboard = UIStoryboard(name: "PayForm", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() as? PayFormViewController {
             self.statusLabel.text = ""
             
             controller.name = "Lollipop Shop"
-            controller.amount = NSDecimalNumber(double: 100.00)
+            controller.amount = NSDecimalNumber(value: 100.00 as Double)
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
             //controller.image = UIImage(named: "icon")
@@ -49,17 +49,17 @@ class ViewController: UIViewController {
                     let msg  = "error (\(error.code)): \(error.localizedDescription)"
                     print(msg)
                     self.statusLabel.text = msg
-                    self.statusLabel.textColor = UIColor.redColor()
+                    self.statusLabel.textColor = UIColor.red
                 }
                 else if let result = result {
                     if let cardInfo = result["cardInfo"] as? Dictionary<String, String>, let token = cardInfo["code"] as String! {
                         print("cardInfo: \(cardInfo)")
                         self.statusLabel.text = "token: \(token)"
-                        self.statusLabel.textColor = UIColor.blackColor()
+                        self.statusLabel.textColor = UIColor.black
                     }
                     else {
                         self.statusLabel.text = "No Token!"
-                        self.statusLabel.textColor = UIColor.redColor()
+                        self.statusLabel.textColor = UIColor.red
                     }
                     
                     if let shippingInfo = result["shippingAddress"] as? Dictionary<String, String> {
@@ -73,14 +73,14 @@ class ViewController: UIViewController {
                 else {
                     let msg = "Yikes! No error and no result data!"
                     self.statusLabel.text = msg
-                    self.statusLabel.textColor = UIColor.redColor()
+                    self.statusLabel.textColor = UIColor.red
                 }
                 
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
                 self.view.setNeedsLayout() // Needed in case of view orientation change
             }
             
-            self.presentViewController(controller, animated: true, completion: nil)
+            self.present(controller, animated: true, completion: nil)
         }
     }
     

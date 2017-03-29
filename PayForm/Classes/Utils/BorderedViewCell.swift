@@ -13,28 +13,28 @@ class BorderedViewCell: UITableViewCell {
     
     // MARK: - Public methods
 
-    func setBorderColor(color: UIColor) {
+    func setBorderColor(_ color: UIColor) {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.borderColor = color
         }
     }
 
-    func setHighlightColor(color: UIColor) {
+    func setHighlightColor(_ color: UIColor) {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.innerBorderColor = color
         }
     }
 
-    func drawLeft(draw: Bool) {
+    func drawLeft(_ draw: Bool) {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.drawLeft = draw
         }
     }
     
-    func drawTop(draw: Bool) {
+    func drawTop(_ draw: Bool) {
         let view = self.contentView.subviews.first
         if let borderedView = view as? BorderedView {
             borderedView.drawTop = draw

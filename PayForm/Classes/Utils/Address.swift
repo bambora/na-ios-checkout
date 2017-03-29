@@ -9,8 +9,8 @@
 import Foundation
 
 public enum AddressType {
-    case Shipping
-    case Billing
+    case shipping
+    case billing
 }
 
 public struct Address {

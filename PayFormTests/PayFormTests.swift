@@ -29,13 +29,13 @@ class PayFormTests: XCTestCase {
     
     func test2VisaValidation() {
         let ccValidator = CreditCardValidator()
-        let dict: Dictionary<String, AnyObject> = ["name": "Visa", "cardType": CardType.Visa.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["4012 8888 8888 1881", "3012888888881881", "3012888888881881", "4012888888882881"]]
+        let dict: Dictionary<String, AnyObject> = ["name": "Visa" as AnyObject, "cardType": CardType.visa.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["4012 8888 8888 1881", "3012888888881881", "3012888888881881", "4012888888882881"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
     
     func test3MasterCardValidation() {
         let ccValidator = CreditCardValidator()
-        let dict: Dictionary<String, AnyObject> = ["name": "MasterCard", "cardType": CardType.MasterCard.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["5555 5555 5555 4444", "6555 5555 5555 4444", "5555 5555 5555 44444", "5555 5555 5555 4443"]]
+        let dict: Dictionary<String, AnyObject> = ["name": "MasterCard" as AnyObject, "cardType": CardType.masterCard.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["5555 5555 5555 4444", "6555 5555 5555 4444", "5555 5555 5555 44444", "5555 5555 5555 4443"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
     
@@ -44,7 +44,7 @@ class PayFormTests: XCTestCase {
         
         let ccNumbers: [String] = ["5555 5555 5555 4444", "2221 0000 0000 0009", "2720 9999 9999 9996"]
         for cardNumber in ccNumbers {
-            self.testGoodCard("MasterCard", cardType: CardType.MasterCard, cardLength: 16, cvvLength: 3, cardNumber: cardNumber, ccValidator: ccValidator)
+            self.testGoodCard("MasterCard", cardType: CardType.masterCard, cardLength: 16, cvvLength: 3, cardNumber: cardNumber, ccValidator: ccValidator)
         }
     }
     
@@ -53,7 +53,7 @@ class PayFormTests: XCTestCase {
         
         let ccNumbers: [String] = ["6555 5555 5555 4444"]
         for cardNumber in ccNumbers {
-            XCTAssertFalse(ccValidator.cardType(cardNumber) == .MasterCard, "Bad [\(cardNumber)] number type test.")
+            XCTAssertFalse(ccValidator.cardType(cardNumber) == .masterCard, "Bad [\(cardNumber)] number type test.")
         }
     }
     
@@ -78,19 +78,19 @@ class PayFormTests: XCTestCase {
     
     func test4AMEXCardValidation() {
         let ccValidator = CreditCardValidator()
-        let dict: Dictionary<String, AnyObject> = ["name": "AMEX", "cardType": CardType.AMEX.rawValue, "cardLength": 15, "cvvLength": 4, "cards" : ["378282246310005", "328282246310005", "37828224631000555", "378282246310015"]]
+        let dict: Dictionary<String, AnyObject> = ["name": "AMEX" as AnyObject, "cardType": CardType.amex.rawValue, "cardLength": 15, "cvvLength": 4, "cards" : ["378282246310005", "328282246310005", "37828224631000555", "378282246310015"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
 
     func test5DiscoverCardValidation() {
         let ccValidator = CreditCardValidator()
-        let dict: Dictionary<String, AnyObject> = ["name": "Discover", "cardType": CardType.Discover.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["6011000990139424", "5011000990139424", "60110009901394244", "6011000990139434"]]
+        let dict: Dictionary<String, AnyObject> = ["name": "Discover" as AnyObject, "cardType": CardType.discover.rawValue, "cardLength": 16, "cvvLength": 3, "cards" : ["6011000990139424", "5011000990139424", "60110009901394244", "6011000990139434"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
 
     func test6DinersClubCardValidation() {
         let ccValidator = CreditCardValidator()
-        let dict: Dictionary<String, AnyObject> = ["name": "Diners Club", "cardType": CardType.DinersClub.rawValue, "cardLength": 14, "cvvLength": 3, "cards" : ["38520000023237", "48520000023237", "385200000232377", "38520000023247"]]
+        let dict: Dictionary<String, AnyObject> = ["name": "Diners Club" as AnyObject, "cardType": CardType.dinersClub.rawValue, "cardLength": 14, "cvvLength": 3, "cards" : ["38520000023237", "48520000023237", "385200000232377", "38520000023247"]]
         self.testCardDictionary(dict, withValidator: ccValidator)
     }
     
@@ -117,7 +117,7 @@ class PayFormTests: XCTestCase {
     
     // MARK: - Private methods
     
-    private func testCardDictionary(dict: Dictionary<String, AnyObject>, withValidator ccValidator: CreditCardValidator) {
+    fileprivate func testCardDictionary(_ dict: Dictionary<String, AnyObject>, withValidator ccValidator: CreditCardValidator) {
         let cardName = dict["name"] as! String
         let cardType = CardType(rawValue: (dict["cardType"] as! Int))
         let cardLength = dict["cardLength"] as! Int
@@ -128,7 +128,7 @@ class PayFormTests: XCTestCase {
         self.testGoodCard(cardName, cardType: cardType!, cardLength: cardLength, cvvLength: cvvLength, cardNumber: goodCard, ccValidator: ccValidator)
         
         let badCard1 = cards[1]
-        XCTAssertFalse(ccValidator.cardType(badCard1) == .MasterCard, "Bad \(cardName) number type test.")
+        XCTAssertFalse(ccValidator.cardType(badCard1) == .masterCard, "Bad \(cardName) number type test.")
         
         let badCard2 = cards[2]
         XCTAssertFalse(ccValidator.isValidNumber(badCard2), "Bad \(cardName) number validation.")
@@ -137,14 +137,14 @@ class PayFormTests: XCTestCase {
         XCTAssertFalse(ccValidator.isLuhnValid(badCard3), "Bad \(cardName) number Luhn validation.")
     }
     
-    private func testGoodCard(cardName: String, cardType: CardType, cardLength: Int, cvvLength: Int, cardNumber: String, ccValidator: CreditCardValidator) {
+    fileprivate func testGoodCard(_ cardName: String, cardType: CardType, cardLength: Int, cvvLength: Int, cardNumber: String, ccValidator: CreditCardValidator) {
         
         XCTAssertTrue(ccValidator.lengthOfStringForType(cardType) == cardLength, "\(cardName) type did not have length of \(cardLength).")
         XCTAssertTrue(ccValidator.lengthOfCvvForType(cardType) == cvvLength, "\(cardName) type does not have \(cvvLength) digit security code.")
         
         XCTAssertTrue(ccValidator.validate(cardNumber), "\(cardName) [\(cardNumber)] general card validation.")
         
-        let cleanNumber = cardNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+        let cleanNumber = cardNumber.replacingOccurrences(of: " ", with: "")
         XCTAssertTrue(ccValidator.lengthOfStringForType(cardType) == cleanNumber.characters.count, "\(cardName):\(cardNumber)  did not have required length of \(cardLength).")
         
         XCTAssertTrue(ccValidator.cardType(cardNumber) == cardType, "\(cardName) [\(cardNumber)] number type test.")
