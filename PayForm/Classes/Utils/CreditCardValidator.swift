@@ -3,7 +3,7 @@
 //  PayForm
 //
 //  Created by Sven Resch on 2016-06-09.
-//  Copyright © 2016 Beanstream Internet Commerce, Inc. All rights reserved.
+//  Copyright © 2017 Bambora Inc. All rights reserved.
 //
 // Inspired by work seen here:
 // - https://github.com/dhoerl18/CreditCard/blob/master/CreditCard/CreditCard.m

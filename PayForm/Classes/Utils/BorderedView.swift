@@ -3,7 +3,7 @@
 //  PayForm
 //
 //  Created by Sven Resch on 2016-06-02.
-//  Copyright © 2016 Beanstream Internet Commerce, Inc. All rights reserved.
+//  Copyright © 2017 Bambora Inc. All rights reserved.
 //
 // Wasn't able to get a more simple drawing working due to layer/view clipping. In order to 
 // not see double width borders we will draw overlapping rects and adjust frames as needed

@@ -3,7 +3,7 @@
 //  PayFormDemo
 //
 //  Created by Sven Resch on 2016-06-03.
-//  Copyright © 2016 Beanstream Internet Commerce, Inc. All rights reserved.
+//  Copyright © 2017 Bambora Inc. All rights reserved.
 //
 
 import UIKit
@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
 
     @IBAction func payAction(_ sender: AnyObject) {
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             controller.currencyCode = "CAD"
             controller.purchaseDescription = "item, item, item..."
             //controller.image = UIImage(named: "icon")
-            //controller.primaryColor = UIColor.blueColor()       // default: "#067aed"
+            //controller.primaryColor = UIColor.blueColor()       // default: "#8247B5" Bambora Purple
             //controller.shippingAddressRequired = true           // default: true
             //controller.billingAddressRequired = true            // default: true
             //controller.tokenRequestTimeoutSeconds = 6           // default: 6

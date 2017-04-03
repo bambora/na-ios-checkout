@@ -3,7 +3,7 @@
 //  PayForm
 //
 //  Created by Sven Resch on 2016-06-01.
-//  Copyright © 2016 Beanstream Internet Commerce, Inc. All rights reserved.
+//  Copyright © 2017 Bambora Inc. All rights reserved.
 //
 
 import UIKit

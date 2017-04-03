@@ -38,8 +38,8 @@
 /* Class = "UITextField"; placeholder = "name"; ObjectID = "fER-v9-gxN"; */
 "fER-v9-gxN.placeholder" = "name";
 
-/* Class = "UILabel"; text = "secured by beanstream"; ObjectID = "gy6-Ae-amn"; */
-"gy6-Ae-amn.text" = "secured by beanstream";
+/* Class = "UILabel"; text = "secured by bambora"; ObjectID = "gy6-Ae-amn"; */
+"gy6-Ae-amn.text" = "secured by bambora";
 
 /* Class = "UITextField"; placeholder = "expiry mm/yy"; ObjectID = "kf9-fo-QXQ"; */
 "kf9-fo-QXQ.placeholder" = "expiry mm/yy";
