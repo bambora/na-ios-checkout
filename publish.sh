@@ -22,18 +22,18 @@ echo
 echo "-----------------------------"
 echo "Getting podspec version..."
 echo "-----------------------------"
-version=$(grep 'spec.version[ ]*=' PayForm.podspec | sed -e "s/.*\'\(.*\)\'.*/\1/")
+version=$(grep 'spec.version[ ]*=' Checkout.podspec | sed -e "s/.*\'\(.*\)\'.*/\1/")
 echo "Version: $version"
 echo
 
 echo "-----------------------------"
 echo "Packaging..."
 echo "-----------------------------"
-package="PayForm-$version.tar.gz"
+package="Checkout-$version.tar.gz"
 
 echo "Package: $package"
 export COPYFILE_DISABLE=true
-tar -cvzf $package PayForm/ PayForm.podspec LICENSE
+tar -cvzf $package Checkout/ Checkout.podspec LICENSE
 echo
 
 echo "-----------------------------"
@@ -44,7 +44,7 @@ file="artifactory.properties"
 if [ -f "$file" ]
 then
   	. $file
-	curl -u$jfrog_user:$jfrog_pass -X PUT https://beanstream.jfrog.io/beanstream/beanstream-public/$package -T $package
+	curl -u$jfrog_user:$jfrog_pass -X PUT https://bambora.jfrog.io/bambora/na-public/$package -T $package
 else
   	echo "ERROR: $file not found."
 fi
