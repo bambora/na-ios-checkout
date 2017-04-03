@@ -165,7 +165,9 @@ Now that you have tokenized card data on your server use it to [Call our APIs](h
 ---
 
 <a name="contributing"/>
+
 ## Building Locally and Contributing
+
  * Check out repo: `$ git clone git@github.com:Bambora/na-ios-checkout.git`
  * Open CheckoutTest.xcworkspace in Xcode
  * Fork the repo to commit changes to and issue Pull Requests as needed.
@@ -173,5 +175,6 @@ Now that you have tokenized card data on your server use it to [Call our APIs](h
 ---
 
 # API References
+
 * [Merchant Quickstart](https://developer.na.bambora.com/docs/guides/merchant_quickstart/)
 * [Merchant API](https://developer.na.bambora.com/docs/references/merchant_API/)
