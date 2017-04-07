@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "cYY-Ly-6c6"; */
+"cYY-Ly-6c6.text" = "Label";
+
+/* Class = "UILabel"; text = "Tap to launch the Checkout demo"; ObjectID = "gOZ-ir-E00"; */
+"gOZ-ir-E00.text" = "Tap to launch the Checkout demo";
+
+/* Class = "UIButton"; normalTitle = "Pay by card"; ObjectID = "qT7-Kw-x3a"; */
+"qT7-Kw-x3a.normalTitle" = "Pay by card";
