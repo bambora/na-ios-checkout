@@ -57,7 +57,7 @@ class ProcessingViewController: UIViewController {
     }
     
     fileprivate func process(_ params: Dictionary<String, String>) {
-        if let url = URL(string: "https://www.beanstream.com/scripts/tokenization/tokens") {
+        if let url = URL(string: "https://api.na.bambora.com/scripts/tokenization/tokens") {
             
             let urlconfig = URLSessionConfiguration.default
             urlconfig.timeoutIntervalForRequest = Settings.tokenRequestTimeout
