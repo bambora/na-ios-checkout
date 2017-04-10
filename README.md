@@ -42,7 +42,7 @@ Checkout is a small iOS (Swift) framework project that you can add to your app p
 
 The Checkout controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
-Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
+Once the user has completed all fields with valid input, a processing closure provided by you is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
 <a name="demo"/>
 
