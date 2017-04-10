@@ -1,8 +1,8 @@
 <img src="https://cdn.na.bambora.com/resources/logos/bambora-logo180x92.png" />
 
-<img width="250" align="right" src="screenshot.png">
-
 # Checkout for iOS
+
+<img width="220" align="right" src="screenshot.png">
 
 ##### Table of Contents
 
@@ -112,7 +112,7 @@ end
 
 * Note that 'pod update' alone does not update Artifactory based pod indexes as expected. Use 'pod repo-art update bambora-na-public' first and then use 'pod update'.
 
-### Step 1: Add Checkout To Your App
+### Step 2: Add Checkout To Your App
 
 Here is an example, written in Swift of how Checkout is wired to a button action that simply updated a status label.
 
