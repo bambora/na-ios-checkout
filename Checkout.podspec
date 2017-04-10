@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.summary  = 'A delightful Payments UI framework to be helpful with Bambora related development.'
   spec.homepage = 'http://developer.na.bambora.com'
   spec.authors  = 'Sven M. Resch'
-  spec.source   = { :git => 'https://github.com/Beanstream/beanstream-ios-payform.git',
+  spec.source   = { :git => 'https://github.com/Bambora/na-ios-checkout.git',
   					:tag => spec.version.to_s, :submodules => true }
   spec.requires_arc = true
   spec.ios.deployment_target = '8.2'
