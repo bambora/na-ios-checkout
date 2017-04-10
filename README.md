@@ -168,7 +168,7 @@ Here is an example, written in Swift of how Checkout is wired to a button action
 }
 ```
 
-## Step 3: Process The Payment
+### Step 3: Process The Payment
 
 Whether you collect the tokenized card data and send it asynchronously to your server, or take any other action, you will need to collect the cardInfo code string value that is your token to process the payment with.
 
