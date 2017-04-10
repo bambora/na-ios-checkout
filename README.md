@@ -8,6 +8,7 @@
 * [Platform Support](#platform-support)
 * [Checkout](#checkout)
 * [How It Works](#functionality)
+* [Demo App](#demo)
 * [CocoaPads Test App](#tester)
 * [Integration Guide](#integration-guide)
 * [Building Locally and Contributing](#contributing)
@@ -31,23 +32,32 @@ By integrating Checkout a developer can easily provide a way for users to accept
 
 # Checkout
 
-Checkout is a small iOS (Swift) framework project that implemented as a view controller that you can add to your app project. Most apps will let users launch Checkout to gather credit card details from something like a button action.
+Checkout is a small iOS (Swift) framework project that you can add to your app project. Most apps will let users launch Checkout to gather credit card details from something like a button action.
 
 <a name="functionality"/>
 
 ## How It Works
+
 The Checkout controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
 Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
+<a name="demo"/>
+
+## Demo App
+
+While you can use Checkout via CocoaPods (see below in the integration guide) as an iOS developer you can also just clone this repo and build the Checkout Demo target yourself and try out the functionality. This project has no 3rd party dependencies and so we hope it's easy to build, and easy to try out, for yourself.
+
 <a name="tester"/>
 
 ## CocoaPods Tester App
+
 Use this [test app](https://github.com/Bambora/na-ios-checkout/PodsTester/) to see a working example of integrating Checkout using CocoaPods.
 
 <a name="integration-guide"/>
 
-## Integration
+## Integration Guide
+
 Adding Checkout to your app could not be easier. You simply use CocoaPods and our Artifactory repository to add the Checkout framework. Checkout is configured by setting properties on the CheckoutViewController instance you create and present. It can be configured to collect shipping and billing addresses in addition to the card details.
 
 The required parameters are:
@@ -112,11 +122,11 @@ Here is an example, written in Swift of how Checkout is wired to a button action
         self.statusLabel.text = ""
 
         controller.name = "Lollipop Shop"
-        controller.amount = NSDecimalNumber(double: 100.00)
+        controller.amount = NSDecimalNumber(value: 100.00 as Double)
         controller.currencyCode = "CAD"
         controller.purchaseDescription = "item, item, item..."
         //controller.image = UIImage(named: "icon")
-        //controller.primaryColor = UIColor.blueColor()       // default: "#8247B5"
+        //controller.primaryColor = UIColor.blue              // default: "#8247B5"
         //controller.shippingAddressRequired = true           // default: true
         //controller.billingAddressRequired = true            // default: true
         //controller.tokenRequestTimeoutSeconds = 6           // default: 6
@@ -147,11 +157,11 @@ Here is an example, written in Swift of how Checkout is wired to a button action
                 self.statusLabel.text = msg
             }
 
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             self.view.setNeedsLayout() // Needed in case of view orientation change
         }
 
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)
     }
 }
 ```
