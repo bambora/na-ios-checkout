@@ -1,10 +1,10 @@
 <img src="https://cdn.na.bambora.com/resources/logos/bambora-logo180x92.png" />
 
-<img width="220" align="center" src="screenshot.png">
-
 # Checkout for iOS
 
 ##### Table of Contents
+
+<img width="220" align="right" src="screenshot.png">
 
 * [Overview](#overview)
 * [Platform Support](#platform-support)
