@@ -36,9 +36,9 @@ Checkout is a small iOS (Swift) framework project that you can add to your app p
 
 <a name="functionality"/>
 
-## How It Works
-
 <img width="250" align="left" src="screenshot.png">
+
+## How It Works
 
 The Checkout controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
