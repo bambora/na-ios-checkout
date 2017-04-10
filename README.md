@@ -2,6 +2,8 @@
 
 # Checkout for iOS
 
+<img width="250" align="right" src="screenshot.png">
+
 ##### Table of Contents
 
 * [Overview](#overview)
@@ -16,8 +18,6 @@
 <a name="overview"/>
 
 ## Overview
-
-<img width="250" align="right" src="screenshot.png">
 
 Checkout is a client-side iOS framework that handles customer credit card input within a merchant's mobile app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
 
