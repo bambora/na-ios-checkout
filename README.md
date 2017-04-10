@@ -2,9 +2,9 @@
 
 # Checkout for iOS
 
-##### Table of Contents
-
 <img width="220" align="right" src="screenshot.png">
+
+##### Table of Contents
 
 * [Overview](#overview)
 * [Platform Support](#platform-support)
