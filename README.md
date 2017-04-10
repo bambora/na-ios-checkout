@@ -17,6 +17,8 @@
 
 ## Overview
 
+<img width="250" align="right" src="screenshot.png">
+
 Checkout is a client-side iOS framework that handles customer credit card input within a merchant's mobile app. This iOS framework limits the scope of a merchant's PCI compliance by removing the need for them to pass the sensitive information (credit card number, CVD, or expiry) through their servers and from having to write and store code that comes in contact with that sensitive information.
 
 By integrating Checkout a developer can easily provide a way for users to accept payments in an iOS app. Checkout provides some client-side validation, smart field data formatting and a design that works in all iOS device form factors.
@@ -35,8 +37,6 @@ By integrating Checkout a developer can easily provide a way for users to accept
 Checkout is a small iOS (Swift) framework project that you can add to your app project. Most apps will let users launch Checkout to gather credit card details from something like a button action.
 
 <a name="functionality"/>
-
-<img width="250" align="left" src="screenshot.png">
 
 ## How It Works
 
