@@ -34,11 +34,11 @@ By integrating Checkout a developer can easily provide a way for users to accept
 
 Checkout is a small iOS (Swift) framework project that you can add to your app project. Most apps will let users launch Checkout to gather credit card details from something like a button action.
 
-<img width="250" align="left" src="screenshot.png">
-
 <a name="functionality"/>
 
 ## How It Works
+
+<img width="250" align="left" src="screenshot.png">
 
 The Checkout controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
