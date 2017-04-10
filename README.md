@@ -8,7 +8,7 @@
 * [Platform Support](#platform-support)
 * [Checkout](#checkout)
 * [How It Works](#functionality)
-* [Demo App](#demo)
+* [CocoaPads Test App](#tester)
 * [Integration Guide](#integration-guide)
 * [Building Locally and Contributing](#contributing)
 
@@ -40,10 +40,10 @@ The Checkout controller is instantiated and presented by your app code. The resu
 
 Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
-<a name="demo"/>
+<a name="tester"/>
 
-## Demo App
-Use this [demo](https://github.com/Bambora/na-ios-checkout-demo) to see how to integrate Checkout
+## CocoaPods Tester App
+Use this [test app](https://github.com/Bambora/na-ios-checkout/PodsTester/) to see a working example of integrating Checkout using CocoaPods.
 
 <a name="integration-guide"/>
 
