@@ -1,12 +1,13 @@
 //
 //  ViewController.swift
-//  CheckoutDemo
+//  PodsTester
 //
-//  Created by Sven Resch on 2016-06-03.
+//  Created by Sven Resch on 2016-06-21.
 //  Copyright © 2017 Bambora Inc. All rights reserved.
 //
 
 import UIKit
+import Checkout
 
 class ViewController: UIViewController {
 
@@ -14,23 +15,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        statusLabel.text = ""
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Found on iOS 9 that this was needed in case Checkout completes in a different
-        // orientation than was originally launched in (iOS 8.3 - 9.3 with iPhone 4).
-        self.view.setNeedsLayout()
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .default
+        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    @IBAction func payAction(_ sender: AnyObject) {
-        let storyboard = UIStoryboard(name: "Checkout", bundle: nil)
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    @IBAction func buttonAction(_ sender: AnyObject) {
+        
+        let bundle = Bundle.init(for: CheckoutViewController.classForCoder())
+        let storyboard = UIStoryboard(name: "Checkout", bundle: bundle)
+        
         if let controller = storyboard.instantiateInitialViewController() as? CheckoutViewController {
             self.statusLabel.text = ""
             
@@ -77,11 +74,11 @@ class ViewController: UIViewController {
                 }
                 
                 self.dismiss(animated: true, completion: nil)
-                self.view.setNeedsLayout() // Needed in case of view orientation change
             }
             
             self.present(controller, animated: true, completion: nil)
         }
     }
-    
+
 }
+

@@ -1,0 +1,12 @@
+PODS:
+  - Checkout (0.4.0)
+
+DEPENDENCIES:
+  - Checkout (~> 0.4.0)
+
+SPEC CHECKSUMS:
+  Checkout: 0bbdddd67deb4771794d172d8e05b975c2daf9c6
+
+PODFILE CHECKSUM: 50ac5021f88c5817ece4eaa27f2f79486f4fd81f
+
+COCOAPODS: 1.2.0
