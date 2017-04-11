@@ -2,6 +2,8 @@
 
 # Checkout for iOS
 
+<img width="220" align="right" src="screenshot.png">
+
 ##### Table of Contents
 
 * [Overview](#overview)
@@ -40,7 +42,7 @@ Checkout is a small iOS (Swift) framework project that you can add to your app p
 
 The Checkout controller is instantiated and presented by your app code. The resulting payment form may contain input fields for a shipping address, for a billing address and for credit card details.
 
-Once the user has completed all fields with valid input a processing closure, provided by you, is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
+Once the user has completed all fields with valid input, a processing closure provided by you is executed and is passed address information and a token for the credit card details. The processing closure is intended to allow the app developer to define a block of code to do any additional background processing and then dismiss the form.
 
 <a name="demo"/>
 
@@ -110,7 +112,7 @@ end
 
 * Note that 'pod update' alone does not update Artifactory based pod indexes as expected. Use 'pod repo-art update bambora-na-public' first and then use 'pod update'.
 
-### Step 1: Add Checkout To Your App
+### Step 2: Add Checkout To Your App
 
 Here is an example, written in Swift of how Checkout is wired to a button action that simply updated a status label.
 
@@ -166,7 +168,7 @@ Here is an example, written in Swift of how Checkout is wired to a button action
 }
 ```
 
-## Step 3: Process The Payment
+### Step 3: Process The Payment
 
 Whether you collect the tokenized card data and send it asynchronously to your server, or take any other action, you will need to collect the cardInfo code string value that is your token to process the payment with.
 
