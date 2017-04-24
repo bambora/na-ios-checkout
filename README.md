@@ -26,7 +26,7 @@ By integrating Checkout a developer can easily provide a way for users to accept
 <a name="platform-support"/>
 
 ## iOS Support
- * iOS 8.2+
+ * iOS 9.0+
  * iPhone
  * iPad
 
