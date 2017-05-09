@@ -1,0 +1,72 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "3hC-pI-fsa"; */
+"3hC-pI-fsa.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "province"; ObjectID = "6fW-2n-D84"; */
+"6fW-2n-D84.placeholder" = "province";
+
+/* Class = "UILabel"; text = "processing"; ObjectID = "7H6-Ek-tfW"; */
+"7H6-Ek-tfW.text" = "processing";
+
+/* Class = "UITextField"; placeholder = "email"; ObjectID = "7OT-PU-KWN"; */
+"7OT-PU-KWN.placeholder" = "email";
+
+/* Class = "UITextField"; placeholder = "city"; ObjectID = "7Yf-h5-FJg"; */
+"7Yf-h5-FJg.placeholder" = "city";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "9yY-Kt-2k1"; */
+"9yY-Kt-2k1.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "LIk-wf-OiK"; */
+"LIk-wf-OiK.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "RoD-L7-kbA"; */
+"RoD-L7-kbA.placeholder" = "name";
+
+/* Class = "UILabel"; text = "payment"; ObjectID = "Rr0-rc-Gox"; */
+"Rr0-rc-Gox.text" = "payment";
+
+/* Class = "UILabel"; text = "Pay"; ObjectID = "UOw-cB-b20"; */
+"UOw-cB-b20.text" = "Pay";
+
+/* Class = "UITableViewController"; title = "Payment"; ObjectID = "Wzw-lC-oKO"; */
+"Wzw-lC-oKO.title" = "Payment";
+
+/* Class = "UITextField"; placeholder = "country"; ObjectID = "afe-tQ-4Om"; */
+"afe-tQ-4Om.placeholder" = "country";
+
+/* Class = "UITextField"; placeholder = "name"; ObjectID = "fER-v9-gxN"; */
+"fER-v9-gxN.placeholder" = "name";
+
+/* Class = "UILabel"; text = "secured by bambora"; ObjectID = "gy6-Ae-amn"; */
+"gy6-Ae-amn.text" = "secured by bambora";
+
+/* Class = "UITextField"; placeholder = "expiry mm/yy"; ObjectID = "kf9-fo-QXQ"; */
+"kf9-fo-QXQ.placeholder" = "expiry mm/yy";
+
+/* Class = "UITextField"; placeholder = "zip"; ObjectID = "lKw-kx-ml6"; */
+"lKw-kx-ml6.placeholder" = "zip";
+
+/* Class = "UILabel"; text = "BILLING ADDRESS"; ObjectID = "msH-CV-q83"; */
+"msH-CV-q83.text" = "BILLING ADDRESS";
+
+/* Class = "UITextField"; placeholder = "card number"; ObjectID = "nqH-79-hy9"; */
+"nqH-79-hy9.placeholder" = "card number";
+
+/* Class = "UILabel"; text = "Billing address is same as shipping"; ObjectID = "ssn-ZY-hL5"; */
+"ssn-ZY-hL5.text" = "Billing address is same as shipping";
+
+/* Class = "UITextField"; placeholder = "cvv"; ObjectID = "vid-AX-afl"; */
+"vid-AX-afl.placeholder" = "cvv";
+
+/* Class = "UITableViewController"; title = "Shipping"; ObjectID = "xtv-gs-FVv"; */
+"xtv-gs-FVv.title" = "Shipping";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "zUC-IR-Xim"; */
+"zUC-IR-Xim.text" = "Label";
+
+/* Class = "UIViewController"; title = "Processing"; ObjectID = "zbg-ky-5M2"; */
+"zbg-ky-5M2.title" = "Processing";
+
+/* Class = "UITextField"; placeholder = "street address"; ObjectID = "zpU-o6-z43"; */
+"zpU-o6-z43.placeholder" = "street address";
