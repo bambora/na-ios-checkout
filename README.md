@@ -8,6 +8,7 @@
 
 * [Overview](#overview)
 * [Platform Support](#platform-support)
+* [TLS 1.2 Support](#tls12)
 * [Checkout](#checkout)
 * [How It Works](#functionality)
 * [Demo App](#demo)
@@ -29,6 +30,11 @@ By integrating Checkout a developer can easily provide a way for users to accept
  * iOS 9.0+
  * iPhone
  * iPad
+
+<a name="tls12"/>
+
+## TLS 1.2 support
+For testing instructions with our TLS1.2-only server, please refer to our [developer portal](https://dev.na.bambora.com/docs/references/payment_SDKs/support_tls12/#ios-sdk)
 
 <a name="checkout"/>
 
