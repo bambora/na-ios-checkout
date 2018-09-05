@@ -8,6 +8,7 @@
 
 * [Overview](#overview)
 * [Platform Support](#platform-support)
+* [TLS 1.2 Support](#tls12)
 * [Checkout](#checkout)
 * [How It Works](#functionality)
 * [Demo App](#demo)
@@ -29,6 +30,11 @@ By integrating Checkout a developer can easily provide a way for users to accept
  * iOS 9.0+
  * iPhone
  * iPad
+
+<a name="tls12"/>
+
+## TLS 1.2 support
+For testing instructions with our TLS1.2-only server, please refer to our [developer portal](https://dev.na.bambora.com/docs/references/payment_SDKs/support_tls12/#ios-sdk)
 
 <a name="checkout"/>
 
@@ -93,7 +99,7 @@ The first step is to install CocoaPods on your development machine. Then you wil
 * Add our CocoaPods repo
 
 ```bash
-> pod repo-art add bambora-na-public "https://beanstream.jfrog.io/beanstream/api/pods/na-public"
+> pod repo-art add bambora-na-public "https://beanstream.jfrog.io/beanstream/api/pods/beanstream-public"
 ```
 
 * After having executed a 'pod init' in your iOS project directory, add the Artifactory plugin and Checkout pod to your Podfile as follows and then execute the standard 'pod install' command.
