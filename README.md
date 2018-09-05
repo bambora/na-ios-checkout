@@ -93,7 +93,7 @@ The first step is to install CocoaPods on your development machine. Then you wil
 * Add our CocoaPods repo
 
 ```bash
-> pod repo-art add bambora-na-public "https://beanstream.jfrog.io/beanstream/api/pods/na-public"
+> pod repo-art add bambora-na-public "https://beanstream.jfrog.io/beanstream/api/pods/beanstream-public"
 ```
 
 * After having executed a 'pod init' in your iOS project directory, add the Artifactory plugin and Checkout pod to your Podfile as follows and then execute the standard 'pod install' command.
