@@ -142,14 +142,14 @@ open class CheckoutViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func showFooter() {
+    @objc func showFooter() {
         UILabel.beginAnimations(nil, context: nil)
         UILabel.setAnimationDuration(0.25)
         self.footerView.alpha = 1
         UILabel.commitAnimations()
     }
 
-    func hideFooter() {
+    @objc func hideFooter() {
         UILabel.beginAnimations(nil, context: nil)
         UILabel.setAnimationDuration(0.25)
         self.footerView.alpha = 0

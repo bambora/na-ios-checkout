@@ -54,7 +54,7 @@ class CreditCardValidator {
         if cardType != .invalidCard {
             let cleanCard = cardNumber.replacingOccurrences(of: " ", with: "")
             let len = self.lengthOfStringForType(cardType)
-            if len == cleanCard.characters.count {
+            if len == cleanCard.count {
                 if self.isValidNumber(cardNumber) && self.isLuhnValid(cardNumber) {
                     return true
                 }
@@ -67,7 +67,7 @@ class CreditCardValidator {
     func cardType(_ cardNumber: String) -> CardType {
         let ccnumber = cardNumber.replacingOccurrences(of: " ", with: "")
         
-        if ccnumber.characters.count < CC_LEN_FOR_TYPE {
+        if ccnumber.count < CC_LEN_FOR_TYPE {
             return .invalidCard
         }
         
@@ -91,7 +91,7 @@ class CreditCardValidator {
                 regex = "fu"
             }
 
-            let matches = ccnumber.range(of: regex, options: .regularExpression, range: ccnumber.startIndex..<ccnumber.characters.index(ccnumber.startIndex, offsetBy: CC_LEN_FOR_TYPE))
+            let matches = ccnumber.range(of: regex, options: .regularExpression, range: ccnumber.startIndex..<ccnumber.index(ccnumber.startIndex, offsetBy: CC_LEN_FOR_TYPE))
             if let _ = matches {
                 if let type = CardType(rawValue: cardType) {
                     return type
@@ -135,11 +135,11 @@ class CreditCardValidator {
     
     func isLuhnValid(_ cardNumber: String) -> Bool {
         var ccnumber = cardNumber.replacingOccurrences(of: " ", with: "")
-        ccnumber = String(ccnumber.characters.reversed())
+        ccnumber = String(ccnumber.reversed())
         
         var luhn = ""
-        for i in stride(from: 0, to: ccnumber.characters.count, by: 1) {
-            let c = ccnumber[ccnumber.characters.index(ccnumber.startIndex, offsetBy: i)]
+        for i in stride(from: 0, to: ccnumber.count, by: 1) {
+            let c = ccnumber[ccnumber.index(ccnumber.startIndex, offsetBy: i)]
             if i % 2 == 0 {
                 luhn += String(c)
             }
@@ -151,8 +151,8 @@ class CreditCardValidator {
         }
         
         var sum = 0
-        for i in stride(from: 0, to: luhn.characters.count, by: 1) {
-            let c = luhn[luhn.characters.index(luhn.startIndex, offsetBy: i)]
+        for i in stride(from: 0, to: luhn.count, by: 1) {
+            let c = luhn[luhn.index(luhn.startIndex, offsetBy: i)]
             if let val = Int(String(c)) {
                 sum += val
             }

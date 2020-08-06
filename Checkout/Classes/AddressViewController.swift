@@ -162,7 +162,7 @@ class AddressViewController: UITableViewController {
                     }
 
                 case Row.error:
-                    cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "error")
+                    cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "error")
                     cell.backgroundColor = UIColor.red.withAlphaComponent(0.1)
                     cell.selectionStyle = .none
                     cell.textLabel?.text = NSLocalizedString("Please fill all fields.", comment: "Validation statement used when all fields are not entered on Address view.")
@@ -180,7 +180,7 @@ class AddressViewController: UITableViewController {
                 }
             }
             else {
-                cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "fubar")
+                cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "fubar"
             }
         }
@@ -205,7 +205,7 @@ class AddressViewController: UITableViewController {
     
     // MARK: - Custom action methods
     
-    func billingIsSameValueChanged(_ sender: UISwitch) {
+    @objc func billingIsSameValueChanged(_ sender: UISwitch) {
         self.view.endEditing(true)
         self.billingAddressIsSame = sender.isOn
         let nextStepIndexPath = IndexPath(row: 0, section: 1)

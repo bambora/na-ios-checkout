@@ -52,7 +52,7 @@ class ViewController: UIViewController {
                     self.statusLabel.textColor = UIColor.red
                 }
                 else if let result = result {
-                    if let cardInfo = result["cardInfo"] as? Dictionary<String, String>, let token = cardInfo["code"] as String! {
+                    if let cardInfo = result["cardInfo"] as? Dictionary<String, String>, let token = cardInfo["code"] as String? {
                         print("cardInfo: \(cardInfo)")
                         self.statusLabel.text = "token: \(token)"
                         self.statusLabel.textColor = UIColor.black

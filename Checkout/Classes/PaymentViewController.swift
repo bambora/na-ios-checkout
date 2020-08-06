@@ -86,7 +86,8 @@ class PaymentViewController: UITableViewController {
             controller.expiryMonth = String(format: "%02d", monthYear.month)  // "06" == June
             
             var yearStr = String(monthYear.year)
-            yearStr = yearStr.substring(from: yearStr.characters.index(yearStr.startIndex, offsetBy: 2))
+            let idx = yearStr.index(yearStr.startIndex, offsetBy: 2)
+            yearStr = String(yearStr[idx...])
             controller.expiryYear = yearStr  // "16" == current year == 2016
         }
     }
@@ -228,7 +229,7 @@ class PaymentViewController: UITableViewController {
                     }
                     
                 case Row.spacer:
-                    cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "spacer")
+                    cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "spacer")
                     cell.selectionStyle = .none
                     
                 case Row.info:
@@ -245,7 +246,7 @@ class PaymentViewController: UITableViewController {
             }
             else {
                 print(">>> Should not have happend. Have a wierd row!!! \(indexPath.row)")
-                cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "fubar")
+                cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "fubar")
                 cell.textLabel?.text = "Ooops!"
             }
         }
@@ -270,7 +271,7 @@ class PaymentViewController: UITableViewController {
     // MARK: - Private methods
     
     fileprivate func dequeueCvvInfoCell() -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "CvvInfoCell")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "CvvInfoCell")
         cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = emailTextField?.font
@@ -289,7 +290,7 @@ class PaymentViewController: UITableViewController {
     }
 
     fileprivate func dequeueErrorCell() -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "error")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "error")
         cell.backgroundColor = UIColor.red.withAlphaComponent(0.1)
         cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
@@ -407,7 +408,7 @@ class PaymentViewController: UITableViewController {
             let minCardLength = ccValidator.lengthOfStringForType(cardType)
             var cardInvalid = false
             
-            if cleanCard.characters.count < minCardLength {
+            if cleanCard.count < minCardLength {
                 let msg = NSLocalizedString("Please enter a valid credit card number. The number entered is too short.", comment: "Validation statement used when credit card number entered is too short.")
                 errorMessages.append(msg)
                 cardInvalid = true
@@ -449,7 +450,7 @@ class PaymentViewController: UITableViewController {
         if let cvvNumber = cvvTextField?.text, cvvNumber != "" {
             let minCvvLength = ccValidator.lengthOfCvvForType(cardType)
             
-            if cvvNumber.characters.count < minCvvLength {
+            if cvvNumber.count < minCvvLength {
                 let msg = NSLocalizedString("Please enter a valid CVV number. The number entered is too short.", comment: "Validation statement used when CVV entered is too short.")
                 errorMessages.append(msg)
                 
@@ -651,7 +652,7 @@ extension PaymentViewController: UITextFieldDelegate {
     // Found on http://stackoverflow.com/questions/12083605/formatting-a-uitextfield-for-credit-card-input-like-xxxx-xxxx-xxxx-xxxx
     // --> Enhanced to follow a cardFormat string rather than just space every 4 digits.
     //
-    func reformatAsCardNumber(_ textField: UITextField) {
+    @objc func reformatAsCardNumber(_ textField: UITextField) {
         // In order to make the cursor end up positioned correctly, we need to
         // explicitly reposition it after we inject spaces into the text.
         // targetCursorPosition keeps track of where the cursor needs to end up as
@@ -666,7 +667,7 @@ extension PaymentViewController: UITextFieldDelegate {
             cardNumberWithoutSpaces = self.removeNonDigits(text, andPreserveCursorPosition: &targetCursorPosition)
         }
     
-        if cardNumberWithoutSpaces.characters.count > 19 {
+        if cardNumberWithoutSpaces.count > 19 {
             // If the user is trying to enter more than 19 digits, we prevent
             // their change, leaving the text field in  its previous state.
             // While 16 digits is usual, credit card numbers have a hard
@@ -702,8 +703,8 @@ extension PaymentViewController: UITextFieldDelegate {
         var digitsOnlyString = ""
         let originalCursorPosition = cursorPosition
         
-        for i in stride(from: 0, to: string.characters.count, by: 1) {
-            let characterToAdd = string[string.characters.index(string.startIndex, offsetBy: i)]
+        for i in stride(from: 0, to: string.count, by: 1) {
+            let characterToAdd = string[string.index(string.startIndex, offsetBy: i)]
             if characterToAdd >= "0" && characterToAdd <= "9" {
                 digitsOnlyString.append(characterToAdd)
             }
@@ -727,8 +728,8 @@ extension PaymentViewController: UITextFieldDelegate {
         var formatIndex = cardFormat.startIndex
         let cursorPositionInSpacelessString = cursorPosition
         
-        for i in stride(from: 0, to: string.characters.count, by: 1) {
-            if formatIndex != cardFormat.endIndex && cardFormat.characters[formatIndex] == " " {
+        for i in stride(from: 0, to: string.count, by: 1) {
+            if formatIndex != cardFormat.endIndex && cardFormat[formatIndex] == " " {
                 stringWithAddedSpaces.append(" ")
                 if i < cursorPositionInSpacelessString {
                     cursorPosition += 1
@@ -740,7 +741,7 @@ extension PaymentViewController: UITextFieldDelegate {
                 formatIndex = cardFormat.index(formatIndex, offsetBy: 1)
             }
             
-            let characterToAdd = string[string.characters.index(string.startIndex, offsetBy: i)]
+            let characterToAdd = string[string.index(string.startIndex, offsetBy: i)]
             stringWithAddedSpaces.append(characterToAdd)
         }
         
